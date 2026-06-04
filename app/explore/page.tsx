@@ -6,6 +6,20 @@ import { useGameStore } from "../../store/store";
 import ItemBar from "../../component/ItemBar";
 import Modal from "../../component/Modal";
 
+function Placeholder({ label, className = "" }: { label: string; className?: string }) {
+  return (
+    <div className={`flex items-center justify-center bg-stone-700 border border-stone-500 text-stone-300 text-xs font-ui ${className}`}>
+      {label}
+    </div>
+  );
+}
+
+const ITEMS = [
+  { key: "note",  label: "密碼紙條", href: "/explore/cipher", pos: "left-[15%] bottom-[25%]" },
+  { key: "bones", label: "舊箱子",   href: "/explore/bones",  pos: "left-[48%] bottom-[20%]" },
+  { key: "wand",  label: "神秘木棍", href: "/explore/wand",   pos: "right-[15%] bottom-[28%]" },
+];
+
 export default function Explore() {
   const router = useRouter();
   const { collectedItems, recipeFound, setRecipeFound } = useGameStore();
@@ -15,7 +29,6 @@ export default function Explore() {
   const allCollected = ["note", "bones", "wand"].every(collected);
 
   useEffect(() => {
-    // 只在尚未觸發過食譜的情況下顯示彈窗
     if (allCollected && !recipeFound) {
       const t = setTimeout(() => setShowRecipe(true), 400);
       return () => clearTimeout(t);
@@ -23,114 +36,47 @@ export default function Explore() {
   }, [allCollected, recipeFound]);
 
   return (
-    <div className="w-full h-screen flex flex-col bg-stone-950">
+    <div className="w-full h-screen flex flex-col bg-stone-900">
       {/* 頂部物品欄 */}
       <ItemBar collectedItems={collectedItems} />
 
-      {/* 主場景：三面牆透視房間 */}
-      <div className="flex-1 relative overflow-hidden">
+      {/* 主場景 */}
+      <div className="flex-1 relative">
+        {/* 背景佔位 */}
+        <Placeholder label="[糖果屋內部 背景圖]" className="absolute inset-0" />
 
-        {/* ── 天花板 ── */}
-        <div
-          className="absolute inset-0"
-          style={{
-            clipPath: "polygon(0% 0%, 100% 0%, 72% 12%, 28% 12%)",
-            background: "linear-gradient(to bottom, #1a0a02, #2d1505)",
-          }}
-        />
+        {/* 三個互動物件 */}
+        {ITEMS.map((item) => {
+          const done = collected(item.key);
+          return (
+            <button
+              key={item.key}
+              onClick={() => router.push(item.href)}
+              className={`absolute flex flex-col items-center gap-1 transition-transform hover:scale-105 active:scale-95 ${item.pos}`}
+            >
+              <div
+                className="w-20 h-20 flex items-center justify-center border-2 text-xs font-ui font-bold"
+                style={{
+                  background: done ? "#1a3a1a" : "#4a2e08",
+                  borderColor: done ? "#22c55e" : "var(--color-gold)",
+                  color: done ? "#86efac" : "#f5a623",
+                }}
+              >
+                {done ? "✓ 已收集" : item.label}
+              </div>
+              <span className="text-[10px] font-ui" style={{ color: done ? "#86efac" : "#f5a623" }}>
+                {item.label}
+              </span>
+            </button>
+          );
+        })}
+      </div>
 
-        {/* ── 左牆（磚牆紋理） ── */}
-        <div
-          className="absolute inset-0 brick-texture"
-          style={{
-            clipPath: "polygon(0% 0%, 28% 12%, 28% 72%, 0% 100%)",
-            filter: "brightness(0.65)",
-          }}
-        />
-
-        {/* ── 右牆（磚牆紋理） ── */}
-        <div
-          className="absolute inset-0 brick-texture"
-          style={{
-            clipPath: "polygon(72% 12%, 100% 0%, 100% 100%, 72% 72%)",
-            filter: "brightness(0.65)",
-          }}
-        />
-
-        {/* ── 後牆（木板紋理） ── */}
-        <div
-          className="absolute inset-0 wood-texture"
-          style={{ clipPath: "polygon(28% 12%, 72% 12%, 72% 72%, 28% 72%)" }}
-        />
-
-        {/* ── 地板（深色木紋） ── */}
-        <div
-          className="absolute inset-0"
-          style={{
-            clipPath: "polygon(0% 100%, 28% 72%, 72% 72%, 100% 100%)",
-            background: "repeating-linear-gradient(90deg, transparent 0px, transparent 48px, rgba(0,0,0,0.2) 48px, rgba(0,0,0,0.2) 50px), linear-gradient(to bottom, #3b1e08, #130802)",
-          }}
-        />
-
-        {/* ── 後牆裝飾線框（加深邊界感） ── */}
-        <svg
-          className="absolute inset-0 w-full h-full pointer-events-none"
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-          style={{ zIndex: 1 }}
-        >
-          <polygon
-            points="28,12 72,12 72,72 28,72"
-            fill="none"
-            stroke="#6b3a1a"
-            strokeWidth="0.4"
-            vectorEffect="non-scaling-stroke"
-          />
-          <line x1="0" y1="100" x2="28" y2="72" stroke="#5c2e0e" strokeWidth="0.3" vectorEffect="non-scaling-stroke" />
-          <line x1="72" y1="72" x2="100" y2="100" stroke="#5c2e0e" strokeWidth="0.3" vectorEffect="non-scaling-stroke" />
-        </svg>
-
-        {/* ════════════════════════════════
-            三個互動物件
-            使用 % 定位，對應透視座標
-            ════════════════════════════════ */}
-
-        {/* 1. 密碼紙條 ── 後牆左側（掛在牆上） */}
-        <ItemSpot
-          collected={collected("note")}
-          label="密碼紙條"
-          emoji="📜"
-          onClick={() => router.push("/explore/cipher")}
-          style={{ left: "34%", top: "22%", transform: "translate(-50%,-50%)" }}
-          glowColor="amber"
-        />
-
-        {/* 2. 舊箱子 ── 地板中央 */}
-        <ItemSpot
-          collected={collected("bones")}
-          label="舊箱子"
-          emoji="📦"
-          onClick={() => router.push("/explore/bones")}
-          style={{ left: "50%", top: "77%", transform: "translate(-50%,-50%)" }}
-          glowColor="stone"
-        />
-
-        {/* 3. 神秘木棍 ── 右牆靠近角落 */}
-        <ItemSpot
-          collected={collected("wand")}
-          label="神秘木棍"
-          emoji="🪄"
-          onClick={() => router.push("/explore/wand")}
-          style={{ left: "80%", top: "42%", transform: "translate(-50%,-50%)" }}
-          glowColor="purple"
-        />
-
-        {/* 底部提示文字 */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-stone-500 text-xs select-none pointer-events-none">
-          {allCollected
-            ? "牆壁上有什麼東西……"
-            : `尚有 ${3 - ["note","bones","wand"].filter(collected).length} 個線索未找到`}
-        </div>
+      {/* 底部提示 */}
+      <div className="px-6 py-3 border-t border-stone-700 text-xs font-ui text-stone-400">
+        {allCollected
+          ? "所有線索已收集完畢……"
+          : `尚有 ${3 - ["note","bones","wand"].filter(collected).length} 個線索未找到`}
       </div>
 
       {/* 食譜發現彈窗 */}
@@ -152,62 +98,5 @@ export default function Explore() {
         </Modal>
       )}
     </div>
-  );
-}
-
-// ── 互動物件元件 ──────────────────────────────────────────
-interface ItemSpotProps {
-  collected: boolean;
-  label: string;
-  emoji: string;
-  onClick: () => void;
-  style: React.CSSProperties;
-  glowColor: "amber" | "stone" | "purple";
-}
-
-const glowMap = {
-  amber:  { border: "#f59e0b", bg: "rgba(120,60,0,0.5)",  text: "#fcd34d" },
-  stone:  { border: "#78716c", bg: "rgba(40,25,10,0.5)",  text: "#d6d3d1" },
-  purple: { border: "#a855f7", bg: "rgba(60,10,80,0.5)",  text: "#d8b4fe" },
-};
-
-function ItemSpot({ collected, label, emoji, onClick, style, glowColor }: ItemSpotProps) {
-  const { border, bg, text } = glowMap[glowColor];
-  return (
-    <button
-      onClick={onClick}
-      className="absolute flex flex-col items-center gap-1 group transition-transform hover:scale-110 active:scale-95"
-      style={{ ...style, zIndex: 10 }}
-    >
-      <div
-        className="w-14 h-14 rounded-lg flex items-center justify-center shadow-lg transition-all"
-        style={{
-          border: `2px solid ${collected ? "#22c55e" : border}`,
-          background: collected ? "rgba(20,80,30,0.6)" : bg,
-          boxShadow: collected
-            ? "0 0 12px #22c55e66"
-            : `0 0 14px ${border}66`,
-          animation: collected ? "none" : "subtle-pulse 2s ease-in-out infinite",
-        }}
-      >
-        <span className="text-3xl">{emoji}</span>
-      </div>
-      <span
-        className="text-xs font-medium px-1.5 py-0.5 rounded"
-        style={{
-          color: collected ? "#86efac" : text,
-          background: "rgba(0,0,0,0.5)",
-        }}
-      >
-        {collected ? `✓ ${label}` : label}
-      </span>
-
-      <style>{`
-        @keyframes subtle-pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.65; }
-        }
-      `}</style>
-    </button>
   );
 }
