@@ -1,48 +1,67 @@
-"use client"
+"use client";
+
 import Link from "next/link";
 import React from "react";
+import { motion } from "framer-motion";
 
 type ActionButtonProps = {
-  /** 文字或節點 */
   text?: React.ReactNode;
-  /** 若提供則渲染為 Link，否則為 button */
   href?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
   disabled?: boolean;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+  variant?: "gold" | "red" | "purple" | "ghost";
+  className?: string;
+  children?: React.ReactNode;
+} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">;
+
+const variantClass = {
+  gold:   "border-[var(--color-gold)] text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-stone-950 border-glow-gold",
+  red:    "border-[var(--color-candy-red)] text-[var(--color-candy-red)] hover:bg-[var(--color-candy-red)] hover:text-white",
+  purple: "border-[var(--color-purple)] text-[var(--color-purple)] hover:bg-[var(--color-purple)] hover:text-white border-glow-purple",
+  ghost:  "border-stone-600 text-stone-400 hover:bg-stone-800 hover:text-stone-100",
+};
 
 export default function ActionButton({
-  text = "button",
+  text,
   href,
   onClick,
   disabled = false,
+  variant = "gold",
+  className = "",
+  children,
   ...rest
 }: ActionButtonProps) {
-  const FIXED_CLASS = "text-white font-bold border border-gray-700 px-3 py-2 bg-gray-700 shadow-md hover:bg-white hover:text-gray-700 hover:shadow-lg transition-all duration-500";
-  const baseClass = `${FIXED_CLASS} ${disabled ? "opacity-50 pointer-events-none" : ""}`.trim();
+  const base = [
+    "border-2 px-6 py-2 font-ui font-medium tracking-wider transition-all duration-300",
+    "disabled:opacity-40 disabled:cursor-not-allowed",
+    variantClass[variant],
+    className,
+  ].join(" ");
+
+  const label = text ?? children ?? "button";
 
   if (href) {
     return (
-      <div className="flex flex-col justify-center items-center gap-4">
+      <motion.div whileHover={{ scale: disabled ? 1 : 1.04 }} whileTap={{ scale: disabled ? 1 : 0.94 }}>
         <Link
           href={href}
-          className={baseClass}
+          className={base}
           onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
             if (disabled) e.preventDefault();
             if (onClick) onClick(e as React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>);
           }}
         >
-          {text}
+          {label}
         </Link>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="flex flex-col justify-center items-center gap-4">
-      <button type="button" className={baseClass} onClick={onClick} disabled={disabled} {...rest}>
-        {text}
+    <motion.div whileHover={{ scale: disabled ? 1 : 1.04 }} whileTap={{ scale: disabled ? 1 : 0.94 }}>
+      <button type="button" className={base} onClick={onClick} disabled={disabled} {...rest}>
+        {label}
       </button>
-    </div>
+    </motion.div>
   );
 }

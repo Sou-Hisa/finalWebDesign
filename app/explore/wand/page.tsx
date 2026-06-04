@@ -1,18 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGameStore } from "../../../store/store";
 
 export default function ExploreWand() {
   const router = useRouter();
   const { addItem, collectedItems } = useGameStore();
-  const alreadyCollected = collectedItems.includes("wand");
-  const [collected, setCollected] = useState(alreadyCollected);
+  // 直接讀 store，不用 local state，避免雙重狀態
+  const collected = collectedItems.includes("wand");
 
   function handleCollect() {
     addItem("wand");
-    setCollected(true);
   }
 
   return (

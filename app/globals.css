@@ -1,26 +1,109 @@
 @import "tailwindcss";
 
+/* ── 遊戲主題 CSS 變數 ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-bg-dark:    #0d0705;
+  --color-bg-mid:     #1e0f07;
+  --color-bg-room:    #2a1508;
+  --color-gold:       #f5a623;
+  --color-gold-dim:   #a06a10;
+  --color-candy-red:  #c0392b;
+  --color-candy-pink: #e91e8c;
+  --color-purple:     #8b5cf6;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: Arial, Helvetica, sans-serif;
+  --font-sans: var(--font-ui), "Noto Sans TC", sans-serif;
   --font-mono: "Courier New", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── 全域字型與背景 ── */
+body {
+  font-family: var(--font-ui), "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  background-color: var(--color-bg-dark);
+  color: #e8d5b0;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── 字型 utility ── */
+.font-title {
+  font-family: var(--font-title), "Ma Shan Zheng", cursive;
+}
+.font-body {
+  font-family: var(--font-body), "Noto Serif TC", serif;
+}
+
+/* ── 文字光暈 ── */
+.text-glow-gold {
+  text-shadow: 0 0 10px #f5a62399, 0 0 30px #f5a62355, 0 0 60px #f5a62322;
+}
+.text-glow-red {
+  text-shadow: 0 0 10px #c0392b99, 0 0 30px #c0392b55;
+}
+.text-glow-purple {
+  text-shadow: 0 0 10px #8b5cf699, 0 0 30px #8b5cf655;
+}
+
+/* ── 邊框光暈 ── */
+.border-glow-gold {
+  box-shadow: 0 0 8px #f5a62366, inset 0 0 6px #f5a62322;
+}
+.border-glow-purple {
+  box-shadow: 0 0 12px #8b5cf666, inset 0 0 8px #8b5cf622;
+}
+
+/* ── Shimmer（物品收集後閃光） ── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent 30%, #f5a62355 50%, transparent 70%);
+  background-size: 200% auto;
+  animation: shimmer 2.5s linear infinite;
+}
+
+/* ── 螢幕閃紅（受傷反饋） ── */
+@keyframes flash-red {
+  0%, 100% { opacity: 0; }
+  20%      { opacity: 0.38; }
+}
+.flash-red {
+  animation: flash-red 0.5s ease-out forwards;
+}
+
+/* ── Vignette ── */
+.vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.75) 100%);
+  pointer-events: none;
+}
+
+/* ── 糖果斜條紋背景 ── */
+.candy-stripes {
+  background: repeating-linear-gradient(
+    -45deg,
+    #1a0505 0px, #1a0505 18px,
+    #2d0a0a 18px, #2d0a0a 36px
+  );
+}
+
+/* ── 木板紋理（後牆） ── */
+.wood-texture {
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0px, transparent 28px,
+      rgba(0,0,0,0.18) 28px, rgba(0,0,0,0.18) 30px
+    ),
+    linear-gradient(180deg, #4a2510, #2e160a);
+}
+
+/* ── 磚牆紋理（側牆） ── */
+.brick-texture {
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 18px, rgba(0,0,0,0.25) 18px, rgba(0,0,0,0.25) 20px),
+    repeating-linear-gradient(90deg, transparent, transparent 38px, rgba(0,0,0,0.15) 38px, rgba(0,0,0,0.15) 40px);
+  background-color: #3d2010;
 }

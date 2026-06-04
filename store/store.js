@@ -39,6 +39,10 @@ const useGameStore = create((set, get) => ({
   })),
   hasItem: (item) => get().collectedItems.includes(item),
 
+  // 食譜是否已觸發（防止返回 explore 時重複彈出）
+  recipeFound: false,
+  setRecipeFound: () => set({ recipeFound: true }),
+
   // 分數
   score: 0,
   setScore: (score) => set({ score }),
@@ -46,6 +50,7 @@ const useGameStore = create((set, get) => ({
   // 重置遊戲
   resetGame: () => set({
     collectedItems: [],
+    recipeFound: false,
     score: 0,
   }),
 }));

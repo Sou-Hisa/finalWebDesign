@@ -1,9 +1,10 @@
 "use client";
 
+import { motion } from "framer-motion";
+
 const ITEM_CONFIG: Record<string, { label: string; emoji: string }> = {
   note:  { label: "密碼紙條", emoji: "📜" },
   bones: { label: "白色骨頭", emoji: "🦴" },
-  book:  { label: "骨骼百科", emoji: "📖" },
   wand:  { label: "巫婆魔杖", emoji: "🪄" },
 };
 
@@ -13,24 +14,44 @@ interface ItemBarProps {
 
 export default function ItemBar({ collectedItems }: ItemBarProps) {
   return (
-    <div className="w-full border-b-2 border-black bg-amber-50 px-4 py-2 flex items-center gap-2">
-      <span className="text-xs text-gray-500 mr-2 shrink-0">物品收集欄</span>
-      <div className="flex gap-3">
+    <div
+      className="w-full px-4 py-2 flex items-center gap-3 border-b"
+      style={{
+        background: "linear-gradient(90deg, #1a0c05, #2a1508, #1a0c05)",
+        borderColor: "#f5a62344",
+      }}
+    >
+      <span className="text-xs font-ui shrink-0" style={{ color: "#a06a10" }}>
+        物品收集欄
+      </span>
+
+      <div className="flex gap-2">
         {Object.entries(ITEM_CONFIG).map(([key, { label, emoji }]) => {
           const collected = collectedItems.includes(key);
           return (
-            <div
+            <motion.div
               key={key}
               title={label}
-              className={`flex flex-col items-center px-2 py-1 border rounded text-xs transition-all ${
-                collected
-                  ? "border-amber-500 bg-amber-100 text-amber-800"
-                  : "border-gray-300 bg-gray-100 text-gray-400 grayscale opacity-40"
-              }`}
+              animate={collected ? { scale: [1, 1.15, 1] } : {}}
+              transition={{ duration: 0.35 }}
+              className="flex flex-col items-center px-2 py-1 border rounded-sm text-xs transition-all relative overflow-hidden"
+              style={{
+                borderColor: collected ? "var(--color-gold)" : "#44332211",
+                background:  collected ? "rgba(245,166,35,0.12)" : "rgba(255,255,255,0.03)",
+                color:        collected ? "#f5a623" : "#55443322",
+                filter:       collected ? "none" : "grayscale(1) opacity(0.3)",
+                boxShadow:    collected ? "0 0 8px #f5a62333" : "none",
+              }}
             >
-              <span className="text-lg">{emoji}</span>
-              <span>{label}</span>
-            </div>
+              {collected && (
+                <span
+                  className="absolute inset-0 shimmer pointer-events-none"
+                  style={{ mixBlendMode: "overlay" }}
+                />
+              )}
+              <span className="text-lg relative z-10">{emoji}</span>
+              <span className="font-ui relative z-10">{label}</span>
+            </motion.div>
           );
         })}
       </div>

@@ -8,18 +8,19 @@ import Modal from "../../component/Modal";
 
 export default function Explore() {
   const router = useRouter();
-  const { collectedItems } = useGameStore();
+  const { collectedItems, recipeFound, setRecipeFound } = useGameStore();
   const [showRecipe, setShowRecipe] = useState(false);
 
   const collected = (key: string) => collectedItems.includes(key);
   const allCollected = ["note", "bones", "wand"].every(collected);
 
   useEffect(() => {
-    if (allCollected) {
+    // 只在尚未觸發過食譜的情況下顯示彈窗
+    if (allCollected && !recipeFound) {
       const t = setTimeout(() => setShowRecipe(true), 400);
       return () => clearTimeout(t);
     }
-  }, [allCollected]);
+  }, [allCollected, recipeFound]);
 
   return (
     <div className="w-full h-screen flex flex-col bg-stone-950">
@@ -38,39 +39,36 @@ export default function Explore() {
           }}
         />
 
-        {/* ── 左牆 ── */}
+        {/* ── 左牆（磚牆紋理） ── */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 brick-texture"
           style={{
             clipPath: "polygon(0% 0%, 28% 12%, 28% 72%, 0% 100%)",
-            background: "linear-gradient(to right, #1c0e04, #3d2010)",
+            filter: "brightness(0.65)",
           }}
         />
 
-        {/* ── 右牆 ── */}
+        {/* ── 右牆（磚牆紋理） ── */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 brick-texture"
           style={{
             clipPath: "polygon(72% 12%, 100% 0%, 100% 100%, 72% 72%)",
-            background: "linear-gradient(to left, #1c0e04, #3d2010)",
+            filter: "brightness(0.65)",
           }}
         />
 
-        {/* ── 後牆 ── */}
+        {/* ── 後牆（木板紋理） ── */}
         <div
-          className="absolute inset-0"
-          style={{
-            clipPath: "polygon(28% 12%, 72% 12%, 72% 72%, 28% 72%)",
-            background: "linear-gradient(to bottom, #4a2510, #2e160a)",
-          }}
+          className="absolute inset-0 wood-texture"
+          style={{ clipPath: "polygon(28% 12%, 72% 12%, 72% 72%, 28% 72%)" }}
         />
 
-        {/* ── 地板 ── */}
+        {/* ── 地板（深色木紋） ── */}
         <div
           className="absolute inset-0"
           style={{
             clipPath: "polygon(0% 100%, 28% 72%, 72% 72%, 100% 100%)",
-            background: "linear-gradient(to bottom, #3b1e08, #1a0b03)",
+            background: "repeating-linear-gradient(90deg, transparent 0px, transparent 48px, rgba(0,0,0,0.2) 48px, rgba(0,0,0,0.2) 50px), linear-gradient(to bottom, #3b1e08, #130802)",
           }}
         />
 
@@ -146,7 +144,7 @@ export default function Explore() {
             「如何烤出鮮嫩多汁的小女孩與小男孩……」
           </p>
           <button
-            onClick={() => router.push("/chapter02")}
+            onClick={() => { setRecipeFound(); router.push("/chapter02"); }}
             className="w-full border-2 border-red-600 py-2 font-bold text-red-700 hover:bg-red-600 hover:text-white transition-colors"
           >
             繼續 →
