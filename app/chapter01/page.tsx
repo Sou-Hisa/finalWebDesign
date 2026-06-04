@@ -7,7 +7,7 @@ import DialogueBox from "../../component/DialogueBox";
 
 function Placeholder({ label, className = "" }: { label: string; className?: string }) {
   return (
-    <div className={`flex items-center justify-center bg-stone-700 border border-stone-500 text-stone-300 text-xs font-ui ${className}`}>
+    <div className={`flex items-center justify-center bg-amber-800 text-gray-100 border border-gray-500 text-xs font-ui ${className}`}>
       {label}
     </div>
   );

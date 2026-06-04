@@ -7,7 +7,7 @@ const Typewriter = dynamic(() => import("typewriter-effect"), { ssr: false });
 
 function Placeholder({ label, className = "" }: { label: string; className?: string }) {
   return (
-    <div className={`flex items-center justify-center bg-stone-700 border border-stone-500 text-stone-300 text-xs font-ui ${className}`}>
+    <div className={`flex items-center justify-center bg-gray-600 text-gray-100 text-xs font-ui ${className}`}>
       {label}
     </div>
   );
@@ -15,19 +15,18 @@ function Placeholder({ label, className = "" }: { label: string; className?: str
 
 export default function Description() {
   return (
-    <div className="w-full h-screen bg-stone-900 flex">
+    <div className="w-full h-screen bg-gray-800 flex">
       {/* 左：文字區 */}
-      <div className="w-1/2 flex flex-col justify-center gap-8 px-12">
+      <div className="w-2/3 flex flex-col justify-center gap-8 px-12">
         <p className="font-title text-2xl" style={{ color: "var(--color-gold)" }}>前情提要</p>
-        <div className="font-body text-stone-200 text-base leading-relaxed min-h-32">
+        <div className="font-body text-gray-200 text-base leading-relaxed min-h-32">
           <Typewriter
             options={{
               strings: [
-                "很久以前，有一對兄妹分別叫作漢賽爾與葛麗特。他們的家境非常貧窮，遇上大饑荒時，繼母狠心地說服了軟弱的父親，決定把孩子們帶到森林深處丟掉，省下口糧。",
-                "漢賽爾很聰明，第一次他偷偷在口袋裡裝滿了白色小石子，沿路丟下。當月亮升起，石子閃閃發光，引導他們平安回到了家。",
-                "不久後，繼母又打算丟掉他們。這次漢賽爾沒機會撿石頭，只好把僅有的一塊麵包搓成碎屑撒在路上。",
-                "遺憾的是，當他們想回家時，發現森林裡的鳥兒早就把麵包屑吃光了。兩兄妹在森林裡迷了路，又餓又累。",
-                "絕望之際，兄妹倆看到了一棟神奇的房子……",
+                "很久以前，兄妹漢賽爾與葛麗特因家境貧困，被繼母說服父親帶進森林裡遺棄。",
+                "第一次，漢賽爾沿路撒下白石子，借著月光順利找到回家的路。",
+                "第二次他改用麵包屑，卻被鳥兒吃光，兄妹倆從此迷失在森林深處。",
+                "就在飢寒交迫、幾乎絕望之際，他們發現了一棟神奇的房子……",
               ],
               autoStart: true,
               loop: true,

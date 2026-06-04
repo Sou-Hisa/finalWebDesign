@@ -4,6 +4,9 @@ import Link from "next/link";
 import React from "react";
 import { motion } from "framer-motion";
 
+const MotionLink = motion(Link);
+const MotionButton = motion.button;
+
 type ActionButtonProps = {
   text?: React.ReactNode;
   href?: string;
@@ -32,7 +35,7 @@ export default function ActionButton({
   ...rest
 }: ActionButtonProps) {
   const base = [
-    "border-2 px-6 py-2 font-ui font-medium tracking-wider transition-all duration-300",
+    "inline-flex items-center justify-center w-max text-center border-2 px-6 py-2 font-ui font-medium tracking-wider transition-all duration-300",
     "disabled:opacity-40 disabled:cursor-not-allowed",
     variantClass[variant],
     className,
@@ -42,26 +45,31 @@ export default function ActionButton({
 
   if (href) {
     return (
-      <motion.div whileHover={{ scale: disabled ? 1 : 1.04 }} whileTap={{ scale: disabled ? 1 : 0.94 }}>
-        <Link
-          href={href}
-          className={base}
-          onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-            if (disabled) e.preventDefault();
-            if (onClick) onClick(e as React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>);
-          }}
-        >
-          {label}
-        </Link>
-      </motion.div>
+      <MotionLink
+        href={href}
+        className={base}
+        whileHover={{ scale: disabled ? 1 : 1.04 }}
+        whileTap={{ scale: disabled ? 1 : 0.94 }}
+        onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+          if (disabled) e.preventDefault();
+          if (onClick) onClick(e as React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>);
+        }}
+      >
+        {label}
+      </MotionLink>
     );
   }
 
   return (
-    <motion.div whileHover={{ scale: disabled ? 1 : 1.04 }} whileTap={{ scale: disabled ? 1 : 0.94 }}>
-      <button type="button" className={base} onClick={onClick} disabled={disabled} {...rest}>
-        {label}
-      </button>
-    </motion.div>
+    <MotionButton
+      type="button"
+      className={base}
+      whileHover={{ scale: disabled ? 1 : 1.04 }}
+      whileTap={{ scale: disabled ? 1 : 0.94 }}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {label}
+    </MotionButton>
   );
 }

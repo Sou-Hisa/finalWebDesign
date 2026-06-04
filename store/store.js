@@ -8,7 +8,8 @@ const chapter00Dialogues = [
 ];
 
 const chapter01Dialogues = [
-  { character: "慈祥的老婆婆", text: "哎呀，可憐的孩子們，餓壞了吧？快進來！這裡有吃不完的糖果和蛋糕，好好補充一下力氣吧！" },
+  { character: "慈祥的老婆婆", text: "哎呀，可憐的孩子們，餓壞了吧？快進來！" },
+  { character: "慈祥的老婆婆", text: "這裡有吃不完的糖果和蛋糕，好好補充一下力氣吧！" },
   { character: "漢賽爾", text: "太好了葛麗特，我們有食物吃了！" },
 ];
 
@@ -18,7 +19,8 @@ const chapter02Dialogues = [
 ];
 
 const battleDialogues = [
-  { character: "女巫", text: "呵呵呵，聰明的小老鼠們，看來你們發現了我的秘密啊？可惜太遲了！火爐已經燒得通紅，乖乖成為我今晚的大餐吧！" },
+  { character: "女巫", text: "呵呵呵，聰明的小老鼠們，看來你們發現了我的秘密啊？" },
+  { character: "女巫", text: "可惜太遲了！火爐已經燒得通紅，乖乖成為我今晚的大餐吧！" },
   { character: "漢賽爾", text: "妹妹，快用魔杖對付她！" },
 ];
 

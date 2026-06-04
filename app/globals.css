@@ -24,13 +24,25 @@ body {
   color: #e8d5b0;
 }
 
+::selection {
+  background-color: #ffffff; /* 背景顏色 */
+  color: #e8d5b0;            /* 文字顏色 */
+}
+
 /* ── 字型 utility ── */
+@font-face {
+  font-family: "SweiSpringCJKtc-Regular";
+  src: url(https://cdn.jsdelivr.net/gh/max32002/swei-spring@1.068/WebFont/CJK%20TC/SweiSpringCJKtc-Regular.woff2) format("woff2"),
+       url(https://cdn.jsdelivr.net/gh/max32002/swei-spring@1.068/WebFont/CJK%20TC/SweiSpringCJKtc-Regular.woff) format("woff");
+  font-display: swap;
+}
 .font-title {
-  font-family: var(--font-title), "Ma Shan Zheng", cursive;
+  font-family: "SweiSpringCJKtc-Regular", "Noto Serif TC", serif;
 }
 .font-body {
   font-family: var(--font-body), "Noto Serif TC", serif;
 }
+
 
 /* ── 文字光暈 ── */
 .text-glow-gold {

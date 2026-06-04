@@ -8,7 +8,7 @@ import Modal from "../../component/Modal";
 
 function Placeholder({ label, className = "" }: { label: string; className?: string }) {
   return (
-    <div className={`flex items-center justify-center bg-stone-700 border border-stone-500 text-stone-300 text-xs font-ui ${className}`}>
+    <div className={`flex items-center justify-center bg-stone-700 text-gray-100 border border-gray-500 text-xs font-ui ${className}`}>
       {label}
     </div>
   );
@@ -73,7 +73,7 @@ export default function Explore() {
       </div>
 
       {/* 底部提示 */}
-      <div className="px-6 py-3 border-t border-stone-700 text-xs font-ui text-stone-400">
+      <div className="px-6 py-4 border-t border-stone-700 text-xs font-ui text-gray-300">
         {allCollected
           ? "所有線索已收集完畢……"
           : `尚有 ${3 - ["note","bones","wand"].filter(collected).length} 個線索未找到`}
