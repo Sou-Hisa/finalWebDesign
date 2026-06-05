@@ -38,7 +38,7 @@ export default function RootLayout({
       lang="zh-TW"
       className={`h-full antialiased ${maShangZheng.variable} ${notoSerifTC.variable} ${notoSansTC.variable}`}
     >
-      <body className="min-h-full flex flex-col bg-game-dark font-ui">
+      <body className="w-full h-screen min-h-full flex flex-col font-ui">
         {children}
       </body>
     </html>

@@ -27,7 +27,7 @@ export default function Chapter02() {
   }
 
   return (
-    <div className="w-full h-screen flex flex-col bg-gray-950">
+    <div className="w-full h-screen flex flex-col bg-gray-400">
       {/* 主場景 */}
       <div className="flex-1 relative">
         <Placeholder label="[真相揭露 背景圖]" className="absolute inset-0" />

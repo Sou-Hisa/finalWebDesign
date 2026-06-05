@@ -15,9 +15,9 @@ function Placeholder({ label, className = "" }: { label: string; className?: str
 }
 
 const ITEMS = [
-  { key: "note",  label: "密碼紙條", href: "/explore/cipher", pos: "left-[15%] bottom-[25%]" },
-  { key: "bones", label: "舊箱子",   href: "/explore/bones",  pos: "left-[48%] bottom-[20%]" },
-  { key: "wand",  label: "神秘木棍", href: "/explore/wand",   pos: "right-[15%] bottom-[28%]" },
+  { key: "note",  label: "密碼紙條", href: "/explore/cipher", pos: "left-[10%] bottom-[25%]" },
+  { key: "bones", label: "舊箱子",   href: "/explore/bones",  pos: "left-[50%] bottom-[25%]" },
+  { key: "wand",  label: "神秘木棍", href: "/explore/wand",   pos: "right-[10%] bottom-[25%]" },
 ];
 
 export default function Explore() {

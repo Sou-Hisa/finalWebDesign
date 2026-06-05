@@ -39,7 +39,7 @@ export default function Description() {
       </div>
 
       {/* 右：插圖佔位 */}
-      <Placeholder label="[前情提要插圖]" className="w-1/2 h-full" />
+      <Placeholder label="[前情提要插圖]" className="w-full h-full" />
     </div>
   );
 }
