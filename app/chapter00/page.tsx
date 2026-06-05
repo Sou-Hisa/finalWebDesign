@@ -35,11 +35,14 @@ export default function Chapter00() {
           className="
             absolute inset-0
             bg-[url('/images/bg_ch00.png')]
-            bg-cover
+            bg-auto
             bg-center
             bg-no-repeat
             opacity-40
           "
+          style={{
+            backgroundSize: "auto 100%",
+          }}
         />
         
         {/* 角色立繪 */}

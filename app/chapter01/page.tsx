@@ -35,13 +35,15 @@ export default function Chapter01() {
           className="
             absolute inset-0
             bg-[url('/images/bg_ch01.png')]
-            bg-cover
+            bg-auto
             bg-center
-            bg-no-repeat
-            opacity-75
+            bg-no-repeat         
           "
+          style={{
+            backgroundSize: "auto 100%",
+          }}
         />
-
+        <div className="absolute inset-0 bg-white/40" />
         {/* 老婆婆立繪 */}
         <Placeholder label="[老婆婆 立繪]" className="absolute bottom-20 right-30 w-28 h-44" />
       </div>

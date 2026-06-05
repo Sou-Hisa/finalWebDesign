@@ -43,7 +43,18 @@ export default function Explore() {
       {/* 主場景 */}
       <div className="flex-1 relative">
         {/* 背景佔位 */}
-        <Placeholder label="[糖果屋內部 背景圖]" className="absolute inset-0" />
+        <div
+          className="
+            absolute inset-0
+            bg-[url('/images/bg_explore.png')]
+            bg-auto
+            bg-center
+            bg-no-repeat         
+          "
+          style={{
+            backgroundSize: "auto 100%",
+          }}
+        />
 
         {/* 三個互動物件 */}
         {ITEMS.map((item) => {
