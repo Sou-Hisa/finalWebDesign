@@ -13,8 +13,18 @@ export default function Home() {
   return (
     <div className="w-full h-screen bg-gray-800 flex relative overflow-hidden">
       {/* 右側背景圖佔位 */}
-      <Placeholder label="[首頁背景圖]" className="absolute inset-0 opacity-30" />
-
+      {/*<Placeholder label="[首頁背景圖]" className="absolute inset-0 opacity-30" />*/}
+      <div
+        className="
+          absolute inset-0
+          bg-[url('/images/bg_front.png')]
+          bg-cover
+          bg-center
+          bg-no-repeat
+          opacity-40
+        "
+      />
+          
       {/* 主內容 */}
       <div className="relative z-10 flex flex-col items-center justify-center gap-12 w-full">
         <div>
