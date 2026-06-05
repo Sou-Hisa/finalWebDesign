@@ -36,8 +36,8 @@ export default function Chapter02() {
         <Placeholder label="[食譜書 特寫圖]" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-52" />
 
         {/* 角色立繪 */}
-        <Placeholder label="[葛麗特 立繪]" className="absolute bottom-0 left-12 w-28 h-40" />
-        <Placeholder label="[漢賽爾 立繪]" className="absolute bottom-0 left-48 w-28 h-40" />
+        <Placeholder label="[葛麗特 立繪]" className="absolute bottom-20 left-30 w-28 h-40" />
+        <Placeholder label="[漢賽爾 立繪]" className="absolute bottom-20 left-60 w-28 h-40" />
       </div>
 
       {/* 對話框 */}

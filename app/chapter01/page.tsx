@@ -43,17 +43,17 @@ export default function Chapter01() {
         />
 
         {/* 老婆婆立繪 */}
-        <Placeholder label="[老婆婆 立繪]" className="absolute bottom-0 right-12 w-28 h-44" />
+        <Placeholder label="[老婆婆 立繪]" className="absolute bottom-20 right-30 w-28 h-44" />
       </div>
 
       {/* 對話框 */}
-      <DialogueBox
-        character={current.character}
-        text={current.text}
-        onNext={handleNext}
-        isLast={isLast}
-        lastLabel="進入屋內"
-      />
+        <DialogueBox
+          character={current.character}
+          text={current.text}
+          onNext={handleNext}
+          isLast={isLast}
+          lastLabel="進入屋內"
+        />
     </div>
   );
 }

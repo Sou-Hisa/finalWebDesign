@@ -228,7 +228,6 @@ export default function Battle() {
   // 每當符文切換，短暫鎖定畫布（就緒信號）
   useEffect(() => {
     if (phase !== "battle") return;
-    setCanDraw(false);
     const t = setTimeout(() => setCanDraw(true), 300);
     return () => clearTimeout(t);
   }, [spellIdx, phase]);
@@ -281,6 +280,7 @@ export default function Battle() {
       setWitchHp(newHp);
       if (newHp <= 0) setTimeout(() => endBattle(true), 900);
       else {
+        setCanDraw(false);
         setSpellIdx((i) => {
           const next = i + 1;
           if (next % spellQueue.length === 0) setSpellQueue(shuffleSpells());
@@ -316,7 +316,7 @@ export default function Battle() {
           <div className="flex-1 relative">
             <Placeholder label="[決戰場景 背景圖]" className="absolute inset-0" />
             {/* 角色：3:4 比例，貼底橫排 */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-10 items-end pb-2">
+            <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-10 items-end pb-2">
               <Placeholder label="[葛麗特]" className="w-32 h-40" />
               <Placeholder label="[火爐]"   className="w-28 h-28" />
               <Placeholder label="[女巫]"   className="w-32 h-40" />
@@ -357,7 +357,7 @@ export default function Battle() {
                 className="border-2 border-stone-600 px-5 py-2 text-stone-400 hover:bg-stone-800 transition-colors text-sm font-ui">
                 撤離
               </button>
-              <button onClick={() => setPhase("battle")}
+              <button onClick={() => { setCanDraw(false); setPhase("battle"); }}
                 className="border-2 px-6 py-2 font-ui font-bold"
                 style={{ borderColor: "#8b5cf6", color: "#c084fc", background: "rgba(139,92,246,0.15)" }}>
                 挑戰！
