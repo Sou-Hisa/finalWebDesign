@@ -70,9 +70,10 @@ export default function PuzzleBox() {
         </ActionButton>
 
         <div className="w-full max-w-sm bg-stone-800 border border-stone-600 rounded-lg p-6 flex flex-col items-center gap-4 shadow-2xl">
-          <div className="w-24 h-16 bg-stone-700 border-2 border-stone-500 rounded flex items-center justify-center text-xs font-ui text-stone-400">
-            [木盒圖片]
-          </div>
+        <img
+          src="/images/explore_item_box.png"
+          className="w-40 h-auto"
+        />
           <p className="text-stone-300 text-sm font-body leading-relaxed text-center">
             這個木盒……似乎要解開機關才能打開呢？
           </p>
@@ -103,22 +104,61 @@ export default function PuzzleBox() {
         <p className="text-stone-400 text-xs font-ui tracking-widest">滑動方塊，將圖案復原</p>
 
         <div
-          className="grid gap-1"
-          style={{ gridTemplateColumns: `repeat(${SIZE}, 1fr)`, width: 240, height: 240 }}
+          className="grid gap-[2px]"
+          style={{
+            gridTemplateColumns: `repeat(${SIZE}, 120px)`,
+            width: 360,
+            height: 360,
+          }}
         >
-          {tiles.map((tile, idx) => (
-            <button
-              key={idx}
-              onClick={() => handleTileClick(idx)}
-              className={`flex items-center justify-center rounded text-lg font-bold font-ui transition-all duration-150
-                ${tile === 0
-                  ? "bg-stone-800 cursor-default"
-                  : "bg-amber-800 border-2 border-amber-600 text-amber-100 hover:bg-amber-700 active:scale-95 cursor-pointer"
-                }`}
-            >
-              {tile !== 0 && tile}
-            </button>
-          ))}
+          {tiles.map((tile, idx) => {
+            if (tile === 0) {
+              return (
+                <button
+                  key={idx}
+                  onClick={() => handleTileClick(idx)}
+                  className="
+                    w-[120px]
+                    h-[120px]
+                    bg-stone-900
+                    border
+                    border-stone-700
+                  "
+                />
+              );
+            }
+
+            const tileIndex = tile - 1;
+
+      const x = tileIndex % SIZE;
+      const y = Math.floor(tileIndex / SIZE);
+
+      return (
+        <button
+          key={idx}
+          onClick={() => handleTileClick(idx)}
+          className="
+            w-[120px]
+            h-[120px]
+            border
+            border-amber-950
+            bg-no-repeat
+            cursor-pointer
+            active:scale-95
+            transition
+          "
+          style={{
+            backgroundImage:
+              "url('/images/explore_item_puzzle.png')",
+
+            backgroundSize: "360px 360px",
+
+            backgroundPosition:
+              `-${x * 120}px -${y * 120}px`,
+          }}
+        />
+      );
+          })}
         </div>
 
         <button
