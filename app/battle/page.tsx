@@ -314,7 +314,12 @@ export default function Battle() {
       {phase === "dialogue" && (
         <>
           <div className="flex-1 relative">
-            <Placeholder label="[決戰場景 背景圖]" className="absolute inset-0" />
+            {/*<Placeholder label="[決戰場景 背景圖]" className="absolute inset-0" />*/}
+            <img
+              src="/images/bg_battle.png"
+              alt="決戰場景背景"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
             {/* 角色：3:4 比例，貼底橫排 */}
             <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-10 items-end pb-2">
               <Placeholder label="[葛麗特]" className="w-32 h-40" />
@@ -409,7 +414,15 @@ export default function Battle() {
           <div className="flex-1 relative overflow-hidden">
 
             {/* 背景佔位 */}
-            <Placeholder label="[決戰背景圖]" className="absolute inset-0" />
+            {/*<Placeholder label="[決戰背景圖]" className="absolute inset-0" />*/}
+            <>
+              <img
+                src="/images/bg_battle.png"
+                alt="決戰背景"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/30" />
+            </>
 
             {/* ── 符文展示框（中央偏上） ── */}
             <AnimatePresence mode="wait">

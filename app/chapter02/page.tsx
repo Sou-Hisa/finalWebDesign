@@ -33,7 +33,17 @@ export default function Chapter02() {
         <Placeholder label="[真相揭露 背景圖]" className="absolute inset-0" />
 
         {/* 食譜書特寫 */}
-        <Placeholder label="[食譜書 特寫圖]" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-52" />
+        <div
+          className="
+            absolute inset-0
+            bg-[url('/images/bg_ch02.png')]
+            bg-center
+            bg-no-repeat
+          "
+          style={{
+            backgroundSize: "auto 100%",
+          }}
+        />
 
         {/* 角色立繪 */}
         <Placeholder label="[葛麗特 立繪]" className="absolute bottom-20 left-30 w-28 h-40" />
