@@ -11,11 +11,12 @@ export default function ExploreLeftWall() {
 
   return (
     <div className="w-full h-screen relative overflow-hidden bg-stone-900">
-      {/* Background placeholder */}
-      <div className="absolute inset-0 bg-gradient-to-b from-stone-600/40 to-stone-900 pointer-events-none" />
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <span className="text-stone-600/30 text-xs font-ui select-none">[左側牆壁 背景佔位]</span>
-      </div>
+      {/* Background */}
+      <img
+        src="/images/explore_left.png"
+        alt="left_wall"
+        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none"
+      />
 
       {/* Return */}
       <ActionButton

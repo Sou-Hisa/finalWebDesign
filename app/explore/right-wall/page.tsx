@@ -12,11 +12,12 @@ export default function ExploreRightWall() {
 
   return (
     <div className="w-full h-screen relative overflow-hidden bg-stone-900">
-      {/* Background placeholder */}
-      <div className="absolute inset-0 bg-gradient-to-b from-stone-700/40 to-stone-900 pointer-events-none" />
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <span className="text-stone-600/30 text-xs font-ui select-none">[右側牆壁 背景佔位]</span>
-      </div>
+      {/* Background */}
+    <img
+      src="/images/explore_right.png"
+      alt="right_wall"
+      className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none"
+    />
 
       {/* Return */}
       <ActionButton
