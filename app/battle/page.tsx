@@ -497,8 +497,9 @@ export default function Battle() {
       {phase === "dialogue" && (
         <>
           <div className="flex-1 relative">
+            {/*<Placeholder label="[決戰場景 背景圖]" className="absolute inset-0" />*/}
             <Img
-              src="/images/battle_bg.png"
+              src="/images/battle_bg1.png"
               alt="決戰場景背景"
               className="absolute inset-0 w-full h-full object-cover"
               width={1920} height={1080}
@@ -522,14 +523,12 @@ export default function Battle() {
       {/* ════ 決戰說明：打字機 ════ */}
       {phase === "intro" && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center px-8">
-          <Img
-            src="/images/battle_bg.png"
-            alt="決戰說明背景"
-            className="absolute inset-0 w-full h-full object-cover opacity-40 pointer-events-none"
-            width={1920}
-            height={1080}
-          />
-          <div className="relative z-10 flex flex-col items-start gap-3 mb-10">
+          {/* 背景透出 */}
+          <Img src="/images/battle_bg2.png" alt=""
+            width={1920} height={1080}
+            className="absolute inset-0 w-full h-full object-cover opacity-40 pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col items-start w-full max-w-2xl gap-3 mb-10">
             {/* 已完成的行 */}
             {INTRO_LINES.slice(0, introLineIdx).map((line, i) => (
               <p key={i}
@@ -595,7 +594,7 @@ export default function Battle() {
           <div className="flex-1 relative overflow-hidden">
 
             <Img
-              src="/images/battle_bg.png"
+              src="/images/battle_bg2.png"
               alt="決戰背景"
               className="absolute inset-0 w-full h-full object-cover"
               width={1920} height={1080}

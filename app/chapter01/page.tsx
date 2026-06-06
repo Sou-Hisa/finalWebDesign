@@ -2,16 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useGameStore } from "../../store/store";
 import DialogueBox from "../../component/DialogueBox";
 
-function Placeholder({ label, className = "" }: { label: string; className?: string }) {
-  return (
-    <div className={`flex items-center justify-center bg-amber-800 text-gray-100 border border-gray-500 text-xs font-ui ${className}`}>
-      {label}
-    </div>
-  );
-}
 
 export default function Chapter01() {
   const [index, setIndex] = useState(0);
@@ -43,8 +37,17 @@ export default function Chapter01() {
           }}
         />
         <div className="absolute inset-0 bg-black/55" />
-        {/* 老婆婆立繪 */}
-        <Placeholder label="[老婆婆 立繪]" className="absolute bottom-25 right-30 w-28 h-44" />
+        {/* 老婆婆 */}
+        <div className="absolute bottom-25 right-20 w-45 h-60">
+          <Image
+            src="/item_images/granny.png"
+            alt="老婆婆 立繪"
+            fill
+            priority
+            sizes="120px"
+            className="object-contain object-bottom"
+          />
+        </div>
       </div>
 
       {/* 對話框 */}

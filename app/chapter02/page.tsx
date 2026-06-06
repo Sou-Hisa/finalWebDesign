@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useGameStore } from "../../store/store";
 import DialogueBox from "../../component/DialogueBox";
 
@@ -46,8 +47,29 @@ export default function Chapter02() {
         />
 
         {/* 角色立繪 */}
-        <Placeholder label="[葛麗特 立繪]" className="absolute bottom-25 left-30 w-28 h-40" />
-        <Placeholder label="[漢賽爾 立繪]" className="absolute bottom-25 left-60 w-28 h-40" />
+        {/* 漢賽爾 */}
+        <div className="absolute bottom-25 left-10 w-45 h-60">
+          <Image
+            src="/item_images/hansel_scared.png"
+            alt="漢賽爾 立繪"
+            fill
+            priority
+            sizes="120px"
+            className="object-contain object-bottom"
+          />
+        </div>
+
+        {/* 葛麗特 */}
+        <div className="absolute bottom-25 left-45 w-45 h-60">
+          <Image
+            src="/item_images/gretel_scared.png"
+            alt="葛麗特 立繪"
+            fill
+            priority
+            sizes="120px"
+            className="object-contain object-bottom"
+          />
+        </div>
       </div>
 
       {/* 對話框 */}

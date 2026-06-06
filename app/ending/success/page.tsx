@@ -99,13 +99,21 @@ export default function EndingSuccess() {
             transition={{ duration: 0.9 }}
             className="flex flex-col items-center gap-5"
           >
-            {/* 結果圖佔位（換圖時把 div 換成 <img src="/images/ending-success.png" ... />） */}
-            <div
-              className="w-64 h-40 border-2 flex items-center justify-center text-xs font-ui text-amber-400"
-              style={{ borderColor: "var(--color-gold)", background: "rgba(120,80,10,0.2)" }}
-            >
-              [逃脫成功 結果圖]
-            </div>
+            {/* 結果圖*/}
+            <img
+              src="/images/ending_success.png"
+              alt="逃脫成功"
+              className="
+                w-64
+                h-40
+                object-cover
+                border-2
+                rounded
+              "
+              style={{
+                borderColor: "var(--color-gold)",
+              }}
+            />
 
             <ActionButton
               onClick={handleRestart}
