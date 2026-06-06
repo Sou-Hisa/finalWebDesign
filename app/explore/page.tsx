@@ -58,7 +58,13 @@ export default function Explore() {
       <ItemBar collectedItems={collectedItems} onItemClick={setViewingItem} />
 
       {/* 主場景 */}
-      <div className="flex-1 relative bg-black">
+      <div className="flex-1 relative bg-stone-950 overflow-hidden">
+      <img 
+        src="/images/explore_bg.png" 
+        alt="糖果屋書架背景" 
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+      />
+      {/*<div className="flex-1 relative bg-black">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#8f877f_0%,#5a524d_36%,#2a2421_74%,#171312_100%)]" />
         <div className="absolute inset-x-0 bottom-0 h-[18%] bg-gradient-to-t from-[#231b17] to-transparent" />
         <div className="absolute inset-x-[6%] top-[10%] bottom-[12%] border border-white/10 bg-white/5 shadow-[inset_0_0_80px_rgba(0,0,0,0.32)]" />
@@ -67,7 +73,7 @@ export default function Explore() {
           <div className="border-r border-white/10 bg-white/10" />
           <div className="bg-white/5" />
         </div>
-        <div className="absolute inset-0 bg-black/55" />
+        <div className="absolute inset-0 bg-black/55" />*/}
 
         {/* 三個牆壁互動區域 */}
         {ZONES.map((zone) => {
