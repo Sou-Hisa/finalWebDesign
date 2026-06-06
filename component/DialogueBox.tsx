@@ -37,7 +37,7 @@ export default function DialogueBox({
   const color = getColor(character);
 
   return (
-    <div className="mx-auto my-4 flex flex-col gap-2 z-10 absolute bottom-0 left-1/2 -translate-x-1/2 w-[95%]" style={{ '--accent': color } as React.CSSProperties}>
+    <div className="mx-auto mb-6 flex flex-col gap-2 z-10 absolute bottom-0 left-1/2 -translate-x-1/2 w-[95%]" style={{ '--accent': color } as React.CSSProperties}>
       {/* 角色名稱 + 繼續按鈕 */}
       <div className="flex items-center justify-between">
         <motion.div
@@ -70,7 +70,7 @@ export default function DialogueBox({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -4 }}
           transition={{ duration: 0.28 }}
-            className="px-5 py-4 text-base font-body bg-white/80 text-black rounded-md"
+            className="px-5 py-6 text-base font-body bg-white/80 text-black rounded-md"
         >
           {text}
         </motion.div>

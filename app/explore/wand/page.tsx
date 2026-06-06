@@ -1,207 +1,161 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useGameStore } from "../../../store/store";
 import ActionButton from "../../../component/ActionButton";
 
-type WandStep = "box" | "puzzle" | "collected";
-type Tile = number | null; // null = 空格
+type Step = "scene" | "inspect" | "collect" | "done";
 
-const SIZE   = 3;
-const SOLVED: Tile[] = [1, 2, 3, 4, 5, 6, 7, 8, null];
-
-function getNeighbors(idx: number): number[] {
-  const row = Math.floor(idx / SIZE);
-  const col = idx % SIZE;
-  const ns: number[] = [];
-  if (row > 0)          ns.push(idx - SIZE);
-  if (row < SIZE - 1)   ns.push(idx + SIZE);
-  if (col > 0)          ns.push(idx - 1);
-  if (col < SIZE - 1)   ns.push(idx + 1);
-  return ns;
-}
-
-function shuffleTiles(base: Tile[], moves = 220): Tile[] {
-  const s = [...base];
-  let emptyIdx = s.indexOf(null);
-  for (let i = 0; i < moves; i++) {
-    const ns = getNeighbors(emptyIdx);
-    const pick = ns[Math.floor(Math.random() * ns.length)];
-    [s[emptyIdx], s[pick]] = [s[pick], s[emptyIdx]];
-    emptyIdx = pick;
-  }
-  return s;
-}
-
-function isSolved(tiles: Tile[]): boolean {
-  return SOLVED.every((v, i) => v === tiles[i]);
-}
-
-export default function ExploreWand() {
+export default function ExploreRightWall() {
   const { addItem, collectedItems } = useGameStore();
   const alreadyCollected = collectedItems.includes("wand");
+  const [step,           setStep]           = useState<Step>(alreadyCollected ? "done" : "scene");
+  const [showCipherImg,  setShowCipherImg]  = useState(false);
 
-  const [step,    setStep]    = useState<WandStep>(alreadyCollected ? "collected" : "box");
-  const [tiles,   setTiles]   = useState<Tile[]>(() => shuffleTiles(SOLVED));
-  const [moves,   setMoves]   = useState(0);
-  const [solved,  setSolved]  = useState(false);
-
-  // 過關偵測
-  useEffect(() => {
-    if (step === "puzzle" && !solved && isSolved(tiles)) {
-      setSolved(true);
-      setTimeout(() => { addItem("wand"); setStep("collected"); }, 900);
-    }
-  }, [tiles, step, solved, addItem]);
-
-  function handleTileClick(idx: number) {
-    if (solved) return;
-    const emptyIdx = tiles.indexOf(null);
-    if (!getNeighbors(emptyIdx).includes(idx)) return;
-    const next = [...tiles];
-    [next[emptyIdx], next[idx]] = [next[idx], next[emptyIdx]];
-    setTiles(next);
-    setMoves(m => m + 1);
-  }
-
-  function resetPuzzle() {
-    setTiles(shuffleTiles(SOLVED));
-    setMoves(0);
-    setSolved(false);
+  function handleCollect() {
+    addItem("wand");
+    setStep("collect");
   }
 
   return (
-    <div className="w-full h-screen flex flex-col items-center bg-black relative overflow-hidden">
+    <div className="w-full h-screen relative overflow-hidden bg-stone-900">
+      {/* Background placeholder */}
+      <div className="absolute inset-0 bg-gradient-to-b from-stone-700/40 to-stone-900 pointer-events-none" />
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <span className="text-stone-600/30 text-xs font-ui select-none">[右側牆壁 背景佔位]</span>
+      </div>
 
-      {/* 背景圖：/public/images/bg_wand.png（中央牆－機關木盒區） */}
-      <div className="absolute inset-0 bg-[url('/images/bg_wand.png')] bg-cover bg-center bg-no-repeat bg-stone-950" />
-      <div className="absolute inset-0 bg-black/60" />
-
-      {/* 返回按鈕 */}
+      {/* Return */}
       <ActionButton
         href="/explore"
         variant="ghost"
-        className="absolute top-4 left-4 z-20 text-stone-400 text-sm border border-stone-700 px-3 py-1 font-ui"
+        className="absolute top-4 right-4 z-20 text-stone-400 text-sm border border-stone-700 px-3 py-1 font-ui"
       >
-        ← 返回
+        返回
       </ActionButton>
 
-      {/* 目標提示 */}
-      <p className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 text-stone-500 text-xs font-ui">
-        解開機關，打開木盒
-      </p>
-
-      {/* ── Step 1：開場，看見木盒 ── */}
-      {step === "box" && (
-        <div className="relative z-10 flex flex-col items-center w-full h-full">
-          <div className="flex-25" />
-
-          {/* 大字場景敘事 */}
-          <div className="w-full max-w-2xl px-8 flex flex-col gap-2 mb-10">
-            <p className="font-title font-bold text-4xl text-white/90 leading-snug">
-              牆角擺著一個帶有機關的木盒，
-            </p>
-            <p className="font-title font-bold text-4xl text-white/60 leading-snug">
-              表面刻著複雜的圖案……
-            </p>
-          </div>
-
-          <div className="flex flex-col items-center gap-6">
-            {/* 木盒佔位圖 */}
-            <div
-              className="w-36 h-28 bg-stone-800 border-2 border-stone-600 flex items-center justify-center text-xs text-stone-400 font-ui"
-              style={{ boxShadow: "0 0 20px rgba(0,0,0,0.6)" }}
-            >
-              [機關木盒 圖]
-            </div>
-            <ActionButton
-              onClick={() => setStep("puzzle")}
-              variant="ghost"
-              className="border-2 border-amber-700 px-8 py-2 text-amber-300 font-bold font-ui"
-            >
-              試著撥動機關
-            </ActionButton>
-          </div>
-
-          <div className="flex-75" />
-        </div>
-      )}
-
-      {/* ── Step 2：滑塊拼圖 ── */}
-      {step === "puzzle" && (
-        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full gap-5 px-4">
-
-          <p className="font-title font-bold text-2xl text-white/80 text-center">
-            將圖案拼回原樣，解開機關
-          </p>
-
-          {/* 拼圖格 */}
-          <div
-            className="grid gap-1.5 p-2 bg-stone-900/80 border border-stone-600 rounded-lg"
-            style={{ gridTemplateColumns: `repeat(${SIZE}, 1fr)`, width: 264 }}
-          >
-            {tiles.map((tile, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleTileClick(idx)}
-                disabled={tile === null}
-                className={`
-                  w-20 h-20 rounded font-title font-bold text-3xl
-                  transition-all duration-100 select-none
-                  ${tile === null
-                    ? "bg-stone-950 cursor-default"
-                    : solved
-                      ? "bg-amber-600 text-white border border-amber-400 cursor-default"
-                      : "bg-amber-900 text-amber-100 border border-amber-700 hover:bg-amber-800 hover:border-amber-500 active:scale-95 cursor-pointer"
-                  }
-                `}
-              >
-                {tile ?? ""}
-              </button>
-            ))}
-          </div>
-
-          {/* 步數 + 重置 */}
-          <div className="flex items-center gap-6">
-            <span className="text-stone-400 text-sm font-ui">步數：{moves}</span>
+      {/* ── Scene / Done ── */}
+      {(step === "scene" || step === "done") && (
+        <div className="relative z-10 w-full h-full flex items-end justify-center pb-16">
+          {step === "scene" ? (
             <button
-              onClick={resetPuzzle}
-              className="text-stone-500 text-xs font-ui border border-stone-700 px-3 py-1 hover:text-stone-300 hover:border-stone-500 transition-colors"
+              onClick={() => setStep("inspect")}
+              className="mb-8 flex flex-col items-center gap-3 group"
             >
-              重新打亂
+              {/* Blinking flash point */}
+              <div className="relative w-10 h-10 flex items-center justify-center">
+                <div className="absolute inset-0 rounded-full bg-yellow-400/60 animate-ping" />
+                <div className="relative w-10 h-10 rounded-full bg-yellow-300 border-2 border-yellow-100 flex items-center justify-center z-10">
+                  <span className="text-yellow-800 text-sm">✦</span>
+                </div>
+              </div>
+              <span className="text-xs text-stone-500 group-hover:text-yellow-300 font-ui transition-colors">
+                地板上有什麼在發光……
+              </span>
             </button>
-          </div>
-
-          {solved && (
-            <p className="text-amber-300 font-title font-bold text-xl animate-pulse">
-              機關解除——
-            </p>
+          ) : (
+            <p className="text-stone-500 text-xs font-ui mb-8">地板上的發光點消失了</p>
           )}
         </div>
       )}
 
-      {/* ── Step 3：木盒打開，發現食譜 ── */}
-      {step === "collected" && (
-        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full gap-5 text-center px-6">
-          <div
-            className="w-36 h-28 bg-amber-900 border-2 border-amber-500 flex items-center justify-center text-xs text-amber-300 font-ui"
-            style={{ boxShadow: "0 0 24px rgba(217,119,6,0.4)" }}
+      {/* ── Inspect modal (image 2 style) ── */}
+      {step === "inspect" && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="w-full max-w-sm mx-4 bg-white rounded-lg overflow-hidden shadow-2xl">
+            <div className="p-5">
+              <p className="text-gray-700 text-sm font-body leading-relaxed">
+                地板上有一張折疊的紙片，上面印著一些奇怪的符號……看起來像某種對照密碼表。
+              </p>
+            </div>
+            <div className="mx-4 mb-4 px-3 py-2 bg-gray-100 border border-gray-300 rounded text-center">
+              <span className="text-gray-600 text-xs font-ui">密碼對照表</span>
+            </div>
+            <div className="flex border-t border-gray-200">
+              <button
+                onClick={handleCollect}
+                className="flex-1 py-3 bg-blue-500 hover:bg-blue-600 text-white text-sm font-ui font-bold transition-colors"
+              >
+                蒐集
+              </button>
+              <button
+                onClick={() => setStep("scene")}
+                className="flex-1 py-3 text-gray-500 text-sm font-ui border-l border-gray-200 hover:bg-gray-50 transition-colors"
+              >
+                離開
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Collect view (image 3 style, full-screen) ── */}
+      {step === "collect" && (
+        <div className="fixed inset-0 z-50 flex flex-col bg-stone-800">
+          <ActionButton
+            href="/explore"
+            variant="ghost"
+            className="absolute top-4 right-4 z-20 text-stone-400 text-sm border border-stone-700 px-3 py-1 font-ui"
           >
-            [木盒已開 圖]
-          </div>
-          <p className="text-green-400 font-bold text-lg font-ui">機關解除，木盒打開了</p>
-          <div className="bg-red-950/60 border border-red-800 rounded-lg p-4 max-w-xs text-left">
-            <p className="text-red-300 text-sm font-title font-bold text-center mb-2">
-              《如何製作香甜鮮嫩的小孩》
-            </p>
-            <p className="text-red-400/80 text-xs font-body leading-relaxed">
-              材料：男孩一名、女孩一名、糖果、香料<br />
-              <span className="text-stone-500">注意：不要讓孩子發現。</span>
-            </p>
-          </div>
-          <ActionButton href="/explore" variant="ghost" className="mt-2 px-8 py-2">
-            收進背包，返回場景
+            返回
           </ActionButton>
+
+          <div className="flex-1 flex items-center justify-center p-8">
+            <div className="w-full max-w-md h-52 bg-stone-600 border border-stone-500 flex items-center justify-center text-stone-400 text-xs font-ui rounded">
+              [密碼對照表圖片]
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center gap-4 mb-4">
+            <p className="text-stone-200 text-sm font-ui">密碼對照表</p>
+            <ActionButton
+              onClick={() => setStep("done")}
+              variant="ghost"
+              className="px-8 py-2 border border-stone-400 text-stone-200 font-ui"
+            >
+              確認
+            </ActionButton>
+          </div>
+
+          {/* Backpack bar inside collect view */}
+          <div className="px-4 py-2 bg-stone-900/95 border-t border-stone-700 flex items-center gap-3 h-12">
+            <span className="text-xs font-ui text-stone-500">背包</span>
+            {collectedItems.includes("box")   && <span className="text-xl" title="舊箱子">📦</span>}
+            {collectedItems.includes("bones") && <span className="text-xl" title="白色骨頭">🦴</span>}
+            <button onClick={() => setShowCipherImg(true)} title="密碼表（點擊查看）" className="text-xl leading-none">📜</button>
+          </div>
+        </div>
+      )}
+
+      {/* Cipher image modal (from backpack) */}
+      {showCipherImg && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70">
+          <div className="w-full max-w-sm mx-4 bg-stone-800 border border-stone-600 rounded-lg overflow-hidden shadow-2xl">
+            <div className="w-full h-52 bg-stone-600 flex items-center justify-center text-stone-400 text-xs font-ui">
+              [密碼對照表圖片]
+            </div>
+            <div className="p-4 flex justify-center">
+              <ActionButton
+                onClick={() => setShowCipherImg(false)}
+                variant="ghost"
+                className="px-6 py-2 text-stone-300 font-ui"
+              >
+                關閉
+              </ActionButton>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Persistent backpack bar (scene / done steps) */}
+      {step !== "collect" && (
+        <div className="absolute bottom-0 left-0 right-0 z-10 px-4 py-2 bg-stone-900/95 border-t border-stone-700 flex items-center gap-3 h-12">
+          <span className="text-xs font-ui text-stone-500">背包</span>
+          {collectedItems.includes("box")   && <span className="text-xl" title="舊箱子">📦</span>}
+          {collectedItems.includes("bones") && <span className="text-xl" title="白色骨頭">🦴</span>}
+          {collectedItems.includes("wand") && (
+            <button onClick={() => setShowCipherImg(true)} title="密碼表（點擊查看）" className="text-xl leading-none">📜</button>
+          )}
         </div>
       )}
     </div>

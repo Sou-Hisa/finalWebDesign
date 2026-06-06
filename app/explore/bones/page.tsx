@@ -4,8 +4,6 @@ import { useState } from "react";
 import { useGameStore } from "../../../store/store";
 import ActionButton from "../../../component/ActionButton";
 
-type Step = "box" | "inspect" | "compare" | "done";
-
 const BONE_OPTIONS = [
   {
     id: "animal_small",
@@ -30,175 +28,213 @@ const BONE_OPTIONS = [
   },
 ];
 
-export default function ExploreBones() {
+type ActiveModal = null | "encyclopedia" | "cipher";
+
+export default function ExploreCenterWall() {
   const { addItem, collectedItems } = useGameStore();
-  const alreadyCollected = collectedItems.includes("bones");
+  const bonesCollected = collectedItems.includes("bones");
+  const hasCipherTable  = collectedItems.includes("wand");
 
-  const [step,      setStep]      = useState<Step>(alreadyCollected ? "done" : "box");
-  const [selected,  setSelected]  = useState<string | null>(null);
-  const [confirmed, setConfirmed] = useState(false);
+  const [modal,         setModal]         = useState<ActiveModal>(null);
+  const [selected,      setSelected]      = useState<string | null>(null);
+  const [confirmed,     setConfirmed]     = useState(false);
+  const [compareResult, setCompareResult] = useState<string | null>(null);
 
-  function collect() { addItem("bones"); }
-
-  function handleOptionClick(id: string) {
-    setSelected(id);
-    setConfirmed(false);
-  }
-
-  function handleConfirm() {
-    if (!selected) return;
+  function handleCompareConfirm() {
+    if (!selected || confirmed) return;
     const opt = BONE_OPTIONS.find((o) => o.id === selected)!;
+    setCompareResult(opt.msg);
     setConfirmed(true);
-    if (opt.correct) { collect(); setTimeout(() => setStep("done"), 1400); }
+    if (opt.correct) addItem("bones");
   }
+
+  function closeModal() {
+    setModal(null);
+    setSelected(null);
+    setConfirmed(false);
+    setCompareResult(null);
+  }
+
+  const correctAnswer = confirmed && BONE_OPTIONS.find((o) => o.id === selected)?.correct;
 
   return (
-    <div className="w-full h-screen flex flex-col items-center bg-black relative overflow-hidden">
+    <div className="w-full h-screen relative overflow-hidden bg-stone-900">
+      {/* Background placeholder */}
+      <div className="absolute inset-0 bg-gradient-to-b from-stone-600/30 to-stone-900 pointer-events-none" />
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <span className="text-stone-600/30 text-xs font-ui select-none">[中間牆壁 背景佔位]</span>
+      </div>
 
-      {/* 背景圖：/public/images/bg_bones.png（左側牆－舊箱子儲藏區） */}
-      <div className="absolute inset-0 bg-[url('/images/bg_bones.png')] bg-cover bg-center bg-no-repeat bg-stone-900" />
-      <div className="absolute inset-0 bg-black/60" />
-
-      {/* 返回按鈕 */}
+      {/* Return */}
       <ActionButton
         href="/explore"
         variant="ghost"
-        className="absolute top-4 left-4 z-20 text-stone-400 text-sm border border-stone-700 px-3 py-1 font-ui"
+        className="absolute top-4 right-4 z-20 text-stone-400 text-sm border border-stone-700 px-3 py-1 font-ui"
       >
-        ← 返回
+        返回
       </ActionButton>
 
-      {/* 目標提示 */}
-      <p className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 text-stone-500 text-xs font-ui">
-        確認箱子裡的東西究竟是什麼，蒐集可用的證據
-      </p>
-
-      {/* ── Step 1：開場 ── */}
-      {step === "box" && (
-        <div className="relative z-10 flex flex-col items-center w-full h-full">
-          <div className="flex-25" />
-
-          {/* 大字場景敘事 */}
-          <div className="w-full max-w-2xl px-8 flex flex-col gap-2 mb-10">
-            <p className="font-title font-bold text-4xl text-white/90 leading-snug">
-              角落裡，一個滿是灰塵的舊箱子。
-            </p>
-            <p className="font-title font-bold text-4xl text-white/60 leading-snug">
-              蓋子半開著——
-            </p>
-          </div>
-
-          {/* 佔位圖 + 按鈕 */}
-          <div className="flex flex-col items-center gap-6">
-            <div className="w-32 h-32 bg-stone-700 border border-stone-500 flex items-center justify-center text-xs text-stone-400 font-ui">
-              [舊箱子 圖]
-            </div>
-            <ActionButton
-              onClick={() => setStep("inspect")}
-              variant="ghost"
-              className="border-2 border-stone-400 px-8 py-2 text-stone-200 font-bold font-ui"
-            >
-              打開箱子
-            </ActionButton>
-          </div>
-
-          <div className="flex-75" />
-        </div>
-      )}
-
-      {/* ── Step 2：發現骨頭 ── */}
-      {step === "inspect" && (
-        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full gap-5 px-6">
-          <div className="flex gap-2 items-center">
-            <div className="w-20 h-6 bg-gray-400 border border-gray-300 rounded-full" />
-            <div className="w-16 h-5 bg-gray-500 border border-gray-300 rounded-full" />
-            <div className="w-20 h-6 bg-gray-400 border border-gray-300 rounded-full" />
-          </div>
-          <div className="bg-stone-800 border border-stone-600 rounded-lg p-4 max-w-sm text-sm text-stone-300 leading-relaxed font-body">
-            <p>箱子裡裝著一些奇怪的白色長條物……</p>
-            <p className="mt-2 text-red-400 font-bold">等等，這好像是骨頭？</p>
-            <p className="mt-2">仔細看：<span className="text-amber-300">細長均勻，四肢比例對稱，頭骨碎片偏圓，整體輕薄。</span></p>
-            <p className="mt-2">走到旁邊的書架，把骨頭和圖鑑對照看看——</p>
-          </div>
-          <ActionButton
-            onClick={() => setStep("compare")}
-            variant="red"
-            className="border-2 border-red-600 px-8 py-2 text-red-400 font-bold font-ui"
+      {/* ── Room scene: bookshelf items ── */}
+      <div className="relative z-10 w-full h-full flex items-center justify-center gap-16 pb-12">
+        {/* Encyclopedia */}
+        <button
+          onClick={() => { if (!bonesCollected) setModal("encyclopedia"); }}
+          className="flex flex-col items-center gap-2 group"
+        >
+          <div
+            className={`w-20 h-28 border-2 flex items-center justify-center text-xs font-ui rounded transition-colors
+              ${bonesCollected
+                ? "bg-stone-800/60 border-stone-700 text-stone-600 cursor-default"
+                : "bg-stone-700 border-stone-500 text-stone-400 group-hover:border-amber-400"}`}
           >
-            走向書架對照
-          </ActionButton>
-        </div>
-      )}
-
-      {/* ── Step 3：比對骨骼圖鑑 ── */}
-      {step === "compare" && (
-        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full gap-4 px-6">
-          <p className="text-stone-300 text-sm text-center font-body max-w-sm">
-            書架上擺著《骨骼圖鑑》，翻到對照頁。<br />
-            <span className="text-amber-300">根據你觀察到的特徵，選出符合的骨架類型</span>
-          </p>
-
-          <div className="w-full max-w-md flex flex-col gap-3">
-            {BONE_OPTIONS.map((opt) => {
-              const isSelected = selected === opt.id;
-              return (
-                <ActionButton
-                  key={opt.id}
-                  onClick={() => handleOptionClick(opt.id)}
-                  className={`w-full text-left border-2 rounded-lg p-4 transition-all ${
-                    isSelected ? "border-amber-400 bg-amber-950/40" : "border-stone-600 bg-stone-900/40 hover:border-stone-400"
-                  } group`}
-                >
-                  <div className="flex flex-col">
-                    <p className={`font-bold text-sm font-ui ${isSelected ? "text-amber-300" : "text-stone-200"}`}>
-                      {opt.label}
-                    </p>
-                    <p className={`text-xs mt-1 font-body ${isSelected ? "text-amber-100" : "text-stone-400"}`}>
-                      {opt.desc}
-                    </p>
-                  </div>
-                </ActionButton>
-              );
-            })}
+            [百科全書]
           </div>
+          <span
+            className={`text-xs font-ui transition-colors
+              ${bonesCollected ? "text-stone-600" : "text-stone-500 group-hover:text-amber-300"}`}
+          >
+            {bonesCollected ? "✓ 已對照" : "百科全書"}
+          </span>
+        </button>
 
-          {confirmed && selected && (() => {
-            const opt = BONE_OPTIONS.find((o) => o.id === selected)!;
-            return (
-              <p className={`text-sm text-center font-body px-4 py-2 border rounded-lg max-w-sm ${
-                opt.correct ? "text-red-400 border-red-700 bg-red-950/40" : "text-stone-400 border-stone-700 bg-stone-900/40"
-              }`}>
-                {opt.msg}
+        {/* Cipher recipe */}
+        <button
+          onClick={() => setModal("cipher")}
+          className="flex flex-col items-center gap-2 group"
+        >
+          <div className="w-16 h-20 bg-stone-700 border-2 border-stone-500 group-hover:border-red-400 transition-colors flex items-center justify-center text-xs text-stone-400 font-ui rounded">
+            [密碼食譜]
+          </div>
+          <span className="text-xs text-stone-500 group-hover:text-red-300 font-ui transition-colors">密碼食譜</span>
+        </button>
+      </div>
+
+      {/* ── Modal: Encyclopedia / Bones comparison ── */}
+      {modal === "encyclopedia" && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="w-full max-w-md mx-4 bg-stone-800 border border-stone-600 rounded-lg overflow-hidden shadow-2xl">
+            {/* Image placeholder */}
+            <div className="w-full h-32 bg-stone-600 border-b border-stone-700 flex items-center justify-center text-stone-400 text-xs font-ui">
+              [百科全書插圖]
+            </div>
+
+            {/* Item label */}
+            <div className="px-4 py-2 bg-stone-700 text-center border-b border-stone-600">
+              <span className="text-stone-300 text-xs font-ui">打開的百科全書（裡面裝滿各種骨頭）</span>
+            </div>
+
+            <div className="p-4">
+              <p className="text-stone-300 text-sm font-body leading-relaxed mb-3">
+                書架上蒐集了多個動物的骨骼與牠們的特徵，找到箱子裡的骨頭符合哪一個選項：
               </p>
-            );
-          })()}
 
-          <div className="w-full max-w-md flex gap-4">
-            <ActionButton onClick={() => setStep("inspect")} variant="ghost" className="flex-1 text-sm font-ui text-stone-500">
-              回去看骨頭特徵
-            </ActionButton>
-            <ActionButton
-              onClick={handleConfirm}
-              disabled={!selected || confirmed}
-              className="flex-1 text-sm font-bold font-ui border-2 border-red-600 text-red-400 hover:bg-red-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              確認比對
-            </ActionButton>
+              {/* Options */}
+              <div className="flex flex-col gap-2 mb-3">
+                {BONE_OPTIONS.map((opt) => {
+                  const isSelected = selected === opt.id;
+                  return (
+                    <button
+                      key={opt.id}
+                      onClick={() => { if (!confirmed) { setSelected(opt.id); setCompareResult(null); } }}
+                      className={`text-left border-2 rounded-lg p-3 transition-all ${
+                        isSelected
+                          ? "border-amber-400 bg-amber-950/40"
+                          : "border-stone-600 bg-stone-900/40 hover:border-stone-400"
+                      }`}
+                    >
+                      <p className={`font-bold text-xs font-ui ${isSelected ? "text-amber-300" : "text-stone-200"}`}>
+                        {opt.label}
+                      </p>
+                      <p className={`text-xs mt-0.5 font-body ${isSelected ? "text-amber-100" : "text-stone-400"}`}>
+                        {opt.desc}
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Result message */}
+              {compareResult && (
+                <p
+                  className={`text-xs text-center font-body px-3 py-2 border rounded mb-3 ${
+                    correctAnswer
+                      ? "text-red-400 border-red-700 bg-red-950/40"
+                      : "text-stone-400 border-stone-700 bg-stone-900/40"
+                  }`}
+                >
+                  {compareResult}
+                </p>
+              )}
+
+              {/* Buttons */}
+              <div className="flex gap-3">
+                <ActionButton
+                  onClick={closeModal}
+                  variant="ghost"
+                  className="flex-1 text-sm font-ui text-stone-500 py-1"
+                >
+                  {correctAnswer ? "關閉" : "放回去"}
+                </ActionButton>
+                <ActionButton
+                  onClick={handleCompareConfirm}
+                  disabled={!selected || confirmed}
+                  className="flex-1 text-sm font-bold font-ui border-2 border-red-600 text-red-400 hover:bg-red-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed py-1"
+                >
+                  確認比對
+                </ActionButton>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
-      {/* ── Step done ── */}
-      {step === "done" && (
-        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full gap-4 text-center px-6">
-          <div className="w-20 h-6 bg-gray-400 border border-gray-300 rounded-full" />
-          <p className="text-green-400 font-bold text-lg font-ui">骨頭證據已收集</p>
-          <p className="text-stone-400 text-sm font-body">已確認是人類小孩的骨頭……</p>
-          <ActionButton href="/explore" variant="ghost" className="px-8 py-2">
-            返回場景
-          </ActionButton>
+      {/* ── Modal: Cipher recipe ── */}
+      {modal === "cipher" && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="w-full max-w-sm mx-4 bg-stone-800 border border-stone-600 rounded-lg overflow-hidden shadow-2xl">
+            <div className="w-full h-36 bg-stone-600 border-b border-stone-700 flex items-center justify-center text-stone-400 text-xs font-ui">
+              [密碼食譜圖片]
+            </div>
+            <div className="px-4 py-2 bg-stone-700 text-center border-b border-stone-600">
+              <span className="text-stone-300 text-xs font-ui">一張寫滿符號的紙條</span>
+            </div>
+            <div className="p-4">
+              {hasCipherTable ? (
+                <>
+                  <p className="text-stone-300 text-sm font-body leading-relaxed mb-1">
+                    對照密碼表，你辨認出了幾個字——
+                  </p>
+                  <p className="text-red-300 text-center text-2xl font-bold my-3 font-title">&ldquo;Help me&rdquo;</p>
+                  <p className="text-stone-400 text-xs font-body text-center mb-3">
+                    這竟是誰留下的訊息……
+                  </p>
+                </>
+              ) : (
+                <p className="text-stone-400 text-sm font-body leading-relaxed mb-3">
+                  不知道這張紙在幹嘛……上面全是奇怪的符號，完全看不懂。也許有什麼對照工具能幫上忙？
+                </p>
+              )}
+              <div className="flex justify-center">
+                <ActionButton
+                  onClick={closeModal}
+                  variant="ghost"
+                  className="px-8 py-2 text-stone-300 font-ui"
+                >
+                  確認
+                </ActionButton>
+              </div>
+            </div>
+          </div>
         </div>
       )}
+
+      {/* Backpack bar */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 px-4 py-2 bg-stone-900/95 border-t border-stone-700 flex items-center gap-3 h-12">
+        <span className="text-xs font-ui text-stone-500">背包</span>
+        {collectedItems.includes("box")   && <span className="text-xl" title="舊箱子">📦</span>}
+        {collectedItems.includes("bones") && <span className="text-xl" title="白色骨頭">🦴</span>}
+        {collectedItems.includes("wand")  && <span className="text-xl" title="密碼表">📜</span>}
+      </div>
     </div>
   );
 }

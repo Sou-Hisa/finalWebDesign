@@ -5,21 +5,40 @@ import { useRouter } from "next/navigation";
 import { useGameStore } from "../../store/store";
 import ItemBar from "../../component/ItemBar";
 import Modal from "../../component/Modal";
-import ActionButton from "../../component/ActionButton"; // Modal 內仍使用
+import ActionButton from "../../component/ActionButton";
 
 const ZONES = [
-  { key: "note",  label: "左側牆壁", href: "/explore/cipher", cls: "left-0 w-[20%]"   },
-  { key: "bones", label: "正面牆壁", href: "/explore/bones",  cls: "left-[20%] w-[60%]" },
-  { key: "wand",  label: "右側牆壁", href: "/explore/wand",   cls: "right-0 w-[20%]"  },
+  { key: "box",   label: "左側牆壁", href: "/explore/left-wall",   cls: "left-0 w-[20%]"   },
+  { key: "bones", label: "中間牆壁", href: "/explore/center-wall", cls: "left-[20%] w-[60%]" },
+  { key: "wand",  label: "右側牆壁", href: "/explore/right-wall",  cls: "right-0 w-[20%]"  },
 ];
+
+const ITEM_DETAIL: Record<string, { title: string; desc: string; imgLabel: string }> = {
+  box: {
+    title: "打開的舊箱子",
+    desc:  "箱子裡裝滿了細長均勻的白色骨頭。四肢比例對稱，頭骨碎片偏圓，整體輕薄——這是人類小孩的骨骸。",
+    imgLabel: "[箱子內容物圖片]",
+  },
+  bones: {
+    title: "白色骨頭（人類幼童）",
+    desc:  "與書架上《骨骼圖鑑》的人類幼童項目完全吻合。箱子裡的骨頭，確定是人類小孩的。",
+    imgLabel: "[骨頭比對圖片]",
+  },
+  wand: {
+    title: "密碼對照表",
+    desc:  "一張印有字母與數字對照關係的紙片。A=1, B=2, C=3……可以用來解讀神秘紙條上的數字訊息。",
+    imgLabel: "[密碼對照表圖片]",
+  },
+};
 
 export default function Explore() {
   const router = useRouter();
   const { collectedItems, recipeFound, setRecipeFound } = useGameStore();
-  const [showRecipe, setShowRecipe] = useState(false);
+  const [showRecipe,   setShowRecipe]   = useState(false);
+  const [viewingItem,  setViewingItem]  = useState<string | null>(null);
 
   const collected = (key: string) => collectedItems.includes(key);
-  const allCollected = ["note", "bones", "wand"].every(collected);
+  const allCollected = ["box", "bones", "wand", "note"].every(collected);
 
   useEffect(() => {
     if (allCollected && !recipeFound) {
@@ -30,27 +49,22 @@ export default function Explore() {
 
   return (
     <div className="w-full h-screen flex flex-col bg-stone-900">
-      {/* 頂部物品欄 */}
-      <ItemBar collectedItems={collectedItems} />
+      {/* 頂部物品欄 — 收集到的物品可點擊查看 */}
+      <ItemBar collectedItems={collectedItems} onItemClick={setViewingItem} />
 
       {/* 主場景 */}
       <div className="flex-1 relative bg-black">
-        {/* 背景 */}
-        <div
-          className="
-            absolute inset-0
-            bg-[url('/images/bg_explore.png')]
-            bg-auto
-            bg-center
-            bg-no-repeat
-          "
-          style={{
-            backgroundSize: "auto 100%",
-          }}
-        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#8f877f_0%,#5a524d_36%,#2a2421_74%,#171312_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-[18%] bg-gradient-to-t from-[#231b17] to-transparent" />
+        <div className="absolute inset-x-[6%] top-[10%] bottom-[12%] border border-white/10 bg-white/5 shadow-[inset_0_0_80px_rgba(0,0,0,0.32)]" />
+        <div className="absolute inset-y-[12%] left-[6%] right-[6%] grid grid-cols-3 pointer-events-none">
+          <div className="border-r border-white/10 bg-white/5" />
+          <div className="border-r border-white/10 bg-white/10" />
+          <div className="bg-white/5" />
+        </div>
         <div className="absolute inset-0 bg-black/55" />
 
-        {/* 三個大互動區域 */}
+        {/* 三個牆壁互動區域 */}
         {ZONES.map((zone) => {
           const done = collected(zone.key);
           return (
@@ -58,18 +72,15 @@ export default function Explore() {
               key={zone.key}
               onClick={() => router.push(zone.href)}
               className={`absolute top-0 h-full ${zone.cls} cursor-pointer group
-                flex items-center justify-center
-                border-2 transition-all duration-200
+                flex items-center justify-center border-2 transition-all duration-200
                 ${done
                   ? "border-green-600/50 bg-green-900/20"
-                  : "border-transparent hover:border-amber-400/50 hover:bg-amber-400/8"
-                }`}
+                  : "border-transparent hover:border-amber-400/50 hover:bg-amber-400/8"}`}
             >
               <span className={`font-ui text-sm tracking-widest transition-opacity duration-200
                 ${done
                   ? "opacity-60 text-green-400"
-                  : "opacity-0 group-hover:opacity-100 text-amber-200"
-                }`}>
+                  : "opacity-0 group-hover:opacity-100 text-amber-200"}`}>
                 {done ? "已調查" : zone.label}
               </span>
             </div>
@@ -81,8 +92,35 @@ export default function Explore() {
       <div className="px-6 py-4 border-t border-stone-700 text-xs font-ui text-gray-300 text-right">
         {allCollected
           ? "所有線索已收集完畢……"
-          : `尚有 ${3 - ["note","bones","wand"].filter(collected).length} 個線索未找到`}
+          : `尚有 ${["box","bones","wand","note"].filter(k => !collected(k)).length} 個線索未找到`}
       </div>
+
+      {/* 物品詳情 Modal */}
+      {viewingItem && ITEM_DETAIL[viewingItem] && (() => {
+        const detail = ITEM_DETAIL[viewingItem];
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+            <div className="w-full max-w-sm mx-4 bg-stone-800 border border-stone-600 rounded-lg overflow-hidden shadow-2xl">
+              <div className="w-full h-44 bg-stone-600 flex items-center justify-center text-stone-400 text-xs font-ui">
+                {detail.imgLabel}
+              </div>
+              <div className="p-4 flex flex-col gap-2">
+                <p className="text-stone-200 text-sm font-ui font-bold">{detail.title}</p>
+                <p className="text-stone-400 text-xs font-body leading-relaxed">{detail.desc}</p>
+              </div>
+              <div className="px-4 pb-4 flex justify-center">
+                <ActionButton
+                  onClick={() => setViewingItem(null)}
+                  variant="ghost"
+                  className="px-8 py-2 text-stone-300 font-ui"
+                >
+                  關閉
+                </ActionButton>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* 食譜發現彈窗 */}
       {showRecipe && (
