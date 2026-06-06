@@ -163,7 +163,7 @@ export default function Description() {
           >
             {displayText}
             <span
-              className="inline-block w-[3px] h-[0.8em] align-middle ml-1"
+              className="inline-block w-0.75 h-[0.8em] align-middle ml-1"
               style={{
                 background: currentLine.color ?? "white",
                 animation: "pulse 0.9s ease-in-out infinite",
@@ -179,7 +179,7 @@ export default function Description() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="mt-6"
+              className="mt-6 flex items-center justify-end"
             >
               <ActionButton text="開始遊戲" href="/chapter00" variant="gold" />
             </motion.div>

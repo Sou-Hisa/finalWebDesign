@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useGameStore } from "../../../store/store";
+import ActionButton from "../../../component/ActionButton";
 
 type Step = "box" | "inspect" | "compare" | "done";
 
@@ -31,7 +31,6 @@ const BONE_OPTIONS = [
 ];
 
 export default function ExploreBones() {
-  const router = useRouter();
   const { addItem, collectedItems } = useGameStore();
   const alreadyCollected = collectedItems.includes("bones");
 
@@ -55,16 +54,17 @@ export default function ExploreBones() {
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center bg-stone-950 px-6 gap-6 relative">
-      <button
-        onClick={() => router.push("/explore")}
+      <ActionButton
+        href="/explore"
+        variant="ghost"
         className="absolute top-4 left-4 text-stone-400 text-sm border border-stone-700 px-3 py-1 hover:bg-stone-800 transition-colors font-ui"
       >
         ← 返回
-      </button>
+      </ActionButton>
 
       {/* 目標說明 */}
-      <p className="absolute top-4 right-4 text-stone-500 text-xs font-ui text-right max-w-[180px]">
-        確認箱子裡的東西究竟是什麼，蒐集可用的證據。
+      <p className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-stone-400 text-xs font-ui">
+        確認箱子裡的東西究竟是什麼，蒐集可用的證據
       </p>
 
       {/* Step 1：看到箱子 */}
@@ -76,12 +76,13 @@ export default function ExploreBones() {
           <p className="text-stone-200 text-base leading-relaxed font-body">
             角落裡有一個滿是灰塵的舊箱子。<br />蓋子半開著，從縫隙裡透出一股詭異的氣息……
           </p>
-          <button
+          <ActionButton
             onClick={() => setStep("inspect")}
+            variant="ghost"
             className="border-2 border-stone-400 px-8 py-2 text-stone-200 font-bold font-ui hover:bg-stone-700 transition-colors"
           >
             打開箱子
-          </button>
+          </ActionButton>
         </div>
       )}
 
@@ -93,18 +94,19 @@ export default function ExploreBones() {
             <div className="w-16 h-5 bg-gray-500 border border-gray-300 rounded-full" />
             <div className="w-20 h-6 bg-gray-400 border border-gray-300 rounded-full" />
           </div>
-          <div className="bg-stone-800 border border-stone-600 rounded p-4 text-left text-sm text-stone-300 leading-relaxed font-body">
+          <div className="bg-stone-800 border border-stone-600 rounded-lg p-4 text-left text-sm text-stone-300 leading-relaxed font-body">
             <p>箱子裡裝著一些奇怪的白色長條物……</p>
             <p className="mt-2 text-red-400 font-bold">等等，這好像是骨頭？</p>
             <p className="mt-2">仔細看：<span className="text-amber-300">細長均勻，四肢比例對稱，頭骨碎片偏圓，整體輕薄。</span></p>
             <p className="mt-2">走到旁邊的書架，把骨頭和圖鑑對照看看——</p>
           </div>
-          <button
+          <ActionButton
             onClick={() => setStep("compare")}
+            variant="red"
             className="border-2 border-red-600 px-8 py-2 text-red-400 font-bold font-ui hover:bg-red-900 transition-colors"
           >
             走向書架對照
-          </button>
+          </ActionButton>
         </div>
       )}
 
@@ -120,10 +122,10 @@ export default function ExploreBones() {
             {BONE_OPTIONS.map((opt) => {
               const isSelected = selected === opt.id;
               return (
-                <button
+                <ActionButton
                   key={opt.id}
                   onClick={() => handleOptionClick(opt.id)}
-                  className={`w-full text-left border-2 rounded p-4 transition-all ${
+                  className={`w-full text-left border-2 rounded-lg p-4 transition-all ${
                     isSelected
                       ? "border-amber-400 bg-amber-950/40"
                       : "border-stone-600 bg-stone-900/40 hover:border-stone-400"
@@ -133,7 +135,7 @@ export default function ExploreBones() {
                     {opt.label}
                   </p>
                   <p className="text-stone-400 text-xs mt-1 font-body">{opt.desc}</p>
-                </button>
+                </ActionButton>
               );
             })}
           </div>
@@ -141,7 +143,7 @@ export default function ExploreBones() {
           {confirmed && selected && (() => {
             const opt = BONE_OPTIONS.find((o) => o.id === selected)!;
             return (
-              <p className={`text-sm text-center font-body px-4 py-2 border rounded ${
+              <p className={`text-sm text-center font-body px-4 py-2 border rounded-lg ${
                 opt.correct
                   ? "text-red-400 border-red-700 bg-red-950/40"
                   : "text-stone-400 border-stone-700 bg-stone-900/40"
@@ -151,20 +153,21 @@ export default function ExploreBones() {
             );
           })()}
 
-          <button
+          <ActionButton
             onClick={handleConfirm}
             disabled={!selected || confirmed}
             className="border-2 border-red-600 px-8 py-2 text-red-400 font-bold font-ui hover:bg-red-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             確認比對
-          </button>
+          </ActionButton>
 
-          <button
+          <ActionButton
             onClick={() => setStep("inspect")}
+            variant="ghost"
             className="text-stone-500 text-xs underline hover:text-stone-300 transition-colors font-ui"
           >
             ← 回去看骨頭特徵
-          </button>
+          </ActionButton>
         </div>
       )}
 
@@ -174,12 +177,13 @@ export default function ExploreBones() {
           <div className="w-20 h-6 bg-gray-400 border border-gray-300 rounded-full" />
           <p className="text-green-400 font-bold text-base font-ui">骨頭證據已收集</p>
           <p className="text-stone-400 text-sm font-body">已確認是人類小孩的骨頭……</p>
-          <button
-            onClick={() => router.push("/explore")}
-            className="border-2 border-green-700 px-8 py-2 text-green-400 font-bold font-ui hover:bg-green-900 transition-colors"
+          <ActionButton
+            href="/explore"
+            variant="ghost"
+            className="px-8 py-2"
           >
             返回場景
-          </button>
+          </ActionButton>
         </div>
       )}
     </div>

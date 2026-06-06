@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { useGameStore } from "../../store/store";
 import DialogueBox from "../../component/DialogueBox";
+import ActionButton from "../../component/ActionButton";
 
 function Placeholder({ label, className = "" }: { label: string; className?: string }) {
   return (
@@ -204,7 +205,6 @@ export default function Battle() {
   const [feedback,      setFeedback]      = useState<"correct" | "wrong" | null>(null);
   const [screenFlash,   setScreenFlash]   = useState(false);
   const [canDraw,       setCanDraw]       = useState(false);
-  const [debugInfo,     setDebugInfo]     = useState<string>("");
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const drawing   = useRef(false);
@@ -270,7 +270,7 @@ export default function Battle() {
     const canvas = canvasRef.current!;
     const matched = detectSpell(points.current, canvas.width, canvas.height);
     const spell   = spellQueue[spellIdx % spellQueue.length];
-    setDebugInfo(`畫了 ${points.current.length} 點 → 偵測: ${matched ?? "無"} (需要: ${spell.id})`);
+    // debug info removed in production UI
     points.current = [];
 
     if (matched === spell.id) {
@@ -334,11 +334,11 @@ export default function Battle() {
       {/* ════ 遊戲說明 popup ════ */}
       {phase === "intro" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-          <div className="w-full max-w-md mx-4 border-2 p-6 flex flex-col gap-4"
+          <div className="w-full max-w-6xl mx-4 border-2 rounded-lg p-6 flex flex-col gap-4"
             style={{ borderColor: "#8b5cf6", background: "#12071e" }}>
             <h2 className="text-xl font-title text-center" style={{ color: "#c084fc" }}>決戰說明</h2>
-            <p className="text-sm font-body text-stone-300">
-              畫面會顯示一個魔法符文形狀，用滑鼠（或手指）在畫面上<strong>連續畫出</strong>對應形狀：
+            <p className="text-sm font-body text-stone-300 text-center">
+              畫面會顯示一個魔法符文形狀，用滑鼠在畫面上連續畫出對應形狀
             </p>
             {/* 符文示意表 */}
             <div className="grid grid-cols-7 gap-2 text-center">
@@ -353,15 +353,21 @@ export default function Battle() {
               命中 {TOTAL_HP} 次打敗巫婆 ／ 限時 {TIME_LIMIT} 秒
             </p>
             <div className="flex gap-3 justify-center">
-              <button onClick={() => router.push("/ending/fail")}
-                className="border-2 border-stone-600 px-5 py-2 text-stone-400 hover:bg-stone-800 transition-colors text-sm font-ui">
+              <ActionButton
+                href="/ending/fail"
+                variant="ghost"
+                className="px-5 py-2 text-sm"
+                style={{ borderColor: "#6b7280", color: "#d1d5db" }}
+              >
                 撤離
-              </button>
-              <button onClick={() => { setCanDraw(false); setPhase("battle"); }}
-                className="border-2 px-6 py-2 font-ui font-bold"
-                style={{ borderColor: "#8b5cf6", color: "#c084fc", background: "rgba(139,92,246,0.15)" }}>
+              </ActionButton>
+              <ActionButton
+                onClick={() => { setCanDraw(false); setPhase("battle"); }}
+                variant="ghost"
+                className="px-6 py-2 border-[#8b5cf6]! hover:bg-[#8b5cf6]! hover:text-white!"
+              >
                 挑戰！
-              </button>
+              </ActionButton>
             </div>
           </div>
         </div>
@@ -371,26 +377,31 @@ export default function Battle() {
       {phase === "battle" && (
         <>
           {/* HUD */}
-          <div className="flex items-center justify-between px-5 py-2 border-b"
-            style={{ background: "rgba(0,0,0,0.7)", borderColor: "#ffffff18" }}>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-ui text-stone-400">巫婆血量</span>
-              <div className="flex gap-1">
+          <div className="flex items-center px-6 py-6 relative">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-ui text-stone-300">巫婆血量</span>
+              <div className="flex gap-2">
                 {Array.from({ length: TOTAL_HP }).map((_, i) => (
-                  <div key={i} className="w-4 h-4 border"
+                  <div key={i} className="w-4 h-4"
                     style={{
+                      borderRadius: 9999,
                       background: i < witchHp ? "#ef4444" : "transparent",
-                      borderColor: i < witchHp ? "#ef4444" : "#4b5563",
+                      border: i < witchHp ? "1px solid #ef4444" : "1px solid #374151",
+                      boxShadow: i < witchHp ? "0 0 6px rgba(239,68,68,0.45)" : "none",
                     }} />
                 ))}
               </div>
             </div>
-            <span className="text-xs font-ui tracking-widest" style={{ color: currentSpell.color }}>
-              {currentSpell.name}
-            </span>
-            <div className={`font-ui font-bold tabular-nums text-base ${timeLeft <= 10 ? "text-red-400 animate-pulse" : ""}`}
-              style={{ color: timeLeft <= 10 ? undefined : "#f5a623" }}>
-              {timeLeft}s
+
+            <div className="absolute left-1/2 -translate-x-1/2">
+              <div className={`font-ui font-bold tabular-nums text-base ${timeLeft <= 10 ? "text-red-400 animate-pulse" : ""}`}
+                style={{ color: timeLeft <= 10 ? undefined : "#e8b56a" }}>
+                {timeLeft}s
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 ml-auto">
+              {/* right area left empty for controls (e.g., volume button portal) */}
             </div>
           </div>
 
@@ -428,7 +439,7 @@ export default function Battle() {
                     {currentSpell.name}
                   </span>
                   <span className="font-ui text-xs text-stone-400">{currentSpell.hint}</span>
-                  <span className="font-ui text-[10px] text-stone-600 mt-0.5">
+                  <span className="font-ui text-[10px] text-stone-500 mt-0.5">
                     {canDraw ? "在畫面上畫出此形狀" : "準備中……"}
                   </span>
                 </div>
@@ -452,12 +463,7 @@ export default function Battle() {
               </motion.div>
             </AnimatePresence>
 
-            {/* ── Debug 偵測資訊（開發用，之後可刪） ── */}
-            {debugInfo && (
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-30 bg-black/70 text-yellow-300 text-[11px] font-mono px-3 py-1 rounded pointer-events-none">
-                {debugInfo}
-              </div>
-            )}
+            {/* debugInfo removed */}
 
             {/* ── Canvas（覆蓋全場景） ── */}
             <canvas ref={canvasRef} width={800} height={600}
@@ -475,13 +481,7 @@ export default function Battle() {
                   label={witchHp > 0 ? "[女巫 立繪]" : "[女巫 倒下]"}
                   className="w-32 h-40"
                 />
-                <div className="flex gap-1">
-                  {Array.from({ length: TOTAL_HP }).map((_, i) => (
-                    <div key={i} className="w-3 h-3 rounded-full"
-                      style={{ background: i < witchHp ? "#ef4444" : "#374151",
-                                boxShadow: i < witchHp ? "0 0 5px #ef4444" : "none" }} />
-                  ))}
-                </div>
+                {/* bottom HP dots removed (now shown in HUD) */}
               </div>
 
               {/* 火爐（中） */}

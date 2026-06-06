@@ -17,9 +17,9 @@ export default function ItemBar({ collectedItems }: ItemBarProps) {
     <div
       className="w-full px-4 py-2 flex items-center"
     >
-      <span className="text-xs font-ui" style={{ color: "#a06a10" }}>
+      <p className="text-sm font-ui mr-4" style={{ color: "#ccc" }}>
         物品收集欄
-      </span>
+      </p>
 
       <div className="flex gap-2">
         {Object.entries(ITEM_CONFIG).map(([key, { label, emoji }]) => {
@@ -30,7 +30,7 @@ export default function ItemBar({ collectedItems }: ItemBarProps) {
               title={label}
               animate={collected ? { scale: [1, 1.15, 1] } : {}}
               transition={{ duration: 0.35 }}
-              className="flex flex-col items-center px-2 py-1 border rounded-sm text-xs transition-all relative overflow-hidden"
+              className="flex flex-col items-center px-4 py-1 border rounded-lg text-xs transition-all relative overflow-hidden"
               style={{
                 borderColor: collected ? "var(--color-gold)" : "#44332211",
                 background:  collected ? "rgba(245,166,35,0.12)" : "rgba(255,255,255,0.03)",
@@ -45,7 +45,7 @@ export default function ItemBar({ collectedItems }: ItemBarProps) {
                   style={{ mixBlendMode: "overlay" }}
                 />
               )}
-              <span className="text-lg relative z-10">{emoji}</span>
+              <span className="text-sm relative z-10">{emoji}</span>
               <span className="font-ui relative z-10">{label}</span>
             </motion.div>
           );

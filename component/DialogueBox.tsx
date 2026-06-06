@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import ActionButton from "./ActionButton";
 
 // 依角色動態換邊框色
 const characterColor: Record<string, string> = {
@@ -36,7 +37,7 @@ export default function DialogueBox({
   const color = getColor(character);
 
   return (
-    <div className="mx-auto my-4 flex flex-col gap-2 z-10 absolute bottom-0 left-1/2 -translate-x-1/2 w-[95%]" style={{ ['--accent' as any]: color }}>
+    <div className="mx-auto my-4 flex flex-col gap-2 z-10 absolute bottom-0 left-1/2 -translate-x-1/2 w-[95%]" style={{ '--accent': color } as React.CSSProperties}>
       {/* 角色名稱 + 繼續按鈕 */}
       <div className="flex items-center justify-between">
         <motion.div
@@ -52,9 +53,13 @@ export default function DialogueBox({
           {character}
         </motion.div>
 
-        <button onClick={onNext} className="flex items-center justify-center px-4 py-2 text-sm text-white font-title font-semibold rounded-md border border-white/80 hover:bg-black/30 transition-all duration-200">
+        <ActionButton
+          onClick={onNext}
+          variant="ghost"
+          className="px-4 py-2 text-sm text-white font-title font-semibold rounded-md border border-white/80 hover:bg-black/30 transition-all duration-200"
+        >
           {isLast ? lastLabel : nextLabel}
-        </button>
+        </ActionButton>
       </div>
 
       {/* 對話文字框 */}

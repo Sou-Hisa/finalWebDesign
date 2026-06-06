@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameStore } from "../../../store/store";
+import ActionButton from "../../../component/ActionButton";
 
 const LINES = [
   "趁著女巫靠近火爐，你們用盡全力將她推了進去！",
@@ -54,7 +55,7 @@ export default function EndingSuccess() {
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center bg-amber-950 gap-6 px-8">
 
-      <div className="w-full max-w-lg flex flex-col gap-3 font-body text-sm leading-relaxed min-h-[14rem]">
+      <div className="w-full max-w-lg flex flex-col gap-3 font-body text-lg leading-relaxed min-h-56">
         {doneLines.map((line, i) => (
           <p
             key={i}
@@ -106,13 +107,13 @@ export default function EndingSuccess() {
               [逃脫成功 結果圖]
             </div>
 
-            <button
+            <ActionButton
               onClick={handleRestart}
-              className="border-2 px-10 py-3 font-ui font-bold tracking-wider transition-all hover:brightness-125 border-glow-gold"
-              style={{ borderColor: "var(--color-gold)", color: "var(--color-gold)" }}
+              variant="gold"
+              className="px-10 py-3 font-ui font-bold tracking-wider hover:brightness-125"
             >
               再玩一次
-            </button>
+            </ActionButton>
           </motion.div>
         )}
       </AnimatePresence>

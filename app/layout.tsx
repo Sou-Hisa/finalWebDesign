@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Ma_Shan_Zheng, Noto_Serif_TC, Noto_Sans_TC } from "next/font/google";
 import "./globals.css";
+import BgMusic from "../component/BgMusic";
 
 const maShangZheng = Ma_Shan_Zheng({
   weight: "400",
@@ -40,6 +41,7 @@ export default function RootLayout({
     >
       <body className="w-full h-screen min-h-full flex flex-col font-ui">
         {children}
+        <BgMusic />
       </body>
     </html>
   );

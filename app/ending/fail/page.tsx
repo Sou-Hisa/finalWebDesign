@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import ActionButton from "../../../component/ActionButton";
 
 const LINES = [
   "你們的動作慢了一步，女巫強大的黑魔法將你們牢牢困住。",
@@ -50,7 +51,7 @@ export default function EndingFail() {
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center bg-stone-950 gap-6 px-8">
 
-      <div className="w-full max-w-lg flex flex-col gap-3 font-body text-sm leading-relaxed min-h-48">
+      <div className="w-full max-w-lg flex flex-col gap-3 font-body text-lg leading-relaxed min-h-48">
         {doneLines.map((line, i) => (
           <p
             key={i}
@@ -100,12 +101,13 @@ export default function EndingFail() {
               [死亡結局 結果圖]
             </div>
 
-            <button
+            <ActionButton
               onClick={handleRestart}
-              className="border-2 border-red-600 px-10 py-3 font-ui font-bold tracking-wider text-red-400 hover:bg-red-900 transition-colors"
+              variant="red"
+              className="px-10 py-3 font-ui font-bold tracking-wider"
             >
               再試一次
-            </button>
+            </ActionButton>
           </motion.div>
         )}
       </AnimatePresence>

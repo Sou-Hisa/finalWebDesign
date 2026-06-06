@@ -2,6 +2,7 @@
 
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
+import ActionButton from "./ActionButton";
 
 interface ModalProps {
   title: string;
@@ -18,7 +19,7 @@ export default function Modal({ title, children, onClose, closeLabel = "確認" 
         animate={{ scale: 1,    opacity: 1 }}
         exit={{   scale: 0.88,  opacity: 0 }}
         transition={{ type: "spring", stiffness: 280, damping: 22 }}
-        className="w-full max-w-md mx-4 border-2 p-6 flex flex-col gap-4 shadow-2xl"
+        className="w-full max-w-md mx-4 rounded-md border-2 p-6 flex flex-col gap-4 shadow-2xl"
         style={{
           borderColor: "var(--color-gold)",
           background: "linear-gradient(160deg, #1a0c05ee, #0d0705ee)",
@@ -30,12 +31,13 @@ export default function Modal({ title, children, onClose, closeLabel = "確認" 
         </h2>
         <div className="font-body text-[#f0e0c0] leading-relaxed">{children}</div>
         {onClose && (
-          <button
+          <ActionButton
             onClick={onClose}
-            className="self-center border-2 border-(--color-gold) text-(--color-gold) px-8 py-2 font-ui font-medium tracking-wider hover:bg-(--color-gold) hover:text-stone-950 transition-all duration-300 border-glow-gold"
+            variant="gold"
+            className="self-center px-8 py-2 font-ui font-medium tracking-wider"
           >
             {closeLabel}
-          </button>
+          </ActionButton>
         )}
       </motion.div>
     </div>

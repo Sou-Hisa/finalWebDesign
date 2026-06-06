@@ -32,10 +32,11 @@ export default function ActionButton({
   variant = "gold",
   className = "",
   children,
-  ...rest
+  // ...rest
 }: ActionButtonProps) {
   const base = [
     "inline-flex items-center justify-center w-max text-center border-2 px-6 py-2 font-ui font-medium tracking-wider transition-all duration-300",
+    "rounded-md",
     "disabled:opacity-40 disabled:cursor-not-allowed",
     variantClass[variant],
     className,

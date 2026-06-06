@@ -1,5 +1,6 @@
 "use client"
-import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 import { FaVolumeMute } from "react-icons/fa";
 import { FaVolumeUp } from "react-icons/fa";
@@ -8,19 +9,35 @@ export default function BgMusic() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const handleFirstClickRef = useRef<() => void>(() => {});
   const [isPlaying, setIsPlaying] = useState(false);
+  const isClient = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   useEffect(() => {
-    const audio = new Audio("/audio/bgMusic.mp3");
+    const audio = new Audio("/audio/Dreamy Flashback.mp3");
     audio.loop = true;
     audio.volume = 0.4;
     audioRef.current = audio;
 
-    // 定義首次點擊自動播放的邏輯
-    const handleFirstClick = () => {
-      audio.play().then(() => {
+    // 先嘗試自動播放（大部分瀏覽器會封鎖，若被封鎖會抓到錯誤並保留下方的點擊備援）
+    audio.play()
+      .then(() => {
         setIsPlaying(true);
-      }).catch((err) => console.log("播放被阻擋:", err));
-      
+      })
+      .catch(() => {
+        // Autoplay 被封鎖，使用者互動作為備援
+      });
+
+    // 定義首次點擊自動播放的備援邏輯（在某些瀏覽器必須由 user gesture 啟動）
+    const handleFirstClick = () => {
+      audio.play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch((err) => console.log("播放被阻擋:", err));
+
       document.removeEventListener("click", handleFirstClick);
     };
 
@@ -54,13 +71,16 @@ export default function BgMusic() {
     }
   };
 
-  return (
+  if (!isClient) return null;
+
+  return createPortal(
     <button
       onClick={toggleBgm}
       data-html2canvas-ignore="true"
-      className="fixed top-4 right-4 z-50 p-2 backdrop-blur-md rounded-full shadow-lg hover:scale-105 transition-all"
+      className="fixed top-4 right-4 z-9999 px-4 py-2 hover:scale-105 transition-all"
     >
-      {isPlaying ? <FaVolumeUp className="w-5 h-5 text-gray-700" /> : <FaVolumeMute className="w-5 h-5 text-gray-500" />}
-    </button>
+      {isPlaying ? <FaVolumeUp className="w-5 h-5 text-gray-200" /> : <FaVolumeMute className="w-5 h-5 text-gray-200" />}
+    </button>,
+    document.body
   );
 }

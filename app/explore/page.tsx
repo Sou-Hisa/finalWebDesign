@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useGameStore } from "../../store/store";
 import ItemBar from "../../component/ItemBar";
 import Modal from "../../component/Modal";
+import ActionButton from "../../component/ActionButton";
 
 const ITEMS = [
   { key: "note",  label: "密碼紙條", href: "/explore/cipher", pos: "left-[10%] bottom-[25%]" },
@@ -34,7 +35,7 @@ export default function Explore() {
 
       {/* 主場景 */}
       <div className="flex-1 relative">
-        {/* 背景佔位 */}
+        {/* 背景 */}
         <div
           className="
             absolute inset-0
@@ -52,31 +53,31 @@ export default function Explore() {
         {ITEMS.map((item) => {
           const done = collected(item.key);
           return (
-            <button
+            <ActionButton
               key={item.key}
-              onClick={() => router.push(item.href)}
-              className={`absolute flex flex-col items-center gap-1 transition-transform hover:scale-105 active:scale-95 ${item.pos}`}
+              href={item.href}
+              className={`absolute flex flex-col justify-center items-center bg-transparent! border-none! transition-all hover:scale-105 active:scale-95 ${item.pos}`}
             >
               <div
-                className="w-20 h-20 flex items-center justify-center border-2 text-xs font-ui font-bold"
+                className="w-20 h-20 flex items-center justify-center border-2 rounded-lg text-xs font-ui font-bold"
                 style={{
                   background: done ? "#1a3a1a" : "#4a2e08",
-                  borderColor: done ? "#22c55e" : "var(--color-gold)",
-                  color: done ? "#86efac" : "#f5a623",
+                  borderColor: done ? "#6fd59d" : "#e8b56a",
+                  color: done ? "#6fd59d" : "#e8b56a",
                 }}
               >
-                {done ? "✓ 已收集" : item.label}
+                {done ? "已收集" : item.label}
               </div>
-              <span className="text-[10px] font-ui" style={{ color: done ? "#86efac" : "#f5a623" }}>
+              <span className="text-[10px] font-ui" style={{ color: done ? "#6fd59d" : "#e8b56a" }}>
                 {item.label}
               </span>
-            </button>
+            </ActionButton>
           );
         })}
       </div>
 
       {/* 底部提示 */}
-      <div className="px-6 py-4 border-t border-stone-700 text-xs font-ui text-gray-300">
+      <div className="px-6 py-4 border-t border-stone-700 text-xs font-ui text-gray-300 text-right">
         {allCollected
           ? "所有線索已收集完畢……"
           : `尚有 ${3 - ["note","bones","wand"].filter(collected).length} 個線索未找到`}
@@ -92,12 +93,14 @@ export default function Explore() {
           <p className="text-sm italic text-red-600 text-center mb-4">
             「如何烤出鮮嫩多汁的小女孩與小男孩……」
           </p>
-          <button
-            onClick={() => { setRecipeFound(); router.push("/chapter02"); }}
-            className="w-full border-2 border-red-600 py-2 font-bold text-red-700 hover:bg-red-600 hover:text-white transition-colors"
-          >
-            繼續 →
-          </button>
+          <div className="flex justify-center">
+            <ActionButton
+              onClick={() => { setRecipeFound(); router.push("/chapter02"); }}
+              className="border-2 border-red-600 px-8 py-2 font-bold text-red-700 hover:bg-red-600 hover:text-white transition-colors"
+            >
+              繼續
+            </ActionButton>
+          </div>
         </Modal>
       )}
     </div>
