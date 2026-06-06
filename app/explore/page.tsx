@@ -34,7 +34,7 @@ export default function Explore() {
       <ItemBar collectedItems={collectedItems} />
 
       {/* 主場景 */}
-      <div className="flex-1 relative">
+      <div className="flex-1 relative bg-gray-400">
         {/* 背景 */}
         <div
           className="
@@ -42,7 +42,8 @@ export default function Explore() {
             bg-[url('/images/bg_explore.png')]
             bg-auto
             bg-center
-            bg-no-repeat         
+            bg-no-repeat 
+            opacity-70        
           "
           style={{
             backgroundSize: "auto 100%",

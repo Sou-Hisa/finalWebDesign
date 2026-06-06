@@ -72,26 +72,28 @@ export default function ExploreCipher() {
           <p className="text-amber-300 text-sm text-center font-body">
             對照看看——8·5·12·16 各對應哪個字母？
           </p>
-          <ActionButton
-            onClick={() => setStep("input")}
-            variant="gold"
-            className="border-2 border-amber-500 px-8 py-2 text-amber-300 font-bold font-ui hover:bg-amber-800 hover:text-white transition-colors"
-          >
-            我解出來了
-          </ActionButton>
-          <ActionButton
-            href="/explore"
-            variant="ghost"
-            className="text-stone-500 text-xs underline hover:text-stone-300 transition-colors font-ui"
-          >
-            先去其他地方，待會再回來
-          </ActionButton>
+          <div className="w-full flex flex-row flex-nowrap items-center gap-4">
+            <ActionButton
+              href="/explore"
+              variant="ghost"
+              className="flex-1 px-6 py-2 text-sm font-bold text-stone-500 hover:text-stone-300 transition-colors font-ui"
+            >
+              先去其他地方看看
+            </ActionButton>
+            <ActionButton
+              onClick={() => setStep("input")}
+              variant="gold"
+              className="flex-1 px-6 py-2 text-sm font-bold text-amber-300 font-ui hover:bg-amber-800 hover:text-white transition-colors"
+            >
+              我解出來了
+            </ActionButton>
+          </div>
         </div>
       )}
 
       {/* Step 2：輸入答案 */}
       {step === "input" && (
-        <div className="flex flex-col items-center gap-5 w-full max-w-sm">
+        <div className="flex flex-col justify-center items-center gap-5 w-full max-w-sm">
           <div className="w-72 bg-amber-50 border-4 border-amber-800 rounded-lg p-4 shadow-2xl rotate-1 flex flex-col gap-2">
             <p className="text-center font-bold text-amber-900 text-sm font-title">神秘紙條</p>
             <div className="border-t border-amber-300 pt-2 text-center">
@@ -99,9 +101,9 @@ export default function ExploreCipher() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center gap-3 w-72">
+          <div className="flex flex-col items-center gap-5 w-72">
             <p className="text-amber-200 text-sm font-body">請輸入解碼後的英文單字：</p>
-            <div className="flex gap-2 w-full">
+            <div className="flex gap-3 w-full">
               <input
                 type="text"
                 value={input}
@@ -114,7 +116,7 @@ export default function ExploreCipher() {
               <ActionButton
                 onClick={handleSubmit}
                 variant="gold"
-                className="border-2 border-amber-500 px-4 py-2 text-amber-300 font-bold font-ui hover:bg-amber-700 hover:text-white transition-colors"
+                className="min-w-20 whitespace-nowrap border-2 border-amber-500 px-6 py-2 text-sm text-amber-300 font-bold font-ui hover:bg-amber-700 hover:text-white transition-colors"
               >
                 確認
               </ActionButton>
@@ -125,9 +127,9 @@ export default function ExploreCipher() {
             <ActionButton
               onClick={() => setStep("note")}
               variant="ghost"
-              className="mt-1 text-stone-400 text-xs underline hover:text-stone-200 transition-colors font-ui"
+              className="mt-1 text-stone-400 text-xs hover:text-stone-200 transition-colors font-ui"
             >
-              ← 回去看對照表
+              回去看對照表
             </ActionButton>
           </div>
         </div>

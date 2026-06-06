@@ -29,15 +29,15 @@ export default function Chapter01() {
   return (
     <div className="w-full h-screen flex flex-col ">
       {/* 主場景 */}
-      <div className="flex-1 relative">
-        {/*<Placeholder label="[糖果屋外觀 背景圖]" className="absolute inset-0" />*/}
+      <div className="flex-1 relative bg-gray-400">
         <div
           className="
             absolute inset-0
             bg-[url('/images/bg_ch01.png')]
             bg-auto
             bg-center
-            bg-no-repeat         
+            bg-no-repeat 
+            opacity-90        
           "
           style={{
             backgroundSize: "auto 100%",

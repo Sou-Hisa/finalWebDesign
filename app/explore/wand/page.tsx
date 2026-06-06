@@ -24,11 +24,11 @@ export default function ExploreWand() {
 
   function handleRuneClick(id: string) {
     if (id === CORRECT_RUNE) {
-      setRuneMsg("符文共鳴了。封印正在解除……");
+      setRuneMsg("符文共鳴了，封印正在解除……");
       setUnlocking(true);
       setTimeout(() => { addItem("wand"); setStep("collected"); }, 1200);
     } else {
-      setRuneMsg("符文排斥了，產生一陣刺痛感。再試試。");
+      setRuneMsg("符文排斥了，產生一陣刺痛感，再試一次吧");
     }
   }
 
@@ -106,7 +106,7 @@ export default function ExploreWand() {
             ))}
           </div>
           {runeMsg && (
-            <p className={`text-sm text-center font-body px-3 py-2 border rounded transition-all ${
+            <p className={`text-sm text-center font-body px-3 py-2 border rounded-lg transition-all ${
               unlocking
                 ? "text-yellow-300 border-yellow-600 bg-yellow-950/40"
                 : "text-red-400 border-red-800 bg-red-950/40"

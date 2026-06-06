@@ -13,7 +13,7 @@ interface ModalProps {
 
 export default function Modal({ title, children, onClose, closeLabel = "確認" }: ModalProps) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <motion.div
         initial={{ scale: 0.82, opacity: 0 }}
         animate={{ scale: 1,    opacity: 1 }}

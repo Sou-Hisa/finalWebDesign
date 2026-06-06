@@ -30,7 +30,6 @@ export default function Chapter00() {
     <div className="w-full h-screen flex flex-col bg-gray-400">
       {/* 主場景 */}
       <div className="flex-1 relative">
-        {/*<Placeholder label="[森林場景 背景圖]" className="absolute inset-0" />*/}
         <div
           className="
             absolute inset-0
@@ -38,7 +37,7 @@ export default function Chapter00() {
             bg-auto
             bg-center
             bg-no-repeat
-            opacity-40
+            opacity-60
           "
           style={{
             backgroundSize: "auto 100%",

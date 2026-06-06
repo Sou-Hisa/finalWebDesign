@@ -10,23 +10,23 @@ const BONE_OPTIONS = [
   {
     id: "animal_small",
     label: "小型動物骨架",
-    desc: "短而纖細，前後肢比例不均，骨骼密度較高。",
+    desc: "短而纖細，前後肢比例不均，骨骼密度較高",
     correct: false,
-    msg: "骨頭的長度和比例對不上——這是小動物的骨架。",
+    msg: "骨頭的長度和比例對不上——這是小動物的骨架",
   },
   {
     id: "human_child",
     label: "人類幼童骨架",
-    desc: "細長均勻，四肢比例對稱，頭骨偏圓，整體輕薄。",
+    desc: "細長均勻，四肢比例對稱，頭骨偏圓，整體輕薄",
     correct: true,
-    msg: "比例完全吻合——箱子裡的骨頭，是人類小孩的。",
+    msg: "比例完全吻合——箱子裡的骨頭，是人類小孩的",
   },
   {
     id: "animal_large",
     label: "大型動物骨架",
-    desc: "粗壯厚實，骨骼明顯彎曲，蹄骨清晰可辨。",
+    desc: "粗壯厚實，骨骼明顯彎曲，蹄骨清晰可辨",
     correct: false,
-    msg: "骨頭太細，完全不是這個量級的動物。",
+    msg: "骨頭太細，完全不是這個量級的動物",
   },
 ];
 
@@ -115,7 +115,7 @@ export default function ExploreBones() {
         <div className="flex flex-col items-center gap-5 w-full max-w-md">
           <p className="text-stone-300 text-sm text-center font-body">
             書架上擺著《骨骼圖鑑》，翻到對照頁。<br />
-            <span className="text-amber-300">根據你觀察到的特徵，選出符合的骨架類型：</span>
+            <span className="text-amber-300">根據你觀察到的特徵，選出符合的骨架類型</span>
           </p>
 
           <div className="w-full flex flex-col gap-3">
@@ -129,12 +129,14 @@ export default function ExploreBones() {
                     isSelected
                       ? "border-amber-400 bg-amber-950/40"
                       : "border-stone-600 bg-stone-900/40 hover:border-stone-400"
-                  }`}
+                  } group`}
                 >
-                  <p className={`font-bold text-sm font-ui ${isSelected ? "text-amber-300" : "text-stone-200"}`}>
-                    {opt.label}
-                  </p>
-                  <p className="text-stone-400 text-xs mt-1 font-body">{opt.desc}</p>
+                  <div className="flex flex-col justify-center items-center">
+                    <p className={`font-bold text-sm font-ui ${isSelected ? "text-amber-300" : "text-stone-200 group-hover:text-stone-100"}`}>
+                      {opt.label}
+                    </p>
+                    <p className={`${isSelected ? "text-amber-100" : "text-stone-400 group-hover:text-stone-200"} text-xs mt-1 font-body`}>{opt.desc}</p>
+                  </div>
                 </ActionButton>
               );
             })}
@@ -153,21 +155,23 @@ export default function ExploreBones() {
             );
           })()}
 
-          <ActionButton
-            onClick={handleConfirm}
-            disabled={!selected || confirmed}
-            className="border-2 border-red-600 px-8 py-2 text-red-400 font-bold font-ui hover:bg-red-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            確認比對
-          </ActionButton>
+          <div className="w-full flex flex-row flex-nowrap items-center justify-between gap-4">
+            <ActionButton
+              onClick={() => setStep("inspect")}
+              variant="ghost"
+              className="flex-1 px-6 py-2 text-sm font-bold text-stone-500 hover:text-stone-300 transition-colors font-ui"
+            >
+              回去看骨頭特徵
+            </ActionButton>
 
-          <ActionButton
-            onClick={() => setStep("inspect")}
-            variant="ghost"
-            className="text-stone-500 text-xs underline hover:text-stone-300 transition-colors font-ui"
-          >
-            ← 回去看骨頭特徵
-          </ActionButton>
+            <ActionButton
+              onClick={handleConfirm}
+              disabled={!selected || confirmed}
+              className="flex-1 px-6 py-2 text-sm font-bold font-ui border-2 border-red-600 text-red-400 hover:bg-red-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              確認比對
+            </ActionButton>
+          </div>
         </div>
       )}
 

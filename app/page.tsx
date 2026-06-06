@@ -2,7 +2,7 @@ import ActionButton from "../component/ActionButton";
 
 export default function Home() {
   return (
-    <div className="w-full h-screen bg-gray-800 flex relative overflow-hidden">
+    <div className="w-full h-screen bg-gray-600 flex relative overflow-hidden">
       <div
         className="
           absolute inset-0
