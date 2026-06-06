@@ -27,7 +27,7 @@ export default function Chapter00() {
   }
 
   return (
-    <div className="w-full h-screen flex flex-col bg-gray-400">
+    <div className="w-full h-screen flex flex-col bg-black">
       {/* 主場景 */}
       <div className="flex-1 relative">
         <div
@@ -37,12 +37,13 @@ export default function Chapter00() {
             bg-auto
             bg-center
             bg-no-repeat
-            opacity-60
           "
           style={{
             backgroundSize: "auto 100%",
           }}
         />
+        {/* 深色遮罩 */}
+        <div className="absolute inset-0 bg-black/55" />
         
         {/* 角色立繪 */}
         <Placeholder label="[漢賽爾 立繪]" className="absolute bottom-20 left-30 w-28 h-40" />

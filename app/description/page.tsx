@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ActionButton from "../../component/ActionButton";
 
@@ -42,6 +42,35 @@ const AFTER_PERM      = 520;
 type Phase = "typing" | "clearing";
 type TempItem = { text: string; color?: string };
 
+// 用 Web Audio API 合成一個短促的打字點擊聲
+function playTypingClick(ctx: AudioContext) {
+  const bufLen = Math.floor(ctx.sampleRate * 0.022); // 22ms 白噪音
+  const buf    = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+  const data   = buf.getChannelData(0);
+  for (let i = 0; i < bufLen; i++) {
+    // 白噪音 + 快速指數衰減，模擬鍵盤觸底的短擊
+    data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufLen, 6);
+  }
+
+  const src    = ctx.createBufferSource();
+  src.buffer   = buf;
+
+  // 帶通濾波：保留 1.5kHz–4kHz，讓音色清脆不刺耳
+  const bpf    = ctx.createBiquadFilter();
+  bpf.type     = "bandpass";
+  bpf.frequency.value = 2400;
+  bpf.Q.value  = 0.7;
+
+  const gain   = ctx.createGain();
+  // 每次輕微隨機音量，避免單調
+  gain.gain.value = 0.18 + Math.random() * 0.06;
+
+  src.connect(bpf);
+  bpf.connect(gain);
+  gain.connect(ctx.destination);
+  src.start();
+}
+
 export default function Description() {
   const [lineIdx,    setLineIdx]    = useState(0);
   const [charIdx,    setCharIdx]    = useState(0);
@@ -51,6 +80,7 @@ export default function Description() {
   const [fading,     setFading]     = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [started,    setStarted]    = useState(false);
+  const audioCtxRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setStarted(true), 600);
@@ -63,7 +93,19 @@ export default function Description() {
 
     if (phase === "typing") {
       if (charIdx < line.text.length) {
-        const t = setTimeout(() => setCharIdx(c => c + 1), TYPE_DELAY);
+        const t = setTimeout(() => {
+          // 建立（或恢復）AudioContext，播放點擊聲
+          try {
+            if (!audioCtxRef.current) {
+              audioCtxRef.current = new AudioContext();
+            }
+            const ctx = audioCtxRef.current;
+            if (ctx.state === "suspended") ctx.resume();
+            playTypingClick(ctx);
+          } catch (_) { /* 不支援時靜默略過 */ }
+
+          setCharIdx(c => c + 1);
+        }, TYPE_DELAY);
         return () => clearTimeout(t);
       }
 
@@ -125,8 +167,8 @@ export default function Description() {
         }}
       />
 
-      {/* 遮罩（可留可刪） */}
-      <div className="absolute inset-0 bg-black/20" />
+      {/* 深色遮罩，讓白字更凸顯 */}
+      <div className="absolute inset-0 bg-black/60" />
 
 
       <div className="flex-38" />

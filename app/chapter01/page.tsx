@@ -29,21 +29,20 @@ export default function Chapter01() {
   return (
     <div className="w-full h-screen flex flex-col ">
       {/* 主場景 */}
-      <div className="flex-1 relative bg-gray-400">
+      <div className="flex-1 relative bg-black">
         <div
           className="
             absolute inset-0
             bg-[url('/images/bg_ch01.png')]
             bg-auto
             bg-center
-            bg-no-repeat 
-            opacity-90        
+            bg-no-repeat
           "
           style={{
             backgroundSize: "auto 100%",
           }}
         />
-        <div className="absolute inset-0 bg-white/40" />
+        <div className="absolute inset-0 bg-black/55" />
         {/* 老婆婆立繪 */}
         <Placeholder label="[老婆婆 立繪]" className="absolute bottom-20 right-30 w-28 h-44" />
       </div>

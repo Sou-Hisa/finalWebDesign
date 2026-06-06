@@ -2,7 +2,7 @@ import ActionButton from "../component/ActionButton";
 
 export default function Home() {
   return (
-    <div className="w-full h-screen bg-gray-600 flex relative overflow-hidden">
+    <div className="w-full h-screen bg-black flex relative overflow-hidden">
       <div
         className="
           absolute inset-0
@@ -10,9 +10,9 @@ export default function Home() {
           bg-cover
           bg-center
           bg-no-repeat
-          opacity-40
         "
       />
+      <div className="absolute inset-0 bg-black/55" />
           
       {/* 主內容 */}
       <div className="relative z-10 flex flex-col items-center justify-center gap-16 w-full">

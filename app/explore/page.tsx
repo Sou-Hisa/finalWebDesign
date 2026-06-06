@@ -34,7 +34,7 @@ export default function Explore() {
       <ItemBar collectedItems={collectedItems} />
 
       {/* 主場景 */}
-      <div className="flex-1 relative bg-gray-400">
+      <div className="flex-1 relative bg-black">
         {/* 背景 */}
         <div
           className="
@@ -42,13 +42,13 @@ export default function Explore() {
             bg-[url('/images/bg_explore.png')]
             bg-auto
             bg-center
-            bg-no-repeat 
-            opacity-70        
+            bg-no-repeat
           "
           style={{
             backgroundSize: "auto 100%",
           }}
         />
+        <div className="absolute inset-0 bg-black/55" />
 
         {/* 三個互動物件 */}
         {ITEMS.map((item) => {
