@@ -14,11 +14,16 @@ export default function ExploreCenterWall() {
 
   return (
     <div className="w-full h-screen relative overflow-hidden bg-stone-900">
-      {/* Background placeholder */}
+      {/* Background placeholder 
       <div className="absolute inset-0 bg-gradient-to-b from-stone-600/30 to-stone-900 pointer-events-none" />
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <span className="text-stone-600/30 text-xs font-ui select-none">[中間牆壁 背景佔位]</span>
-      </div>
+      </div>*/}
+      <img
+        src="/images/explore_middle.png"
+        alt="background"
+        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none"
+      />
 
       {/* Return */}
       <ActionButton

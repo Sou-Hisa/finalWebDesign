@@ -58,7 +58,7 @@ export default function Explore() {
       <div
         className="
           absolute inset-0
-          bg-[url('/images/explore_bg.png')]
+          bg-[url('/images/explore_bg1.png')]
           bg-cover
           bg-center
           bg-no-repeat
@@ -71,7 +71,7 @@ export default function Explore() {
       {/* 主場景 */}
       <div className="flex-1 relative bg-stone-950 overflow-hidden">
       <Img 
-        src="/images/explore_bg.png" 
+        src="/images/explore_bg1.png" 
         loading="eager"
         alt="糖果屋書架背景" 
         width={1920} height={1080}
