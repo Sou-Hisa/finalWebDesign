@@ -53,21 +53,23 @@ export default function Explore() {
   }, [allCollected, recipeFound]);
 
   return (
-    <div className="w-full h-screen flex flex-col bg-stone-900">
+    <div className="w-full h-screen flex flex-col bg-black relative overflow-hidden">
+      <div
+        className="
+          absolute inset-0
+          bg-[url('/images/explore_bg.png')]
+          bg-cover
+          bg-center
+          bg-no-repeat
+          opacity-60
+        "
+      />
       {/* 頂部物品欄 — 收集到的物品可點擊查看 */}
-      <ItemBar collectedItems={collectedItems} onItemClick={setViewingItem} />
+      <ItemBar collectedItems={collectedItems} onItemClick={setViewingItem}/>
 
       {/* 主場景 */}
-      <div className="flex-1 relative bg-black">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#8f877f_0%,#5a524d_36%,#2a2421_74%,#171312_100%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-[18%] bg-gradient-to-t from-[#231b17] to-transparent" />
-        <div className="absolute inset-x-[6%] top-[10%] bottom-[12%] border border-white/10 bg-white/5 shadow-[inset_0_0_80px_rgba(0,0,0,0.32)]" />
-        <div className="absolute inset-y-[12%] left-[6%] right-[6%] grid grid-cols-3 pointer-events-none">
-          <div className="border-r border-white/10 bg-white/5" />
-          <div className="border-r border-white/10 bg-white/10" />
-          <div className="bg-white/5" />
-        </div>
-        <div className="absolute inset-0 bg-black/55" />
+      <div className="flex-1 relative">
+        <div className="absolute inset-0" />
 
         {/* 三個牆壁互動區域 */}
         {ZONES.map((zone) => {
@@ -77,14 +79,14 @@ export default function Explore() {
               key={zone.key}
               onClick={() => router.push(zone.href)}
               className={`absolute top-0 h-full ${zone.cls} cursor-pointer group
-                flex items-center justify-center border-2 transition-all duration-200
+                flex items-center justify-center border transition-all duration-200
                 ${done
-                  ? "border-green-600/50 bg-green-900/20"
+                  ? "bg-white/10 border-white/10"
                   : "border-transparent hover:border-amber-400/50 hover:bg-amber-400/8"}`}
             >
               <span className={`font-ui text-sm tracking-widest transition-opacity duration-200
                 ${done
-                  ? "opacity-60 text-green-400"
+                  ? "opacity-60 text-white"
                   : "opacity-0 group-hover:opacity-100 text-amber-200"}`}>
                 {done ? "已調查" : zone.label}
               </span>
@@ -94,7 +96,7 @@ export default function Explore() {
       </div>
 
       {/* 底部提示 */}
-      <div className="px-6 py-4 border-t border-stone-700 text-xs font-ui text-gray-300 text-right">
+      <div className="px-6 py-4 text-xs font-ui text-gray-100 text-right">
         {allCollected
           ? "所有線索已收集完畢……"
           : `尚有 ${["box","bones","wand","note","magicwand","puzzle"].filter(k => !collected(k)).length} 個線索未找到`}
@@ -104,20 +106,20 @@ export default function Explore() {
       {viewingItem && ITEM_DETAIL[viewingItem] && (() => {
         const detail = ITEM_DETAIL[viewingItem];
         return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="w-full max-w-sm mx-4 bg-stone-800 border border-stone-600 rounded-lg overflow-hidden shadow-2xl">
-              <div className="w-full h-44 bg-stone-600 flex items-center justify-center text-stone-400 text-xs font-ui">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-sm">
+            <div className="w-full max-w-sm mx-4 bg-white/10 rounded-lg overflow-hidden shadow-2xl">
+              <div className="w-full h-44 bg-black/40 flex items-center justify-center text-stone-400 text-xs font-ui">
                 {detail.imgLabel}
               </div>
               <div className="p-4 flex flex-col gap-2">
-                <p className="text-stone-200 text-sm font-ui font-bold">{detail.title}</p>
-                <p className="text-stone-400 text-xs font-body leading-relaxed">{detail.desc}</p>
+                <p className="text-gray-200 text-sm font-ui font-bold">{detail.title}</p>
+                <p className="text-gray-300 text-xs font-body leading-relaxed">{detail.desc}</p>
               </div>
               <div className="px-4 pb-4 flex justify-center">
                 <ActionButton
                   onClick={() => setViewingItem(null)}
                   variant="ghost"
-                  className="px-8 py-2 text-stone-300 font-ui"
+                  className="px-8 py-2 text-gray-300! border-gray-300!"
                 >
                   關閉
                 </ActionButton>

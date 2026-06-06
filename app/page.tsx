@@ -6,7 +6,7 @@ export default function Home() {
       <div
         className="
           absolute inset-0
-          bg-[url('/images/bg_front.png')]
+          bg-[url('/images/front_bg.png')]
           bg-cover
           bg-center
           bg-no-repeat

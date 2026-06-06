@@ -16,8 +16,8 @@ interface ItemBarProps {
 
 export default function ItemBar({ collectedItems, onItemClick }: ItemBarProps) {
   return (
-    <div className="w-full px-4 py-2 flex items-center">
-      <p className="text-sm font-ui mr-4" style={{ color: "#ccc" }}>
+    <div className="z-10 w-full px-4 py-2 flex items-center">
+      <p className="text-sm font-ui mr-4" style={{ color: "#ddd" }}>
         物品收集欄
       </p>
 
@@ -37,9 +37,9 @@ export default function ItemBar({ collectedItems, onItemClick }: ItemBarProps) {
               className={`flex flex-col items-center px-4 py-1 border rounded-lg text-xs transition-all relative overflow-hidden
                 ${clickable ? "cursor-pointer hover:brightness-125 active:scale-95" : "cursor-default"}`}
               style={{
-                borderColor: collected ? "var(--color-gold)" : "#44332211",
-                background:  collected ? "rgba(245,166,35,0.12)" : "rgba(255,255,255,0.03)",
-                color:        collected ? "#f5a623" : "#55443322",
+                borderColor: collected ? "#ddd" : "#44332211",
+                background:  collected ? "#95744F" : "rgba(255,255,255,0.03)",
+                color:        collected ? "#ddd" : "#55443322",
                 filter:       collected ? "none" : "grayscale(1) opacity(0.3)",
                 boxShadow:    collected ? "0 0 8px #f5a62333" : "none",
               }}

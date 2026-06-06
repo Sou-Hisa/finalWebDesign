@@ -41,7 +41,7 @@ export default function Chapter00() {
 
         {/* 角色立繪 */}
         {/* 漢賽爾 */}
-        <div className="absolute bottom-15 left-10 w-45 h-60">
+        <div className="absolute bottom-25 left-15 w-45 h-60">
           <Image
             src="/item_images/H_ha.PNG"
             alt="漢賽爾 立繪"
@@ -53,7 +53,7 @@ export default function Chapter00() {
         </div>
 
         {/* 葛麗特 */}
-        <div className="absolute bottom-15 left-45 w-45 h-60">
+        <div className="absolute bottom-25 left-50 w-45 h-60">
           <Image
             src="/item_images/G_ha.PNG"
             alt="葛麗特 立繪"

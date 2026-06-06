@@ -44,7 +44,7 @@ export default function Chapter01() {
         />
         <div className="absolute inset-0 bg-black/55" />
         {/* 老婆婆立繪 */}
-        <Placeholder label="[老婆婆 立繪]" className="absolute bottom-20 right-30 w-28 h-44" />
+        <Placeholder label="[老婆婆 立繪]" className="absolute bottom-25 right-30 w-28 h-44" />
       </div>
 
       {/* 對話框 */}

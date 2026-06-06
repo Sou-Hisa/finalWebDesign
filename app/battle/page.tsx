@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useGameStore } from "../../store/store";
 import DialogueBox from "../../component/DialogueBox";
 import ActionButton from "../../component/ActionButton";
+import Img from "next/image";
 
 function Placeholder({ label, className = "" }: { label: string; className?: string }) {
   return (
@@ -496,16 +497,16 @@ export default function Battle() {
       {phase === "dialogue" && (
         <>
           <div className="flex-1 relative">
-            {/*<Placeholder label="[決戰場景 背景圖]" className="absolute inset-0" />*/}
-            <img
+            <Img
               src="/images/battle_bg.png"
               alt="決戰場景背景"
               className="absolute inset-0 w-full h-full object-cover"
+              width={1920} height={1080}
             />
-            {/* 角色：3:4 比例，貼底橫排 */}
-            <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-10 items-end pb-2">
+            {/* 角色：3:4 比例 */}
+            <div className="absolute bottom-25 left-1/2 -translate-x-1/2 flex gap-10 items-end pb-2">
               <Placeholder label="[葛麗特]" className="w-32 h-40" />
-              <Placeholder label="[火爐]"   className="w-28 h-28" />
+              <Placeholder label="[火爐]"   className="w-28 h-40" />
               <Placeholder label="[女巫]"   className="w-32 h-40" />
             </div>
           </div>
@@ -520,12 +521,15 @@ export default function Battle() {
 
       {/* ════ 決戰說明：打字機 ════ */}
       {phase === "intro" && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/85 px-8">
-          {/* 背景透出 */}
-          <img src="/images/bg_battle.png" alt=""
-            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" />
-
-          <div className="relative z-10 flex flex-col items-start w-full max-w-2xl gap-3 mb-10">
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center px-8">
+          <Img
+            src="/images/battle_bg.png"
+            alt="決戰說明背景"
+            className="absolute inset-0 w-full h-full object-cover opacity-40 pointer-events-none"
+            width={1920}
+            height={1080}
+          />
+          <div className="relative z-10 flex flex-col items-start gap-3 mb-10">
             {/* 已完成的行 */}
             {INTRO_LINES.slice(0, introLineIdx).map((line, i) => (
               <p key={i}
@@ -550,17 +554,22 @@ export default function Battle() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="relative z-10 flex gap-4"
+                className="relative z-10 flex gap-8"
               >
-                <ActionButton href="/ending/fail" variant="ghost" className="px-6 py-2 text-sm text-stone-400">
+                <ActionButton 
+                  href="/ending/fail" 
+                  variant="ghost" 
+                  className="px-12 py-3"
+                >
                   撤離
                 </ActionButton>
+
                 <ActionButton
                   onClick={() => { setCanDraw(false); setPhase("battle"); }}
                   variant="purple"
-                  className="px-8 py-2 text-base font-bold border-glow-purple"
+                  className="px-12 py-3"
                 >
-                  施法——
+                  施法
                 </ActionButton>
               </motion.div>
             )}
@@ -585,17 +594,18 @@ export default function Battle() {
           {/* 主場景 */}
           <div className="flex-1 relative overflow-hidden">
 
-            <img
-              src="/images/bg_battle.png"
+            <Img
+              src="/images/battle_bg.png"
               alt="決戰背景"
               className="absolute inset-0 w-full h-full object-cover"
+              width={1920} height={1080}
             />
             <div className="absolute inset-0 bg-black/30" />
 
             {/* ── 時間讀條（絕對定位在場景頂端，往下長，不影響 layout） ── */}
             <div
               className="absolute top-0 left-0 w-full z-20 pointer-events-none overflow-hidden transition-[height] duration-500"
-              style={{ height: timeLeft <= 10 ? 20 : timeLeft <= 20 ? 10 : 5 }}
+              style={{ height: 3 }}
             >
               <div
                 className={`h-full transition-[width] duration-1000 ease-linear ${timeLeft <= 10 ? "timer-critical" : ""}`}

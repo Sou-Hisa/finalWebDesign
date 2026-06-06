@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGameStore } from "../../../../store/store";
 import ActionButton from "../../../../component/ActionButton";
+import Img from "next/image";
 
 type BoxStep = "inspect" | "puzzle" | "solved";
 
@@ -70,9 +71,12 @@ export default function PuzzleBox() {
         </ActionButton>
 
         <div className="w-full max-w-sm bg-stone-800 border border-stone-600 rounded-lg p-6 flex flex-col items-center gap-4 shadow-2xl">
-        <img
+        <Img
           src="/images/explore_item_box.png"
           className="w-40 h-auto"
+          alt="[箱子圖片]"
+          width={160}
+          height={120}
         />
           <p className="text-stone-300 text-sm font-body leading-relaxed text-center">
             這個木盒……似乎要解開機關才能打開呢？
@@ -138,8 +142,8 @@ export default function PuzzleBox() {
           key={idx}
           onClick={() => handleTileClick(idx)}
           className="
-            w-[120px]
-            h-[120px]
+            w-30
+            h-30
             border
             border-amber-950
             bg-no-repeat
@@ -182,15 +186,15 @@ export default function PuzzleBox() {
         返回
       </ActionButton>
 
-      <p className="text-green-400 font-bold text-base font-ui">機關解開了！</p>
+      <p className="text-gray-300 font-bold text-base font-ui">機關解開了！</p>
 
       <div className="w-64 h-44 bg-stone-700 border border-stone-500 rounded flex items-center justify-center text-stone-400 text-xs font-ui">
         [巫婆吃人的圖片]
       </div>
 
-      <p className="text-stone-300 text-sm font-body text-center max-w-xs leading-relaxed">
-        木盒裡藏著一張畫——畫中的女巫正在烹煮小孩。<br />
-        <span className="text-red-400">這就是她的計畫……</span>
+      <p className="text-stone-300 text-sm font-body text-center max-w-xs leading-loose">
+        木盒裡藏著一張畫——畫中是女巫的煮小孩食譜<br />
+        <span className=" text-red-400">這就是她的計畫……</span>
       </p>
 
       <ActionButton

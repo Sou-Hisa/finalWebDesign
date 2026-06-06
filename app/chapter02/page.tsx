@@ -46,8 +46,8 @@ export default function Chapter02() {
         />
 
         {/* 角色立繪 */}
-        <Placeholder label="[葛麗特 立繪]" className="absolute bottom-20 left-30 w-28 h-40" />
-        <Placeholder label="[漢賽爾 立繪]" className="absolute bottom-20 left-60 w-28 h-40" />
+        <Placeholder label="[葛麗特 立繪]" className="absolute bottom-25 left-30 w-28 h-40" />
+        <Placeholder label="[漢賽爾 立繪]" className="absolute bottom-25 left-60 w-28 h-40" />
       </div>
 
       {/* 對話框 */}
