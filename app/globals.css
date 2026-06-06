@@ -83,6 +83,15 @@ body {
   animation: flash-red 0.5s ease-out forwards;
 }
 
+/* ── 時間讀條緊急閃爍 ── */
+@keyframes timer-pulse {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 6px #ef4444, 0 0 14px #ef444466; }
+  50%       { opacity: 0.6; box-shadow: 0 0 2px #ef4444; }
+}
+.timer-critical {
+  animation: timer-pulse 0.55s ease-in-out infinite;
+}
+
 /* ── Vignette ── */
 .vignette::after {
   content: "";
