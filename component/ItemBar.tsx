@@ -3,9 +3,10 @@
 import { motion } from "framer-motion";
 
 const ITEM_CONFIG: Record<string, { label: string; emoji: string }> = {
-  box:   { label: "舊箱子", emoji: "📦" },
-  bones: { label: "白色骨頭", emoji: "🦴" },
-  wand:  { label: "密碼表",   emoji: "📜" },
+  box:      { label: "舊箱子", emoji: "📦" },
+  bones:    { label: "白色骨頭", emoji: "🦴" },
+  wand:     { label: "密碼表",   emoji: "📜" },
+  magicwand:{ label: "魔仗",     emoji: "🪄" },
 };
 
 interface ItemBarProps {

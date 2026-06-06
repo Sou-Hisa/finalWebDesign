@@ -7,8 +7,10 @@ import ActionButton from "../../../component/ActionButton";
 export default function ExploreCenterWall() {
   const router = useRouter();
   const { collectedItems } = useGameStore();
-  const bonesCollected = collectedItems.includes("bones");
-  const noteCollected  = collectedItems.includes("note");
+  const bonesCollected  = collectedItems.includes("bones");
+  const noteCollected   = collectedItems.includes("note");
+  const puzzleSolved    = collectedItems.includes("puzzle");
+  const showPuzzleBox   = ["box", "bones", "wand", "magicwand"].every(k => collectedItems.includes(k));
 
   return (
     <div className="w-full h-screen relative overflow-hidden bg-stone-900">
@@ -67,6 +69,27 @@ export default function ExploreCenterWall() {
             {noteCollected ? "✓ 已解碼" : "密碼食譜"}
           </span>
         </button>
+
+        {/* 木盒（4件物品全收後出現） */}
+        {showPuzzleBox && (
+          <button
+            onClick={() => router.push("/explore/center-wall/puzzle-box")}
+            className="flex flex-col items-center gap-2 group"
+          >
+            <div
+              className={`w-20 h-16 border-2 flex items-center justify-center text-xs font-ui rounded transition-colors
+                ${puzzleSolved
+                  ? "bg-stone-800/60 border-dashed border-stone-700 text-stone-600"
+                  : "bg-amber-900 border-amber-700 text-amber-400 group-hover:border-amber-400 animate-pulse"}`}
+            >
+              {puzzleSolved ? "✓" : "[木盒]"}
+            </div>
+            <span className={`text-xs font-ui transition-colors
+              ${puzzleSolved ? "text-stone-600" : "text-amber-500 group-hover:text-amber-300"}`}>
+              {puzzleSolved ? "✓ 已開啟" : "神秘木盒"}
+            </span>
+          </button>
+        )}
       </div>
 
     </div>

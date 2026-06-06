@@ -29,6 +29,11 @@ const ITEM_DETAIL: Record<string, { title: string; desc: string; imgLabel: strin
     desc:  "一張印有字母與數字對照關係的紙片。A=1, B=2, C=3……可以用來解讀神秘紙條上的數字訊息。",
     imgLabel: "[密碼對照表圖片]",
   },
+  magicwand: {
+    title: "神秘的魔仗",
+    desc:  "一根細長的木製魔仗，刻有奇怪的紋路，散發著微弱的光芒。不知道能用來對付什麼……",
+    imgLabel: "[魔仗圖片]",
+  },
 };
 
 export default function Explore() {
@@ -38,7 +43,7 @@ export default function Explore() {
   const [viewingItem,  setViewingItem]  = useState<string | null>(null);
 
   const collected = (key: string) => collectedItems.includes(key);
-  const allCollected = ["box", "bones", "wand", "note"].every(collected);
+  const allCollected = ["box", "bones", "wand", "note", "magicwand", "puzzle"].every(collected);
 
   useEffect(() => {
     if (allCollected && !recipeFound) {
@@ -92,7 +97,7 @@ export default function Explore() {
       <div className="px-6 py-4 border-t border-stone-700 text-xs font-ui text-gray-300 text-right">
         {allCollected
           ? "所有線索已收集完畢……"
-          : `尚有 ${["box","bones","wand","note"].filter(k => !collected(k)).length} 個線索未找到`}
+          : `尚有 ${["box","bones","wand","note","magicwand","puzzle"].filter(k => !collected(k)).length} 個線索未找到`}
       </div>
 
       {/* 物品詳情 Modal */}
