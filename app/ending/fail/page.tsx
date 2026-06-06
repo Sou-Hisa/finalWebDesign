@@ -93,13 +93,13 @@ export default function EndingFail() {
             transition={{ duration: 0.9 }}
             className="flex flex-col items-center gap-5"
           >
-            {/* 結果圖佔位（換圖時把 div 換成 <img src="/images/ending-fail.png" ... />） */}
-            <div
-              className="w-64 h-40 border-2 flex items-center justify-center text-xs font-ui text-red-400"
-              style={{ borderColor: "#991b1b", background: "rgba(60,10,10,0.3)" }}
-            >
-              [死亡結局 結果圖]
-            </div>
+            {/* 結果圖 */}
+            <img 
+              src="/images/ending_fail.png" 
+              alt="死亡結局結果圖" 
+              className="w-64 h-40 object-cover border-2"
+              style={{ borderColor: "#991b1b" }}
+            />
 
             <ActionButton
               onClick={handleRestart}
