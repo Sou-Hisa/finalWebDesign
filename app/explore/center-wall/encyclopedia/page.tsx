@@ -65,7 +65,7 @@ export default function CenterWallEncyclopedia() {
   if (alreadyCollected) {
     return (
       <div className="w-full h-screen flex flex-col items-center justify-center bg-stone-950 px-6 gap-5">
-        <p className="text-green-400 font-bold text-base font-ui">骨頭證據已收集</p>
+        <p className="text-gray-300 font-bold text-base font-ui">骨頭證據已收集</p>
         <p className="text-stone-400 text-sm font-body">已確認是人類小孩的骨頭……</p>
       </div>
     );

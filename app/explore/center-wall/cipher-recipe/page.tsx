@@ -114,9 +114,9 @@ export default function CenterWallCipherRecipe() {
       {/* Step 3: solved */}
       {step === "solved" && (
         <div className="flex flex-col items-center gap-5 w-72 text-center">
-          <p className="text-green-400 font-bold text-base font-ui">解碼成功</p>
+          <p className="text-gray-300 font-bold text-base font-ui">解碼成功</p>
           <p className="text-stone-300 text-sm leading-relaxed font-body">
-            答案是 <span className="text-green-300 font-bold">HELP</span> ——<br />
+            答案是 <span className="text-gray-300 font-bold">HELP</span> ——<br />
             一個被困在這裡的孩子留下的求救訊息
           </p>
           <p className="text-stone-500 text-xs font-body">這竟是誰留下的訊息……</p>
