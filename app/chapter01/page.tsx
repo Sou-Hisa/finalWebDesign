@@ -33,7 +33,7 @@ export default function Chapter01() {
         <div
           className="
             absolute inset-0
-            bg-[url('/images/bg_ch01.png')]
+            bg-[url('/images/ch01_bg.png')]
             bg-auto
             bg-center
             bg-no-repeat

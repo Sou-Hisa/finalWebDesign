@@ -36,7 +36,7 @@ export default function Chapter02() {
         <div
           className="
             absolute inset-0
-            bg-[url('/images/bg_ch02.png')]
+            bg-[url('/images/ch02_bg.png')]
             bg-center
             bg-no-repeat
           "

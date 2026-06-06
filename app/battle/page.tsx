@@ -316,7 +316,7 @@ export default function Battle() {
           <div className="flex-1 relative">
             {/*<Placeholder label="[決戰場景 背景圖]" className="absolute inset-0" />*/}
             <img
-              src="/images/bg_battle.png"
+              src="/images/battle_bg.png"
               alt="決戰場景背景"
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -417,7 +417,7 @@ export default function Battle() {
             {/*<Placeholder label="[決戰背景圖]" className="absolute inset-0" />*/}
             <>
               <img
-                src="/images/bg_battle.png"
+                src="/images/battle_bg.png"
                 alt="決戰背景"
                 className="absolute inset-0 w-full h-full object-cover"
               />

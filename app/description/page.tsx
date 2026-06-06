@@ -158,7 +158,7 @@ export default function Description() {
       <div
         className="
           absolute inset-0
-          bg-[url('/images/bg_description.png')]
+          bg-[url('/images/description_bg.png')]
           bg-center
           bg-no-repeat
         "
