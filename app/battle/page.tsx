@@ -498,7 +498,7 @@ export default function Battle() {
           <div className="flex-1 relative">
             {/*<Placeholder label="[決戰場景 背景圖]" className="absolute inset-0" />*/}
             <img
-              src="/images/battle_bg.png"
+              src="/images/battle_bg1.png"
               alt="決戰場景背景"
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -522,7 +522,7 @@ export default function Battle() {
       {phase === "intro" && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/85 px-8">
           {/* 背景透出 */}
-          <img src="/images/bg_battle.png" alt=""
+          <img src="/images/battle_bg2.png" alt=""
             className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" />
 
           <div className="relative z-10 flex flex-col items-start w-full max-w-2xl gap-3 mb-10">
@@ -586,7 +586,7 @@ export default function Battle() {
           <div className="flex-1 relative overflow-hidden">
 
             <img
-              src="/images/bg_battle.png"
+              src="/images/battle_bg2.png"
               alt="決戰背景"
               className="absolute inset-0 w-full h-full object-cover"
             />
