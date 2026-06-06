@@ -5,12 +5,12 @@ import { useRouter } from "next/navigation";
 import { useGameStore } from "../../store/store";
 import ItemBar from "../../component/ItemBar";
 import Modal from "../../component/Modal";
-import ActionButton from "../../component/ActionButton";
+import ActionButton from "../../component/ActionButton"; // Modal 內仍使用
 
-const ITEMS = [
-  { key: "note",  label: "密碼紙條", href: "/explore/cipher", pos: "left-[10%] bottom-[25%]" },
-  { key: "bones", label: "舊箱子",   href: "/explore/bones",  pos: "left-[50%] bottom-[25%]" },
-  { key: "wand",  label: "神秘木棍", href: "/explore/wand",   pos: "right-[10%] bottom-[25%]" },
+const ZONES = [
+  { key: "note",  label: "左側牆壁", href: "/explore/cipher", cls: "left-0 w-[20%]"   },
+  { key: "bones", label: "正面牆壁", href: "/explore/bones",  cls: "left-[20%] w-[60%]" },
+  { key: "wand",  label: "右側牆壁", href: "/explore/wand",   cls: "right-0 w-[20%]"  },
 ];
 
 export default function Explore() {
@@ -50,29 +50,29 @@ export default function Explore() {
         />
         <div className="absolute inset-0 bg-black/55" />
 
-        {/* 三個互動物件 */}
-        {ITEMS.map((item) => {
-          const done = collected(item.key);
+        {/* 三個大互動區域 */}
+        {ZONES.map((zone) => {
+          const done = collected(zone.key);
           return (
-            <ActionButton
-              key={item.key}
-              href={item.href}
-              className={`absolute flex flex-col justify-center items-center bg-transparent! border-none! transition-all hover:scale-105 active:scale-95 ${item.pos}`}
+            <div
+              key={zone.key}
+              onClick={() => router.push(zone.href)}
+              className={`absolute top-0 h-full ${zone.cls} cursor-pointer group
+                flex items-center justify-center
+                border-2 transition-all duration-200
+                ${done
+                  ? "border-green-600/50 bg-green-900/20"
+                  : "border-transparent hover:border-amber-400/50 hover:bg-amber-400/8"
+                }`}
             >
-              <div
-                className="w-20 h-20 flex items-center justify-center border-2 rounded-lg text-xs font-ui font-bold"
-                style={{
-                  background: done ? "#1a3a1a" : "#4a2e08",
-                  borderColor: done ? "#6fd59d" : "#e8b56a",
-                  color: done ? "#6fd59d" : "#e8b56a",
-                }}
-              >
-                {done ? "已收集" : item.label}
-              </div>
-              <span className="text-[10px] font-ui" style={{ color: done ? "#6fd59d" : "#e8b56a" }}>
-                {item.label}
+              <span className={`font-ui text-sm tracking-widest transition-opacity duration-200
+                ${done
+                  ? "opacity-60 text-green-400"
+                  : "opacity-0 group-hover:opacity-100 text-amber-200"
+                }`}>
+                {done ? "已調查" : zone.label}
               </span>
-            </ActionButton>
+            </div>
           );
         })}
       </div>
