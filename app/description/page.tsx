@@ -112,6 +112,22 @@ export default function Description() {
 
   return (
     <div className="w-full h-screen bg-black flex flex-col items-center relative overflow-hidden px-8">
+      {/* 背景圖  */}
+      <div
+        className="
+          absolute inset-0
+          bg-[url('/images/bg_description.png')]
+          bg-center
+          bg-no-repeat
+        "
+        style={{
+          backgroundSize: "auto 100%",
+        }}
+      />
+
+      {/* 遮罩（可留可刪） */}
+      <div className="absolute inset-0 bg-black/20" />
+
 
       <div className="flex-38" />
 
