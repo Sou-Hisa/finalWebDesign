@@ -15,13 +15,9 @@ interface ItemBarProps {
 export default function ItemBar({ collectedItems }: ItemBarProps) {
   return (
     <div
-      className="w-full px-4 py-2 flex items-center gap-3 border-b"
-      style={{
-        background: "linear-gradient(90deg, #1a0c05, #2a1508, #1a0c05)",
-        borderColor: "#f5a62344",
-      }}
+      className="w-full px-4 py-2 flex items-center"
     >
-      <span className="text-xs font-ui shrink-0" style={{ color: "#a06a10" }}>
+      <span className="text-xs font-ui" style={{ color: "#a06a10" }}>
         物品收集欄
       </span>
 

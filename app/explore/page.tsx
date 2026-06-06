@@ -6,14 +6,6 @@ import { useGameStore } from "../../store/store";
 import ItemBar from "../../component/ItemBar";
 import Modal from "../../component/Modal";
 
-function Placeholder({ label, className = "" }: { label: string; className?: string }) {
-  return (
-    <div className={`flex items-center justify-center bg-stone-700 text-gray-100 border border-gray-500 text-xs font-ui ${className}`}>
-      {label}
-    </div>
-  );
-}
-
 const ITEMS = [
   { key: "note",  label: "密碼紙條", href: "/explore/cipher", pos: "left-[10%] bottom-[25%]" },
   { key: "bones", label: "舊箱子",   href: "/explore/bones",  pos: "left-[50%] bottom-[25%]" },
