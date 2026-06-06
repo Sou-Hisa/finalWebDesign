@@ -50,7 +50,46 @@ function shuffleSpells(): Spell[] {
 const TOTAL_HP   = 5;
 const TIME_LIMIT = 55;
 
+// ── 決戰說明打字機文案 ──────────────────────────────────────
+const INTRO_LINES = [
+  "她怎麼可能就這樣讓你們逃走——",
+  "火爐的熱浪撲面而來。",
+  "你握緊了手中的魔杖，",
+  "深吸一口氣。",
+  "跟著符文，在空中揮出魔法。",
+  "在她對你們下手之前。",
+] as const;
+const INTRO_CHAR_DELAY = 52;
+
 type Point = { x: number; y: number };
+
+// ── 符文引導路徑（畫在 canvas 底層，玩家跟著描） ───────────────
+const GUIDE_PATHS: Record<SpellId, (c: CanvasRenderingContext2D, w: number, h: number) => void> = {
+  V:        (c,w,h) => { c.moveTo(w*.36,h*.33); c.lineTo(w*.50,h*.64); c.lineTo(w*.64,h*.33); },
+  circle:   (c,w,h) => { c.arc(w*.50,h*.50,Math.min(w,h)*.18,0,Math.PI*2); },
+  Z:        (c,w,h) => { c.moveTo(w*.35,h*.34); c.lineTo(w*.65,h*.34); c.lineTo(w*.35,h*.66); c.lineTo(w*.65,h*.66); },
+  N:        (c,w,h) => { c.moveTo(w*.37,h*.66); c.lineTo(w*.37,h*.34); c.lineTo(w*.63,h*.66); c.lineTo(w*.63,h*.34); },
+  L:        (c,w,h) => { c.moveTo(w*.43,h*.34); c.lineTo(w*.43,h*.66); c.lineTo(w*.64,h*.66); },
+  mountain: (c,w,h) => { c.moveTo(w*.32,h*.66); c.lineTo(w*.50,h*.34); c.lineTo(w*.68,h*.66); },
+  seven:    (c,w,h) => { c.moveTo(w*.35,h*.34); c.lineTo(w*.65,h*.34); c.lineTo(w*.37,h*.68); },
+};
+
+function drawSpellGuide(canvas: HTMLCanvasElement, spell: Spell) {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  ctx.save();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.beginPath();
+  ctx.strokeStyle = spell.color;
+  ctx.globalAlpha = 0.22;
+  ctx.lineWidth = 20;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.setLineDash([24, 14]);
+  GUIDE_PATHS[spell.id](ctx, canvas.width, canvas.height);
+  ctx.stroke();
+  ctx.restore();
+}
 
 // ══════════════════════════════════════════════════════════
 //  多段形狀偵測（分段分析向量方向）
@@ -151,15 +190,16 @@ function detectSpell(pts: Point[], cw: number, ch: number): SpellId | null {
     sy[n-1] - sy[0] > totalH * 0.3
   ) return "L";
 
-  // ── Z / N：弧長三等分後分析每段方向 ─────────────────
-  const p0 = first, p1 = atT(0.33), p2 = atT(0.67), p3 = last;
-  const s1 = { dx: p1.x - p0.x, dy: p1.y - p0.y };
-  const s2 = { dx: p2.x - p1.x, dy: p2.y - p1.y };
-  const s3 = { dx: p3.x - p2.x, dy: p3.y - p2.y };
+  // ── Z / N：使用 20%/60% 切點，更符合橫短斜長的筆畫比例 ──
+  // Z 橫線短（各佔~25%）、斜線長（~50%）；用三等分 0.33/0.67 會讓斜線占滿兩段
+  const pA = atT(0.20), pB = atT(0.60);
+  const sA = { dx: pA.x - first.x, dy: pA.y - first.y };
+  const sB = { dx: pB.x - pA.x,   dy: pB.y - pA.y   };
+  const sC = { dx: last.x - pB.x,  dy: last.y - pB.y  };
   const m = diagLen * 0.04;
 
-  if (s1.dx > m && s2.dx < -m && s2.dy > m && s3.dx > m) return "Z";
-  if (s1.dy < -m && s2.dy > m && s2.dx > m && s3.dy < -m) return "N";
+  if (sA.dx > m && sB.dx < -m && sB.dy > m && sC.dx > m) return "Z";
+  if (sA.dy < -m && sB.dy > m && sB.dx > m && sC.dy < -m) return "N";
 
   return null;
 }
@@ -202,15 +242,121 @@ export default function Battle() {
   const [timeLeft,      setTimeLeft]      = useState(TIME_LIMIT);
   const [spellIdx,      setSpellIdx]      = useState(0);
   const [spellQueue,    setSpellQueue]    = useState<Spell[]>(() => shuffleSpells());
-  const [feedback,      setFeedback]      = useState<"correct" | "wrong" | null>(null);
+  const [feedback,      setFeedback]      = useState<"wrong" | null>(null);
   const [screenFlash,   setScreenFlash]   = useState(false);
   const [canDraw,       setCanDraw]       = useState(false);
+  const [hitFx,         setHitFx]         = useState<{ id: number; color: string } | null>(null);
 
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const drawing   = useRef(false);
-  const points    = useRef<Point[]>([]);
-  const timerRef  = useRef<ReturnType<typeof setInterval> | null>(null);
-  const lastPt    = useRef<Point | null>(null);
+  // 決戰說明打字機
+  const [introLineIdx,   setIntroLineIdx]   = useState(0);
+  const [introCharIdx,   setIntroCharIdx]   = useState(0);
+  const [showStartBtn,   setShowStartBtn]   = useState(false);
+
+  const canvasRef        = useRef<HTMLCanvasElement>(null);
+  const particleCanvasRef = useRef<HTMLCanvasElement>(null);
+  const drawing     = useRef(false);
+  const points      = useRef<Point[]>([]);
+  const timerRef    = useRef<ReturnType<typeof setInterval> | null>(null);
+  const lastPt      = useRef<Point | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  function getAudioCtx(): AudioContext | null {
+    try {
+      if (!audioCtxRef.current) audioCtxRef.current = new AudioContext();
+      const ctx = audioCtxRef.current;
+      if (ctx.state === "suspended") ctx.resume();
+      return ctx;
+    } catch { return null; }
+  }
+
+  function playHitSound() {
+    const ctx = getAudioCtx(); if (!ctx) return;
+    const now = ctx.currentTime;
+
+    // 混響：delay feedback loop
+    const rev = ctx.createDelay(1.0); rev.delayTime.value = 0.13;
+    const revFb = ctx.createGain(); revFb.gain.value = 0.38;
+    const revWet = ctx.createGain(); revWet.gain.value = 0.28;
+    rev.connect(revFb); revFb.connect(rev); rev.connect(revWet); revWet.connect(ctx.destination);
+
+    // Whoosh：噪音帶通從低到高掃
+    const nLen = Math.floor(ctx.sampleRate * 0.11);
+    const nBuf = ctx.createBuffer(1, nLen, ctx.sampleRate);
+    const nd = nBuf.getChannelData(0);
+    for (let i = 0; i < nLen; i++) nd[i] = (Math.random()*2-1) * Math.pow(1-i/nLen, 0.6);
+    const nSrc = ctx.createBufferSource(); nSrc.buffer = nBuf;
+    const nbpf = ctx.createBiquadFilter(); nbpf.type = "bandpass";
+    nbpf.frequency.setValueAtTime(250, now);
+    nbpf.frequency.exponentialRampToValueAtTime(5000, now + 0.10);
+    nbpf.Q.value = 2.5;
+    const ng = ctx.createGain(); ng.gain.value = 0.38;
+    nSrc.connect(nbpf); nbpf.connect(ng); ng.connect(ctx.destination); ng.connect(rev);
+    nSrc.start(now);
+
+    // 和弦 triangle：whoosh 後起聲，帶混響尾音
+    [330, 495, 660, 990].forEach((f, i) => {
+      const osc = ctx.createOscillator(); osc.type = "triangle";
+      osc.frequency.setValueAtTime(f * 1.6, now + 0.08);
+      osc.frequency.exponentialRampToValueAtTime(f, now + 0.2); // 降到目標音
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0, now + 0.07);
+      g.gain.linearRampToValueAtTime(0.17 - i * 0.03, now + 0.14);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+      osc.connect(g); g.connect(ctx.destination); g.connect(rev);
+      osc.start(now + 0.07); osc.stop(now + 0.85);
+    });
+  }
+
+  function playMissSound() {
+    const ctx = getAudioCtx(); if (!ctx) return;
+    const now = ctx.currentTime;
+    // 低沉撞擊 + 不諧和雙音
+    const thud = ctx.createOscillator(); thud.type = "sine";
+    thud.frequency.setValueAtTime(95, now);
+    thud.frequency.exponentialRampToValueAtTime(45, now + 0.18);
+    const tg = ctx.createGain(); tg.gain.setValueAtTime(0.48, now); tg.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    thud.connect(tg); tg.connect(ctx.destination);
+    thud.start(now); thud.stop(now + 0.22);
+
+    [215, 228].forEach(f => {
+      const osc = ctx.createOscillator(); osc.type = "sawtooth"; osc.frequency.value = f;
+      const lpf = ctx.createBiquadFilter(); lpf.type = "lowpass"; lpf.frequency.value = 700;
+      const g = ctx.createGain(); g.gain.setValueAtTime(0.1, now + 0.02); g.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+      osc.connect(lpf); lpf.connect(g); g.connect(ctx.destination);
+      osc.start(now + 0.02); osc.stop(now + 0.28);
+    });
+  }
+
+  function playTypingClick() {
+    const ctx = getAudioCtx(); if (!ctx) return;
+    const now = ctx.currentTime;
+    const bufLen = Math.floor(ctx.sampleRate * 0.022);
+    const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufLen; i++) data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufLen, 6);
+    const src = ctx.createBufferSource(); src.buffer = buf;
+    const bpf = ctx.createBiquadFilter(); bpf.type = "bandpass";
+    bpf.frequency.value = 2400; bpf.Q.value = 0.7;
+    const g = ctx.createGain(); g.gain.value = 0.16 + Math.random() * 0.05;
+    src.connect(bpf); bpf.connect(g); g.connect(ctx.destination);
+    src.start(now);
+  }
+
+  function playHeartbeat(remaining: number) {
+    const ctx = getAudioCtx(); if (!ctx) return;
+    const now = ctx.currentTime;
+    const intensity = Math.max(0, 1 - remaining / 20); // 0 at 20s → 1 at 0s
+    // lub
+    const lub = ctx.createOscillator(); lub.type = "sine";
+    lub.frequency.setValueAtTime(60 + intensity * 25, now);
+    const lg = ctx.createGain(); lg.gain.setValueAtTime(0.22 + intensity * 0.18, now); lg.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+    lub.connect(lg); lg.connect(ctx.destination); lub.start(now); lub.stop(now + 0.13);
+    // dub（0.15s 後，稍輕）
+    const dub = ctx.createOscillator(); dub.type = "sine";
+    dub.frequency.setValueAtTime(48 + intensity * 18, now + 0.15);
+    const dg = ctx.createGain(); dg.gain.setValueAtTime(0.15 + intensity * 0.12, now + 0.15); dg.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+    dub.connect(dg); dg.connect(ctx.destination); dub.start(now + 0.15); dub.stop(now + 0.28);
+  }
 
   const endBattle = useCallback((win: boolean) => {
     if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
@@ -220,16 +366,48 @@ export default function Battle() {
   useEffect(() => {
     if (phase !== "battle") return;
     timerRef.current = setInterval(() => {
-      setTimeLeft((t) => { if (t <= 1) { endBattle(false); return 0; } return t - 1; });
+      setTimeLeft((t) => {
+        if (t <= 1) { endBattle(false); return 0; }
+        return t - 1;
+      });
     }, 1000);
     return () => { if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; } };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, endBattle]);
 
-  // 每當符文切換，短暫鎖定畫布（就緒信號）
+  // 心跳音：≤20s 開始，每秒 lub-dub，越緊張越響
+  useEffect(() => {
+    if (phase !== "battle" || timeLeft > 20 || timeLeft <= 0) return;
+    playHeartbeat(timeLeft);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeLeft, phase]);
+
+  // 決戰說明打字機
+  useEffect(() => {
+    if (phase !== "intro") return;
+    if (introLineIdx >= INTRO_LINES.length) { setTimeout(() => setShowStartBtn(true), 400); return; }
+    const line = INTRO_LINES[introLineIdx];
+    if (introCharIdx < line.length) {
+      const t = setTimeout(() => {
+        playTypingClick();
+        setIntroCharIdx(c => c + 1);
+      }, INTRO_CHAR_DELAY);
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(() => { setIntroLineIdx(i => i + 1); setIntroCharIdx(0); }, 500);
+    return () => clearTimeout(t);
+  }, [phase, introLineIdx, introCharIdx]);
+
+  // 每當符文切換，短暫鎖定畫布，並畫出引導路徑
   useEffect(() => {
     if (phase !== "battle") return;
-    const t = setTimeout(() => setCanDraw(true), 300);
+    const t = setTimeout(() => {
+      setCanDraw(true);
+      const spell = spellQueue[spellIdx % spellQueue.length];
+      if (canvasRef.current) drawSpellGuide(canvasRef.current, spell);
+    }, 300);
     return () => clearTimeout(t);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spellIdx, phase]);
 
   function getPos(e: React.MouseEvent | React.TouchEvent): Point {
@@ -245,9 +423,10 @@ export default function Battle() {
     if (phase !== "battle" || !canDraw) return;
     const pos = getPos(e);
     drawing.current = true; points.current = [pos]; lastPt.current = pos;
-    const ctx = canvasRef.current?.getContext("2d");
-    if (!ctx) return;
-    ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+    const canvas = canvasRef.current; if (!canvas) return;
+    // 重繪引導（clearRect + guide），讓筆畫疊在引導上
+    drawSpellGuide(canvas, currentSpell);
+    const ctx = canvas.getContext("2d"); if (!ctx) return;
     ctx.beginPath();
     ctx.strokeStyle = currentSpell.color; ctx.lineWidth = 5;
     ctx.lineCap = "round"; ctx.lineJoin = "round";
@@ -274,8 +453,10 @@ export default function Battle() {
     points.current = [];
 
     if (matched === spell.id) {
-      setFeedback("correct");
-      if (lastPt.current) spawnParticles(canvas, lastPt.current.x, lastPt.current.y, spell.color);
+      playHitSound();
+      if (lastPt.current) spawnParticles(particleCanvasRef.current ?? canvas, lastPt.current.x, lastPt.current.y, spell.color);
+      setHitFx({ id: Date.now(), color: spell.color });
+      setTimeout(() => setHitFx(null), 500);
       const newHp = witchHp - 1;
       setWitchHp(newHp);
       if (newHp <= 0) setTimeout(() => endBattle(true), 900);
@@ -286,14 +467,15 @@ export default function Battle() {
           if (next % spellQueue.length === 0) setSpellQueue(shuffleSpells());
           return next;
         });
-        setTimeout(() => setFeedback(null), 700);
       }
     } else {
+      playMissSound();
       setFeedback("wrong"); setScreenFlash(true);
       setTimeLeft((t) => Math.max(0, t - 5));
       setTimeout(() => {
         setFeedback(null); setScreenFlash(false);
-        canvas.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
+        const spell = spellQueue[spellIdx % spellQueue.length];
+        drawSpellGuide(canvas, spell); // 錯誤後重繪引導
       }, 600);
     }
   }
@@ -336,149 +518,161 @@ export default function Battle() {
         </>
       )}
 
-      {/* ════ 遊戲說明 popup ════ */}
+      {/* ════ 決戰說明：打字機 ════ */}
       {phase === "intro" && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-          <div className="w-full max-w-6xl mx-4 border-2 rounded-lg p-6 flex flex-col gap-4"
-            style={{ borderColor: "#8b5cf6", background: "#12071e" }}>
-            <h2 className="text-xl font-title text-center" style={{ color: "#c084fc" }}>決戰說明</h2>
-            <p className="text-sm font-body text-stone-300 text-center">
-              畫面會顯示一個魔法符文形狀，用滑鼠在畫面上連續畫出對應形狀
-            </p>
-            {/* 符文示意表 */}
-            <div className="grid grid-cols-7 gap-2 text-center">
-              {SPELLS.map((s) => (
-                <div key={s.id} className="flex flex-col items-center gap-1 border border-stone-700 rounded p-2">
-                  <span className="text-2xl font-bold" style={{ color: s.color }}>{s.glyph}</span>
-                  <span className="text-[10px] font-ui text-stone-400 leading-tight">{s.hint}</span>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs font-ui text-stone-500 text-center">
-              命中 {TOTAL_HP} 次打敗巫婆 ／ 限時 {TIME_LIMIT} 秒
-            </p>
-            <div className="flex gap-3 justify-center">
-              <ActionButton
-                href="/ending/fail"
-                variant="ghost"
-                className="px-5 py-2 text-sm"
-                style={{ borderColor: "#6b7280", color: "#d1d5db" }}
-              >
-                撤離
-              </ActionButton>
-              <ActionButton
-                onClick={() => { setCanDraw(false); setPhase("battle"); }}
-                variant="ghost"
-                className="px-6 py-2 border-[#8b5cf6]! hover:bg-[#8b5cf6]! hover:text-white!"
-              >
-                挑戰！
-              </ActionButton>
-            </div>
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/85 px-8">
+          {/* 背景透出 */}
+          <img src="/images/bg_battle.png" alt=""
+            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col items-start w-full max-w-2xl gap-3 mb-10">
+            {/* 已完成的行 */}
+            {INTRO_LINES.slice(0, introLineIdx).map((line, i) => (
+              <p key={i}
+                className="font-title font-bold text-4xl leading-snug"
+                style={{ color: i === INTRO_LINES.length - 1 ? "#ef4444" : "rgba(255,255,255,0.7)" }}>
+                {line}
+              </p>
+            ))}
+            {/* 正在打字的行 */}
+            {introLineIdx < INTRO_LINES.length && (
+              <p className="font-title font-bold text-4xl leading-snug" style={{ color: "#ffffff" }}>
+                {INTRO_LINES[introLineIdx].slice(0, introCharIdx)}
+                <span className="inline-block w-0.5 h-[0.85em] align-middle ml-0.5 bg-white opacity-80"
+                  style={{ animation: "pulse 0.9s ease-in-out infinite" }} />
+              </p>
+            )}
           </div>
+
+          <AnimatePresence>
+            {showStartBtn && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="relative z-10 flex gap-4"
+              >
+                <ActionButton href="/ending/fail" variant="ghost" className="px-6 py-2 text-sm text-stone-400">
+                  撤離
+                </ActionButton>
+                <ActionButton
+                  onClick={() => { setCanDraw(false); setPhase("battle"); }}
+                  variant="purple"
+                  className="px-8 py-2 text-base font-bold border-glow-purple"
+                >
+                  施法——
+                </ActionButton>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       )}
 
       {/* ════ 決戰場景 ════ */}
       {phase === "battle" && (
         <>
-          {/* HUD */}
-          <div className="flex items-center px-6 py-6 relative">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-ui text-stone-300">巫婆血量</span>
-              <div className="flex gap-2">
-                {Array.from({ length: TOTAL_HP }).map((_, i) => (
-                  <div key={i} className="w-4 h-4"
-                    style={{
-                      borderRadius: 9999,
-                      background: i < witchHp ? "#ef4444" : "transparent",
-                      border: i < witchHp ? "1px solid #ef4444" : "1px solid #374151",
-                      boxShadow: i < witchHp ? "0 0 6px rgba(239,68,68,0.45)" : "none",
-                    }} />
-                ))}
-              </div>
-            </div>
-
-            <div className="absolute left-1/2 -translate-x-1/2">
-              <div className={`font-ui font-bold tabular-nums text-base ${timeLeft <= 10 ? "text-red-400 animate-pulse" : ""}`}
-                style={{ color: timeLeft <= 10 ? undefined : "#e8b56a" }}>
-                {timeLeft}s
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 ml-auto">
-              {/* right area left empty for controls (e.g., volume button portal) */}
-            </div>
+          {/* HUD：固定高度，不隨 timeLeft 變化 */}
+          <div className="flex items-center justify-center h-9 shrink-0">
+            <span
+              className={`font-ui font-bold tabular-nums text-base tracking-widest transition-colors duration-300
+                ${timeLeft <= 10 ? "text-red-400 animate-pulse" : ""}`}
+              style={{ color: timeLeft <= 10 ? undefined : "#e8b56a" }}
+            >
+              {timeLeft}s
+            </span>
           </div>
 
           {/* 主場景 */}
           <div className="flex-1 relative overflow-hidden">
 
-            {/* 背景佔位 */}
-            {/*<Placeholder label="[決戰背景圖]" className="absolute inset-0" />*/}
-            <>
-              <img
-                src="/images/battle_bg.png"
-                alt="決戰背景"
-                className="absolute inset-0 w-full h-full object-cover"
+            <img
+              src="/images/bg_battle.png"
+              alt="決戰背景"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-black/30" />
+
+            {/* ── 時間讀條（絕對定位在場景頂端，往下長，不影響 layout） ── */}
+            <div
+              className="absolute top-0 left-0 w-full z-20 pointer-events-none overflow-hidden transition-[height] duration-500"
+              style={{ height: timeLeft <= 10 ? 20 : timeLeft <= 20 ? 10 : 5 }}
+            >
+              <div
+                className={`h-full transition-[width] duration-1000 ease-linear ${timeLeft <= 10 ? "timer-critical" : ""}`}
+                style={{
+                  width: `${(timeLeft / TIME_LIMIT) * 100}%`,
+                  background: timeLeft > 30
+                    ? "linear-gradient(90deg, #16a34a, #4ade80)"
+                    : timeLeft > 15
+                    ? "linear-gradient(90deg, #c2410c, #fb923c)"
+                    : "linear-gradient(90deg, #7f1d1d, #ef4444, #fca5a5)",
+                }}
               />
-              <div className="absolute inset-0 bg-black/30" />
-            </>
+            </div>
 
-            {/* ── 符文展示框（中央偏上） ── */}
-            <AnimatePresence mode="wait">
-              <motion.div key={spellIdx}
-                initial={{ scale: 0.6, opacity: 0, y: -8 }}
-                animate={{ scale: 1,   opacity: 1, y: 0  }}
-                exit={{   scale: 1.2,  opacity: 0, y: -6 }}
-                transition={{ duration: 0.22 }}
-                className="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-20 pointer-events-none"
-              >
-                <div className={`flex flex-col items-center gap-1 px-8 py-3 border-2 transition-opacity duration-300 ${
-                  canDraw ? "opacity-100" : "opacity-50 animate-pulse"
-                }`}
-                  style={{
-                    borderColor: currentSpell.color,
-                    background: `${currentSpell.color}18`,
-                    boxShadow: canDraw ? `0 0 28px ${currentSpell.color}44` : "none",
-                  }}>
-                  <span className="font-bold select-none leading-none" style={{
-                    fontSize: "4.5rem",
-                    color: currentSpell.color,
-                    textShadow: canDraw ? `0 0 20px ${currentSpell.color}` : "none",
-                  }}>
-                    {currentSpell.glyph}
-                  </span>
-                  <span className="font-title text-sm tracking-widest" style={{ color: currentSpell.color }}>
-                    {currentSpell.name}
-                  </span>
-                  <span className="font-ui text-xs text-stone-400">{currentSpell.hint}</span>
-                  <span className="font-ui text-[10px] text-stone-500 mt-0.5">
-                    {canDraw ? "在畫面上畫出此形狀" : "準備中……"}
-                  </span>
-                </div>
+            {/* ── 緊張氛圍：時間越少邊框越紅、畫面越暗 ── */}
+            {(() => {
+              // 從剩餘 70% 時間開始漸增，到 0s 時強度最高
+              const urgency = Math.max(0, Math.min(1, (TIME_LIMIT * 0.7 - timeLeft) / (TIME_LIMIT * 0.7)));
+              if (urgency <= 0) return null;
+              const borderAlpha = urgency * 0.70;
+              const darkAlpha   = urgency * 0.32;
+              const spread      = 40 + urgency * 90;
+              return (
+                <>
+                  {/* 紅暗色調覆蓋 */}
+                  <div className="absolute inset-0 z-5 pointer-events-none transition-all duration-1000"
+                    style={{ background: `rgba(55, 0, 0, ${darkAlpha})` }} />
+                  {/* 邊框暈染 */}
+                  <div
+                    className={`absolute inset-0 z-40 pointer-events-none transition-all duration-1000${timeLeft <= 10 ? " timer-critical" : ""}`}
+                    style={{ boxShadow: `inset 0 0 ${spread}px rgba(220, 20, 10, ${borderAlpha})` }}
+                  />
+                </>
+              );
+            })()}
 
-                {/* 命中 / 失誤 提示（符文框正下方，不遮畫布） */}
-                <AnimatePresence>
-                  {feedback && (
-                    <motion.div
-                      key={feedback}
-                      initial={{ opacity: 0, y: -4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="mt-1 px-4 py-1 text-sm font-ui font-bold"
-                      style={{ color: feedback === "correct" ? "#4ade80" : "#f87171" }}
-                    >
-                      {feedback === "correct" ? "命中" : "失誤  −5 秒"}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
+            {/* ── 失誤提示 ── */}
+            <AnimatePresence>
+              {feedback === "wrong" && (
+                <motion.div
+                  key="wrong"
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-6 left-1/2 -translate-x-1/2 z-30 pointer-events-none px-4 py-1 text-sm font-ui font-bold"
+                  style={{ color: "#f87171" }}
+                >
+                  失誤  −5 秒
+                </motion.div>
+              )}
             </AnimatePresence>
 
-            {/* debugInfo removed */}
+            {/* ── 命中攻擊特效：從中央飛向左下女巫 ── */}
+            <AnimatePresence>
+              {hitFx && (
+                <motion.div
+                  key={hitFx.id}
+                  initial={{ x: 0, y: 0, opacity: 1, scale: 1.2 }}
+                  animate={{ x: "-38vw", y: "55vh", opacity: 0, scale: 0.3 }}
+                  transition={{ duration: 0.42, ease: "easeIn" }}
+                  className="absolute z-30 pointer-events-none w-20 h-20 rounded-full"
+                  style={{
+                    left: "calc(50% - 40px)", top: "8%",
+                    background: `radial-gradient(circle, ${hitFx.color}cc 0%, ${hitFx.color}00 70%)`,
+                    boxShadow: `0 0 30px ${hitFx.color}88`,
+                  }}
+                />
+              )}
+            </AnimatePresence>
 
-            {/* ── Canvas（覆蓋全場景） ── */}
+            {/* ── 粒子 Canvas（在繪圖層下方，避免干擾引導圖） ── */}
+            <canvas ref={particleCanvasRef} width={800} height={600}
+              className="absolute inset-0 w-full h-full pointer-events-none z-9"
+            />
+
+            {/* ── 繪圖 Canvas（覆蓋全場景） ── */}
             <canvas ref={canvasRef} width={800} height={600}
               className="absolute inset-0 w-full h-full cursor-crosshair touch-none z-10"
               onMouseDown={startDraw} onMouseMove={continueDraw}
