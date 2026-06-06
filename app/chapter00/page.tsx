@@ -2,16 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useGameStore } from "../../store/store";
 import DialogueBox from "../../component/DialogueBox";
 
-function Placeholder({ label, className = "" }: { label: string; className?: string }) {
-  return (
-    <div className={`flex items-center justify-center bg-gray-600 text-gray-100 border border-gray-500 text-xs font-ui ${className}`}>
-      {label}
-    </div>
-  );
-}
 
 export default function Chapter00() {
   const [index, setIndex] = useState(0);
@@ -44,10 +38,31 @@ export default function Chapter00() {
         />
         {/* 深色遮罩 */}
         <div className="absolute inset-0 bg-black/55" />
-        
+
         {/* 角色立繪 */}
-        <Placeholder label="[漢賽爾 立繪]" className="absolute bottom-20 left-30 w-28 h-40" />
-        <Placeholder label="[葛麗特 立繪]" className="absolute bottom-20 right-30 w-28 h-40" />
+        {/* 漢賽爾 */}
+        <div className="absolute bottom-15 left-10 w-45 h-60">
+          <Image
+            src="/item_images/H_ha.png"
+            alt="漢賽爾 立繪"
+            fill
+            priority
+            sizes="120px"
+            className="object-contain object-bottom"
+          />
+        </div>
+
+        {/* 葛麗特 */}
+        <div className="absolute bottom-15 left-45 w-45 h-60">
+          <Image
+            src="/item_images/G_ha.png"
+            alt="葛麗特 立繪"
+            fill
+            priority
+            sizes="120px"
+            className="object-contain object-bottom"
+          />
+        </div>
       </div>
 
       {/* 對話框 */}
