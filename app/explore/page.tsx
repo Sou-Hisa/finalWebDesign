@@ -72,8 +72,10 @@ export default function Explore() {
       <div className="flex-1 relative bg-stone-950 overflow-hidden">
       <Img 
         src="/images/explore_bg.png" 
+        loading="eager"
         alt="糖果屋書架背景" 
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        width={1920} height={1080}
+        className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none"
       />
       {/*<div className="flex-1 relative bg-black">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#8f877f_0%,#5a524d_36%,#2a2421_74%,#171312_100%)]" />
