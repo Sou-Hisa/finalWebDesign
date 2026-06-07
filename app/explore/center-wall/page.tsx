@@ -36,28 +36,26 @@ export default function ExploreCenterWall() {
         {/* Encyclopedia */}
         <ActionButton
           href={bonesCollected ? undefined : "/explore/center-wall/encyclopedia"}
-          className="flex-col gap-2 border-0! p-0! bg-transparent! hover:bg-transparent! group"
+          className="flex-col gap-3 border-0! p-0! bg-transparent! hover:bg-transparent! group"
         >
-          <div
-              className={`
-                w-20 h-28
-                rounded
-                overflow-hidden
-                border-2
-                transition-colors
-                ${
-                  bonesCollected
-                    ? "border-stone-700 opacity-60"
-                    : "border-stone-500 group-hover:border-amber-400"
-                }
-              `}
-            >
-              <img
-                src="/images/explore_item_encyclopedia.png"
-                alt="百科全書"
-                className="w-full h-full object-cover"
-              />
-            </div>
+          <img
+            src="/images/explore_item_encyclopedia.png"
+            alt="百科全書"
+            className={`
+              w-36
+              h-auto
+              object-contain
+              transition-all
+              ${
+                bonesCollected
+                  ? "opacity-50 grayscale"
+                  : `
+                    group-hover:scale-105
+                    drop-shadow-[0_0_12px_rgba(251,191,36,0.8)]
+                  `
+              }
+            `}
+          />
           <span className={`text-xs font-ui transition-colors
             ${bonesCollected ? "text-stone-600" : "text-stone-500 group-hover:text-amber-300"}`}>
             {bonesCollected ? "✓ 已對照" : "百科全書"}
@@ -69,27 +67,21 @@ export default function ExploreCenterWall() {
           href={noteCollected ? undefined : "/explore/center-wall/cipher-recipe"}
           className="flex-col gap-2 border-0! p-0! bg-transparent! hover:bg-transparent! group"
         >
-          <div
+          <img
+            src="/images/explore_item_sheet.png"
+            alt="密碼食譜"
             className={`
-              w-16
-              h-24
-              rounded
-              overflow-hidden
-              border-2
-              transition-colors
+              w-20
+              h-auto
+              object-contain
+              transition-transform
               ${
                 noteCollected
-                  ? "border-stone-700 opacity-60"
-                  : "border-stone-500 group-hover:border-amber-400"
+                  ? "opacity-50 grayscale"
+                  : "group-hover:scale-105"
               }
             `}
-          >
-            <img
-              src="/images/explore_item_sheet.png"
-              alt="密碼食譜"
-              className="w-full h-full object-cover"
-            />
-          </div>
+          />
           <span className={`text-xs font-ui transition-colors
             ${noteCollected ? "text-stone-600" : "text-stone-500 group-hover:text-amber-300"}`}>
             {noteCollected ? "✓ 已解碼" : "密碼食譜"}
