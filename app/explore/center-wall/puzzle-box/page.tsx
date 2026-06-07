@@ -13,7 +13,7 @@ const SIZE = 3;
 function generatePuzzle(): number[] {
   const tiles = [1, 2, 3, 4, 5, 6, 7, 8, 0];
   let emptyIdx = 8;
-  for (let i = 0; i < 120; i++) {
+  for (let i = 0; i < 50; i++) {
     const row = Math.floor(emptyIdx / SIZE);
     const col = emptyIdx % SIZE;
     const moves: number[] = [];

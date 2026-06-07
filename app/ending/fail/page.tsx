@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import Img from "next/image";
 import ActionButton from "../../../component/ActionButton";
 
 const LINES = [
@@ -12,23 +13,49 @@ const LINES = [
   "屋子依舊散發著甜美的香氣，靜靜地等待著下一批迷路的獵物……",
 ];
 
-const ITALIC_LINES = new Set([1, 3]);
-const DIM_LINES    = new Set([3]);
-
+const ITALIC_LINES     = new Set([1, 3]);
+const DIM_LINES        = new Set([3]);
+const HIGHLIGHT_LINES  = new Set([3]);
 const CHAR_DELAY = 46;
 const LINE_PAUSE = 750;
 
 export default function EndingFail() {
   const router = useRouter();
+  const audioCtxRef = useRef<AudioContext | null>(null);
 
-  const [doneLines,  setDoneLines]  = useState<string[]>([]);
-  const [lineIdx,    setLineIdx]    = useState(0);
-  const [charIdx,    setCharIdx]    = useState(0);
-  const [showImage,  setShowImage]  = useState(false);
+  const [doneLines, setDoneLines] = useState<string[]>([]);
+  const [lineIdx,   setLineIdx]   = useState(0);
+  const [charIdx,   setCharIdx]   = useState(0);
+  const [phase, setPhase] = useState<"typing" | "fadeOut" | "reveal">("typing");
+
+  function getAudioCtx() {
+    try {
+      if (!audioCtxRef.current) audioCtxRef.current = new AudioContext();
+      const ctx = audioCtxRef.current;
+      if (ctx.state === "suspended") ctx.resume();
+      return ctx;
+    } catch { return null; }
+  }
+
+  function playTypingClick() {
+    const ctx = getAudioCtx(); if (!ctx) return;
+    const now = ctx.currentTime;
+    const bufLen = Math.floor(ctx.sampleRate * 0.022);
+    const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufLen; i++) data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufLen, 6);
+    const src = ctx.createBufferSource(); src.buffer = buf;
+    const bpf = ctx.createBiquadFilter(); bpf.type = "bandpass";
+    bpf.frequency.value = 1800; bpf.Q.value = 0.8;
+    const g = ctx.createGain(); g.gain.value = 0.12 + Math.random() * 0.04;
+    src.connect(bpf); bpf.connect(g); g.connect(ctx.destination);
+    src.start(now);
+  }
 
   useEffect(() => {
+    if (phase !== "typing") return;
     if (lineIdx >= LINES.length) {
-      const t = setTimeout(() => setShowImage(true), 900);
+      const t = setTimeout(() => setPhase("fadeOut"), 2000);
       return () => clearTimeout(t);
     }
     const line = LINES[lineIdx];
@@ -40,69 +67,102 @@ export default function EndingFail() {
       }, LINE_PAUSE);
       return () => clearTimeout(t);
     }
-    const t = setTimeout(() => setCharIdx((c) => c + 1), CHAR_DELAY);
+    const t = setTimeout(() => {
+      playTypingClick();
+      setCharIdx((c) => c + 1);
+    }, CHAR_DELAY);
     return () => clearTimeout(t);
-  }, [lineIdx, charIdx]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lineIdx, charIdx, phase]);
 
-  function handleRestart() { router.push("/battle"); }
+  function handleFadeOutComplete() {
+    if (phase === "fadeOut") setPhase("reveal");
+  }
 
   const currentTyping = lineIdx < LINES.length ? LINES[lineIdx].slice(0, charIdx) : null;
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center bg-stone-950 gap-6 px-8">
+    <div className="w-full h-screen relative flex items-center justify-center overflow-hidden bg-stone-950">
 
-      <div className="w-full max-w-lg flex flex-col gap-3 font-body text-lg leading-relaxed min-h-48">
-        {doneLines.map((line, i) => (
-          <p
-            key={i}
-            className={ITALIC_LINES.has(i) ? "italic" : ""}
-            style={{
-              color: DIM_LINES.has(i)
-                ? "#78716c"
-                : ITALIC_LINES.has(i)
-                ? "#86efac"
-                : "#d6d3d1",
-            }}
-          >
-            {line}
-          </p>
-        ))}
+      {/* 背景圖：reveal 時完整顯現 */}
+      <motion.div
+        className="absolute inset-0"
+        animate={{ opacity: phase === "reveal" ? 1 : 0.20 }}
+        transition={{ duration: 1.4 }}
+      >
+        <Img
+          src="/images/ending_fail.png"
+          alt=""
+          fill
+          className="object-cover pointer-events-none select-none"
+          priority
+        />
+      </motion.div>
 
-        {currentTyping !== null && (
-          <p
-            className={ITALIC_LINES.has(lineIdx) ? "italic" : ""}
-            style={{
-              color: DIM_LINES.has(lineIdx)
-                ? "#78716c"
-                : ITALIC_LINES.has(lineIdx)
-                ? "#86efac"
-                : "#d6d3d1",
-            }}
-          >
-            {currentTyping}
-            <span className="animate-pulse text-red-500">|</span>
-          </p>
-        )}
-      </div>
+      {/* 遮罩：reveal 時淡出 */}
+      <motion.div
+        className="absolute inset-0 bg-stone-950 pointer-events-none"
+        animate={{ opacity: phase === "reveal" ? 0 : 0.65 }}
+        transition={{ duration: 1.4 }}
+      />
 
-      <AnimatePresence>
-        {showImage && (
+      {/* 打字機文字 */}
+      <AnimatePresence onExitComplete={handleFadeOutComplete}>
+        {phase === "typing" && (
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9 }}
-            className="flex flex-col items-center gap-5"
+            key="text"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.0 }}
+            className="relative z-10 w-full max-w-5xl px-8 flex flex-col gap-6 font-body text-3xl leading-loose"
           >
-            {/* 結果圖 */}
-            <img 
-              src="/images/ending_fail.png" 
-              alt="死亡結局結果圖" 
-              className="w-64 h-40 object-cover border-2"
-              style={{ borderColor: "#991b1b" }}
-            />
+            {doneLines.map((line, i) => (
+              <p key={i}
+                className={`text-balance${ITALIC_LINES.has(i) ? " italic" : ""}`}
+                style={{
+                  color:      DIM_LINES.has(i)    ? "#78716c"
+                            : ITALIC_LINES.has(i) ? "#86efac"
+                            : "#d6d3d1",
+                  fontWeight: HIGHLIGHT_LINES.has(i) ? 800 : undefined,
+                  fontSize:   HIGHLIGHT_LINES.has(i) ? "3rem" : undefined,
+                }}
+              >
+                {line}
+              </p>
+            ))}
+            {currentTyping !== null && (
+              <p
+                className={`text-balance${ITALIC_LINES.has(lineIdx) ? " italic" : ""}`}
+                style={{
+                  color:      DIM_LINES.has(lineIdx)    ? "#78716c"
+                            : ITALIC_LINES.has(lineIdx) ? "#86efac"
+                            : "#d6d3d1",
+                  fontWeight: HIGHLIGHT_LINES.has(lineIdx) ? 800 : undefined,
+                  fontSize:   HIGHLIGHT_LINES.has(lineIdx) ? "3rem" : undefined,
+                }}
+              >
+                {currentTyping}
+                <span className="animate-pulse text-red-500">|</span>
+              </p>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
+      {/* 底部漸層（按鈕區對比保底） */}
+      <div className="absolute bottom-0 inset-x-0 h-36 bg-linear-to-t from-stone-950/75 to-transparent pointer-events-none z-10" />
+
+      {/* reveal 後浮出按鈕 */}
+      <AnimatePresence>
+        {phase === "reveal" && (
+          <motion.div
+            key="btn"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.4 }}
+            className="absolute bottom-12 z-20"
+          >
             <ActionButton
-              onClick={handleRestart}
+              onClick={() => router.push("/battle")}
               variant="red"
               className="px-10 py-3 font-ui font-bold tracking-wider"
             >
