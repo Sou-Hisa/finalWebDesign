@@ -41,7 +41,12 @@ export default function Chapter00() {
 
         {/* 角色立繪 */}
         {/* 漢賽爾 */}
-        <div className="absolute bottom-25 left-15 w-45 h-60">
+        <div
+          className="absolute bottom-25 left-15 w-45 h-60 transition-all duration-400"
+          style={{
+            filter: current.character === "漢賽爾" ? "brightness(1.1)" : "brightness(0.35)",
+          }}
+        >
           <Image
             src="/item_images/hansel_surprised.png"
             alt="漢賽爾 立繪"
@@ -53,7 +58,12 @@ export default function Chapter00() {
         </div>
 
         {/* 葛麗特 */}
-        <div className="absolute bottom-25 left-50 w-45 h-60">
+        <div
+          className="absolute bottom-25 left-50 w-45 h-60 transition-all duration-400"
+          style={{
+            filter: current.character === "葛麗特" ? "brightness(1.1)" : "brightness(0.35)",
+          }}
+        >
           <Image
             src="/item_images/gretel_surprised.png"
             alt="葛麗特 立繪"
