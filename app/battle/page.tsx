@@ -515,7 +515,13 @@ export default function Battle() {
 
               {/* 女巫 */}
               <div className="relative w-45 h-70">
-                <Img src="/item_images/witch.png" alt="女巫" fill className="object-contain" />
+                <Img 
+                  src="/item_images/witch.png" 
+                  alt="女巫" 
+                  fill 
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-contain" 
+                />
               </div>
             </div>
           </div>
@@ -565,7 +571,7 @@ export default function Battle() {
               >
                 <ActionButton
                   href="/ending/fail"
-                  variant="ghost"
+                  variant="white"
                   className="px-12 py-3"
                 >
                   撤離
@@ -707,6 +713,7 @@ export default function Battle() {
                     src="/item_images/gretel_fight.png"
                     alt="葛麗特"
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-contain"
                   />
                 </div>
@@ -721,6 +728,7 @@ export default function Battle() {
                   src={witchHp > 0 ? "/item_images/witch.png" : "[女巫倒下]"}
                   alt="女巫"
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-contain"
                 />
               </div>

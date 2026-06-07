@@ -21,26 +21,30 @@ const ZONES = [
     isDone: (c: (k: string) => boolean) => c("wand") && c("magicwand") },
 ];
 
-const ITEM_DETAIL: Record<string, { title: string; desc: string; imgLabel: string }> = {
+const ITEM_DETAIL: Record<string, { title: string; desc: string; imgLabel: string; imgSrc: string }> = {
   box: {
     title: "打開的舊箱子",
     desc:  "箱子裡裝滿了細長均勻的白色骨頭。四肢比例對稱，頭骨碎片偏圓，整體輕薄——這是人類小孩的骨骸。",
     imgLabel: "[箱子內容物圖片]",
+    imgSrc: "/item_images/box_open.png",
   },
   bones: {
     title: "白色骨頭（人類幼童）",
     desc:  "與書架上《骨骼圖鑑》的人類幼童項目完全吻合。箱子裡的骨頭，確定是人類小孩的。",
     imgLabel: "[骨頭比對圖片]",
+    imgSrc: "/item_images/bones.png",
   },
   wand: {
     title: "密碼對照表",
     desc:  "一張印有字母與數字對照關係的紙片。A=1, B=2, C=3……可以用來解讀神秘紙條上的數字訊息。",
     imgLabel: "[密碼對照表圖片]",
+    imgSrc: "/item_images/password.png",
   },
   magicwand: {
     title: "神秘的魔仗",
     desc:  "一根細長的木製魔仗，刻有奇怪的紋路，散發著微弱的光芒。不知道能用來對付什麼……",
     imgLabel: "[魔仗圖片]",
+    imgSrc: "/item_images/wand.png",
   },
 };
 
@@ -127,7 +131,14 @@ export default function Explore() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
             <div className="w-full max-w-md mx-4 rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl flex flex-col gap-4">
               <div className="w-full h-44 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center text-stone-300 text-xs font-ui">
-                {detail.imgLabel}
+                {/* {detail.imgLabel} */}
+                <Img
+                  src={detail.imgSrc}
+                  alt={detail.imgLabel}
+                  width={1920}
+                  height={1080}
+                  className="object-contain w-full h-full"
+                />
               </div>
               <div className="flex flex-col gap-2">
                 <p className="text-amber-300 text-sm font-title font-bold">{detail.title}</p>
