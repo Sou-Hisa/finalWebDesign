@@ -49,14 +49,22 @@ export default function LeftWallBox() {
         />
 
         <div className="relative z-10 w-full mx-4 max-w-md rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl flex flex-col gap-4">
+          {/* 箱子圖片容器 */}
+        <div className="relative w-full h-48 bg-stone-950/40 rounded-md border border-white/10 flex items-center justify-center overflow-hidden">
+          <Img
+            src="/item_images/box_open.png"
+            alt="箱子開"
+            width={240}
+            height={160}
+            className="object-contain drop-shadow-[0_0_15px_rgba(250,250,250,0.4)]" 
+          />
+        </div>
+
           {/* Description */}
           <p className="text-stone-200 text-sm font-body leading-relaxed">
             箱子裡裝著一些奇怪的白色長條物……等等，這好像是骨頭！？仔細把它們收集到背包裡，或許能在哪裡查出這是什麼生物的骨頭。
           </p>
-          {/* Item label */}
-          <div className="px-3 py-2 bg-white/10 border border-white/20 rounded text-center">
-            <span className="text-stone-300 text-xs font-ui">打開的舊箱子（裡面裝滿人骨頭）[圖片]</span>
-          </div>
+          
         </div>
         <div className="relative z-10 flex justify-around gap-5 items-center border-gray-200">
           <ActionButton

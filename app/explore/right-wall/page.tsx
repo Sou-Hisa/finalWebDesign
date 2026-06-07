@@ -37,12 +37,18 @@ export default function ExploreRightWall() {
           href={wandCollected ? undefined : "/explore/right-wall/wand"}
           className="flex-col gap-2 mb-4 border-0! p-0! bg-transparent! hover:bg-transparent! group"
         >
-          <div className={`w-12 h-28 border-2 flex items-center justify-center text-lg rounded transition-colors
+          <div className={`w-12 h-28 border-2 flex items-center justify-center rounded transition-all p-1
             ${wandCollected
-              ? "bg-stone-800/60 border-dashed border-stone-700 text-stone-600 cursor-default"
+              ? "bg-stone-800/60 border-dashed border-stone-700 cursor-default opacity-40 grayscale"
               : "bg-stone-700 border-stone-500 group-hover:border-amber-400 cursor-pointer"}`}
           >
-            🪄
+            <Img 
+              src="/item_images/wand.png"
+              alt="魔杖"
+              width={50} 
+              height={120}
+              className="object-contain w-full h-full"
+            />
           </div>
           <span className={`text-xs font-ui transition-colors
             ${wandCollected ? "text-stone-600" : "text-stone-500 group-hover:text-amber-300"}`}>

@@ -22,21 +22,21 @@ function Placeholder({ label, className = "" }: { label: string; className?: str
 type SpellId = "V" | "Z" | "N" | "L" | "circle" | "mountain" | "seven";
 
 interface Spell {
-  id:    SpellId;
+  id: SpellId;
   glyph: string;
-  name:  string;
-  hint:  string;
+  name: string;
+  hint: string;
   color: string;
 }
 
 const SPELLS: Spell[] = [
-  { id: "V",        glyph: "V",  name: "V 形斬",  hint: "往下再往右上",              color: "#60a5fa" },
-  { id: "circle",   glyph: "◉",  name: "封印陣",  hint: "畫一個完整的圓",            color: "#c084fc" },
-  { id: "Z",        glyph: "Z",  name: "Z 形咒",  hint: "往右、斜左下、再往右",      color: "#34d399" },
-  { id: "N",        glyph: "N",  name: "N 形紋",  hint: "往上、斜右下、再往上",      color: "#fbbf24" },
-  { id: "L",        glyph: "L",  name: "L 形術",  hint: "往下再往右",                color: "#f472b6" },
-  { id: "mountain", glyph: "∧",  name: "山形紋",  hint: "往右上再往右下",            color: "#fb923c" },
-  { id: "seven",    glyph: "7",  name: "七形術",  hint: "往右再斜左下",              color: "#e879f9" },
+  { id: "V", glyph: "V", name: "V 形斬", hint: "往下再往右上", color: "#60a5fa" },
+  { id: "circle", glyph: "◉", name: "封印陣", hint: "畫一個完整的圓", color: "#c084fc" },
+  { id: "Z", glyph: "Z", name: "Z 形咒", hint: "往右、斜左下、再往右", color: "#34d399" },
+  { id: "N", glyph: "N", name: "N 形紋", hint: "往上、斜右下、再往上", color: "#fbbf24" },
+  { id: "L", glyph: "L", name: "L 形術", hint: "往下再往右", color: "#f472b6" },
+  { id: "mountain", glyph: "∧", name: "山形紋", hint: "往右上再往右下", color: "#fb923c" },
+  { id: "seven", glyph: "7", name: "七形術", hint: "往右再斜左下", color: "#e879f9" },
 ];
 
 function shuffleSpells(): Spell[] {
@@ -48,7 +48,7 @@ function shuffleSpells(): Spell[] {
   return arr;
 }
 
-const TOTAL_HP   = 5;
+const TOTAL_HP = 5;
 const TIME_LIMIT = 55;
 
 // ── 決戰說明打字機文案 ──────────────────────────────────────
@@ -66,13 +66,13 @@ type Point = { x: number; y: number };
 
 // ── 符文引導路徑（畫在 canvas 底層，玩家跟著描） ───────────────
 const GUIDE_PATHS: Record<SpellId, (c: CanvasRenderingContext2D, w: number, h: number) => void> = {
-  V:        (c,w,h) => { c.moveTo(w*.36,h*.33); c.lineTo(w*.50,h*.64); c.lineTo(w*.64,h*.33); },
-  circle:   (c,w,h) => { c.arc(w*.50,h*.50,Math.min(w,h)*.18,0,Math.PI*2); },
-  Z:        (c,w,h) => { c.moveTo(w*.35,h*.34); c.lineTo(w*.65,h*.34); c.lineTo(w*.35,h*.66); c.lineTo(w*.65,h*.66); },
-  N:        (c,w,h) => { c.moveTo(w*.37,h*.66); c.lineTo(w*.37,h*.34); c.lineTo(w*.63,h*.66); c.lineTo(w*.63,h*.34); },
-  L:        (c,w,h) => { c.moveTo(w*.43,h*.34); c.lineTo(w*.43,h*.66); c.lineTo(w*.64,h*.66); },
-  mountain: (c,w,h) => { c.moveTo(w*.32,h*.66); c.lineTo(w*.50,h*.34); c.lineTo(w*.68,h*.66); },
-  seven:    (c,w,h) => { c.moveTo(w*.35,h*.34); c.lineTo(w*.65,h*.34); c.lineTo(w*.37,h*.68); },
+  V: (c, w, h) => { c.moveTo(w * .36, h * .33); c.lineTo(w * .50, h * .64); c.lineTo(w * .64, h * .33); },
+  circle: (c, w, h) => { c.arc(w * .50, h * .50, Math.min(w, h) * .18, 0, Math.PI * 2); },
+  Z: (c, w, h) => { c.moveTo(w * .35, h * .34); c.lineTo(w * .65, h * .34); c.lineTo(w * .35, h * .66); c.lineTo(w * .65, h * .66); },
+  N: (c, w, h) => { c.moveTo(w * .37, h * .66); c.lineTo(w * .37, h * .34); c.lineTo(w * .63, h * .66); c.lineTo(w * .63, h * .34); },
+  L: (c, w, h) => { c.moveTo(w * .43, h * .34); c.lineTo(w * .43, h * .66); c.lineTo(w * .64, h * .66); },
+  mountain: (c, w, h) => { c.moveTo(w * .32, h * .66); c.lineTo(w * .50, h * .34); c.lineTo(w * .68, h * .66); },
+  seven: (c, w, h) => { c.moveTo(w * .35, h * .34); c.lineTo(w * .65, h * .34); c.lineTo(w * .37, h * .68); },
 };
 
 function drawSpellGuide(canvas: HTMLCanvasElement, spell: Spell) {
@@ -101,11 +101,11 @@ function detectSpell(pts: Point[], cw: number, ch: number): SpellId | null {
   // ── 1. 累積弧長（arc-length parameterization） ─────────
   const cum: number[] = [0];
   for (let i = 1; i < pts.length; i++) {
-    const dx = pts[i].x - pts[i-1].x, dy = pts[i].y - pts[i-1].y;
-    cum.push(cum[i-1] + Math.sqrt(dx*dx + dy*dy));
+    const dx = pts[i].x - pts[i - 1].x, dy = pts[i].y - pts[i - 1].y;
+    cum.push(cum[i - 1] + Math.sqrt(dx * dx + dy * dy));
   }
   const totalLen = cum[cum.length - 1];
-  const diagLen  = Math.sqrt(cw * cw + ch * ch);
+  const diagLen = Math.sqrt(cw * cw + ch * ch);
   if (totalLen < diagLen * 0.07) return null;
 
   const n = pts.length;
@@ -115,7 +115,7 @@ function detectSpell(pts: Point[], cw: number, ch: number): SpellId | null {
   const sx: number[] = [], sy: number[] = [];
   for (let i = 0; i < n; i++) {
     let sumX = 0, sumY = 0, cnt = 0;
-    for (let j = Math.max(0, i-W); j <= Math.min(n-1, i+W); j++) {
+    for (let j = Math.max(0, i - W); j <= Math.min(n - 1, i + W); j++) {
       sumX += pts[j].x; sumY += pts[j].y; cnt++;
     }
     sx.push(sumX / cnt); sy.push(sumY / cnt);
@@ -132,8 +132,8 @@ function detectSpell(pts: Point[], cw: number, ch: number): SpellId | null {
 
   // 用弧長比例（0~1）表示極值點位置，不受繪製速度影響
   const bottomT = cum[maxYIdx] / totalLen;
-  const topT    = cum[minYIdx] / totalLen;
-  const rightT  = cum[maxXIdx] / totalLen;
+  const topT = cum[minYIdx] / totalLen;
+  const rightT = cum[maxXIdx] / totalLen;
 
   const totalH = sy[maxYIdx] - sy[minYIdx];
   const totalW = sx[maxXIdx] - sx[minXIdx];
@@ -144,15 +144,15 @@ function detectSpell(pts: Point[], cw: number, ch: number): SpellId | null {
     const target = t * totalLen;
     let lo = 0;
     while (lo < n - 2 && cum[lo + 1] < target) lo++;
-    const span = cum[lo+1] - cum[lo];
+    const span = cum[lo + 1] - cum[lo];
     const frac = span > 0 ? (target - cum[lo]) / span : 0;
     return {
-      x: pts[lo].x + (pts[lo+1].x - pts[lo].x) * frac,
-      y: pts[lo].y + (pts[lo+1].y - pts[lo].y) * frac,
+      x: pts[lo].x + (pts[lo + 1].x - pts[lo].x) * frac,
+      y: pts[lo].y + (pts[lo + 1].y - pts[lo].y) * frac,
     };
   }
 
-  const first = pts[0], last = pts[n-1];
+  const first = pts[0], last = pts[n - 1];
   const endDist = Math.sqrt((last.x - first.x) ** 2 + (last.y - first.y) ** 2);
 
   // ── 圓形：起終點很近，路徑夠長 ──────────────────────
@@ -162,41 +162,41 @@ function detectSpell(pts: Point[], cw: number, ch: number): SpellId | null {
   if (
     totalH > minSpan &&
     bottomT > 0.2 && bottomT < 0.8 &&
-    sy[maxYIdx] - sy[0]   > totalH * 0.3 &&
-    sy[maxYIdx] - sy[n-1] > totalH * 0.3
+    sy[maxYIdx] - sy[0] > totalH * 0.3 &&
+    sy[maxYIdx] - sy[n - 1] > totalH * 0.3
   ) return "V";
 
   // ── 山形 ∧：最高點在路徑中段，兩端都明顯低於最高點 ──
   if (
     totalH > minSpan &&
     topT > 0.2 && topT < 0.8 &&
-    sy[0]   - sy[minYIdx] > totalH * 0.3 &&
-    sy[n-1] - sy[minYIdx] > totalH * 0.3
+    sy[0] - sy[minYIdx] > totalH * 0.3 &&
+    sy[n - 1] - sy[minYIdx] > totalH * 0.3
   ) return "mountain";
 
   // ── 七形 7：最右點在路徑前半，之後向左且向下 ─────────
   if (
     totalW > minSpan &&
     rightT > 0.1 && rightT < 0.62 &&
-    sx[maxXIdx] - sx[0]   > totalW * 0.25 &&  // 有向右筆畫
-    sx[maxXIdx] - sx[n-1] > totalW * 0.15 &&  // 終點在最右點左邊
-    sy[n-1]     - sy[maxXIdx] > minSpan * 0.4 // 終點在最右點下方
+    sx[maxXIdx] - sx[0] > totalW * 0.25 &&  // 有向右筆畫
+    sx[maxXIdx] - sx[n - 1] > totalW * 0.15 &&  // 終點在最右點左邊
+    sy[n - 1] - sy[maxXIdx] > minSpan * 0.4 // 終點在最右點下方
   ) return "seven";
 
   // ── L：最低點在路徑後段（35%後），最低點之後繼續往右 ─
   if (
     totalH > minSpan &&
     bottomT > 0.35 && bottomT < 0.88 &&
-    sx[n-1] - sx[maxYIdx] > totalW * 0.2 &&
-    sy[n-1] - sy[0] > totalH * 0.3
+    sx[n - 1] - sx[maxYIdx] > totalW * 0.2 &&
+    sy[n - 1] - sy[0] > totalH * 0.3
   ) return "L";
 
   // ── Z / N：使用 20%/60% 切點，更符合橫短斜長的筆畫比例 ──
   // Z 橫線短（各佔~25%）、斜線長（~50%）；用三等分 0.33/0.67 會讓斜線占滿兩段
   const pA = atT(0.20), pB = atT(0.60);
   const sA = { dx: pA.x - first.x, dy: pA.y - first.y };
-  const sB = { dx: pB.x - pA.x,   dy: pB.y - pA.y   };
-  const sC = { dx: last.x - pB.x,  dy: last.y - pB.y  };
+  const sB = { dx: pB.x - pA.x, dy: pB.y - pA.y };
+  const sC = { dx: last.x - pB.x, dy: last.y - pB.y };
   const m = diagLen * 0.04;
 
   if (sA.dx > m && sB.dx < -m && sB.dy > m && sC.dx > m) return "Z";
@@ -234,31 +234,31 @@ function spawnParticles(canvas: HTMLCanvasElement, x: number, y: number, color: 
 type Phase = "dialogue" | "intro" | "battle";
 
 export default function Battle() {
-  const router    = useRouter();
+  const router = useRouter();
   const dialogues = useGameStore((s) => s.battleDialogues);
 
-  const [phase,         setPhase]         = useState<Phase>("dialogue");
+  const [phase, setPhase] = useState<Phase>("dialogue");
   const [dialogueIndex, setDialogueIndex] = useState(0);
-  const [witchHp,       setWitchHp]       = useState(TOTAL_HP);
-  const [timeLeft,      setTimeLeft]      = useState(TIME_LIMIT);
-  const [spellIdx,      setSpellIdx]      = useState(0);
-  const [spellQueue,    setSpellQueue]    = useState<Spell[]>(() => shuffleSpells());
-  const [feedback,      setFeedback]      = useState<"wrong" | null>(null);
-  const [screenFlash,   setScreenFlash]   = useState(false);
-  const [canDraw,       setCanDraw]       = useState(false);
-  const [hitFx,         setHitFx]         = useState<{ id: number; color: string } | null>(null);
+  const [witchHp, setWitchHp] = useState(TOTAL_HP);
+  const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
+  const [spellIdx, setSpellIdx] = useState(0);
+  const [spellQueue, setSpellQueue] = useState<Spell[]>(() => shuffleSpells());
+  const [feedback, setFeedback] = useState<"wrong" | null>(null);
+  const [screenFlash, setScreenFlash] = useState(false);
+  const [canDraw, setCanDraw] = useState(false);
+  const [hitFx, setHitFx] = useState<{ id: number; color: string } | null>(null);
 
   // 決戰說明打字機
-  const [introLineIdx,   setIntroLineIdx]   = useState(0);
-  const [introCharIdx,   setIntroCharIdx]   = useState(0);
-  const [showStartBtn,   setShowStartBtn]   = useState(false);
+  const [introLineIdx, setIntroLineIdx] = useState(0);
+  const [introCharIdx, setIntroCharIdx] = useState(0);
+  const [showStartBtn, setShowStartBtn] = useState(false);
 
-  const canvasRef        = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const particleCanvasRef = useRef<HTMLCanvasElement>(null);
-  const drawing     = useRef(false);
-  const points      = useRef<Point[]>([]);
-  const timerRef    = useRef<ReturnType<typeof setInterval> | null>(null);
-  const lastPt      = useRef<Point | null>(null);
+  const drawing = useRef(false);
+  const points = useRef<Point[]>([]);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const lastPt = useRef<Point | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
 
   function getAudioCtx(): AudioContext | null {
@@ -284,7 +284,7 @@ export default function Battle() {
     const nLen = Math.floor(ctx.sampleRate * 0.11);
     const nBuf = ctx.createBuffer(1, nLen, ctx.sampleRate);
     const nd = nBuf.getChannelData(0);
-    for (let i = 0; i < nLen; i++) nd[i] = (Math.random()*2-1) * Math.pow(1-i/nLen, 0.6);
+    for (let i = 0; i < nLen; i++) nd[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / nLen, 0.6);
     const nSrc = ctx.createBufferSource(); nSrc.buffer = nBuf;
     const nbpf = ctx.createBiquadFilter(); nbpf.type = "bandpass";
     nbpf.frequency.setValueAtTime(250, now);
@@ -334,7 +334,7 @@ export default function Battle() {
     const bufLen = Math.floor(ctx.sampleRate * 0.022);
     const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
     const data = buf.getChannelData(0);
-    for (let i = 0; i < bufLen; i++) data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufLen, 6);
+    for (let i = 0; i < bufLen; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufLen, 6);
     const src = ctx.createBufferSource(); src.buffer = buf;
     const bpf = ctx.createBiquadFilter(); bpf.type = "bandpass";
     bpf.frequency.value = 2400; bpf.Q.value = 0.7;
@@ -373,14 +373,14 @@ export default function Battle() {
       });
     }, 1000);
     return () => { if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; } };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, endBattle]);
 
   // 心跳音：≤20s 開始，每秒 lub-dub，越緊張越響
   useEffect(() => {
     if (phase !== "battle" || timeLeft > 20 || timeLeft <= 0) return;
     playHeartbeat(timeLeft);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft, phase]);
 
   // 決戰說明打字機
@@ -408,12 +408,12 @@ export default function Battle() {
       if (canvasRef.current) drawSpellGuide(canvasRef.current, spell);
     }, 300);
     return () => clearTimeout(t);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spellIdx, phase]);
 
   function getPos(e: React.MouseEvent | React.TouchEvent): Point {
     const canvas = canvasRef.current!;
-    const rect   = canvas.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width, scaleY = canvas.height / rect.height;
     if ("touches" in e)
       return { x: (e.touches[0].clientX - rect.left) * scaleX, y: (e.touches[0].clientY - rect.top) * scaleY };
@@ -449,7 +449,7 @@ export default function Battle() {
     drawing.current = false;
     const canvas = canvasRef.current!;
     const matched = detectSpell(points.current, canvas.width, canvas.height);
-    const spell   = spellQueue[spellIdx % spellQueue.length];
+    const spell = spellQueue[spellIdx % spellQueue.length];
     // debug info removed in production UI
     points.current = [];
 
@@ -482,7 +482,7 @@ export default function Battle() {
   }
 
   const isLastDialogue = dialogueIndex === dialogues.length - 1;
-  const currentSpell   = spellQueue[spellIdx % spellQueue.length];
+  const currentSpell = spellQueue[spellIdx % spellQueue.length];
 
   return (
     <div className="w-full h-screen flex flex-col bg-stone-950 overflow-hidden relative">
@@ -505,9 +505,18 @@ export default function Battle() {
             />
             {/* 角色：3:4 比例 */}
             <div className="absolute bottom-25 left-1/2 -translate-x-1/2 flex gap-10 items-end pb-2">
-              <Placeholder label="[葛麗特]" className="w-32 h-40" />
-              <Placeholder label="[火爐]"   className="w-28 h-40" />
-              <Placeholder label="[女巫]"   className="w-32 h-40" />
+              {/* 葛麗特 */}
+              <div className="relative w-45 h-60">
+                <Img src="/item_images/gretel_fight.png" alt="葛麗特" fill className="object-contain" />
+              </div>
+
+              {/* 火爐 */}
+              <Placeholder label="[火爐]" className="w-28 h-40" />
+
+              {/* 女巫 */}
+              <div className="relative w-45 h-70">
+                <Img src="/item_images/witch.png" alt="女巫" fill className="object-contain" />
+              </div>
             </div>
           </div>
           <DialogueBox
@@ -554,9 +563,9 @@ export default function Battle() {
                 transition={{ duration: 0.6 }}
                 className="relative z-10 flex gap-8"
               >
-                <ActionButton 
-                  href="/ending/fail" 
-                  variant="ghost" 
+                <ActionButton
+                  href="/ending/fail"
+                  variant="ghost"
                   className="px-12 py-3"
                 >
                   撤離
@@ -612,8 +621,8 @@ export default function Battle() {
                   background: timeLeft > 30
                     ? "linear-gradient(90deg, #16a34a, #4ade80)"
                     : timeLeft > 15
-                    ? "linear-gradient(90deg, #c2410c, #fb923c)"
-                    : "linear-gradient(90deg, #7f1d1d, #ef4444, #fca5a5)",
+                      ? "linear-gradient(90deg, #c2410c, #fb923c)"
+                      : "linear-gradient(90deg, #7f1d1d, #ef4444, #fca5a5)",
                 }}
               />
             </div>
@@ -624,8 +633,8 @@ export default function Battle() {
               const urgency = Math.max(0, Math.min(1, (TIME_LIMIT * 0.7 - timeLeft) / (TIME_LIMIT * 0.7)));
               if (urgency <= 0) return null;
               const borderAlpha = urgency * 0.70;
-              const darkAlpha   = urgency * 0.32;
-              const spread      = 40 + urgency * 90;
+              const darkAlpha = urgency * 0.32;
+              const spread = 40 + urgency * 90;
               return (
                 <>
                   {/* 紅暗色調覆蓋 */}
@@ -689,21 +698,33 @@ export default function Battle() {
             />
 
             {/* ── 角色（底部橫排，3:4 比例） ── */}
-            <div className="absolute bottom-0 w-full flex items-end justify-between px-6 pb-2 pointer-events-none">
-              {/* 女巫（左） */}
+            <div className="absolute bottom-0 w-full flex items-end justify-between px-6 pb-2 pointer-events-none z-8">
+              
               <div className="flex flex-col items-center gap-1">
-                <Placeholder
-                  label={witchHp > 0 ? "[女巫 立繪]" : "[女巫 倒下]"}
-                  className="w-32 h-40"
-                />
-                {/* bottom HP dots removed (now shown in HUD) */}
+                {/* 葛麗特 */}
+                <div className="relative w-28 h-36">
+                  <Img
+                    src="/item_images/gretel_fight.png"
+                    alt="葛麗特"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
               </div>
 
-              {/* 火爐（中） */}
+              {/* 火爐 */}
               <Placeholder label="[火爐]" className="w-28 h-28" />
 
-              {/* 葛麗特（右） */}
-              <Placeholder label="[葛麗特 立繪]" className="w-28 h-36" />
+              {/* 女巫 */}
+              <div className="relative w-32 h-43">
+                <Img
+                  src={witchHp > 0 ? "/item_images/witch.png" : "[女巫倒下]"}
+                  alt="女巫"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+
             </div>
 
           </div>

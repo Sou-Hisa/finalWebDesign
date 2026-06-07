@@ -40,7 +40,13 @@ export default function ExploreLeftWall() {
                 ? "bg-stone-800/60 border-dashed border-stone-700 text-stone-600 cursor-default"
                 : "bg-stone-700 border-stone-500 text-stone-400 group-hover:border-amber-400"}`}
           >
-            {boxCollected ? "[空了]" : "[箱子]"}
+            <Img 
+              src="/item_images/box_close.png"
+              alt="箱子關"
+              width={240}
+              height={160}
+              className="object-contain w-full h-full"
+            />
           </div>
           <span className={`text-xs font-ui transition-colors
             ${boxCollected ? "text-stone-600" : "text-stone-500 group-hover:text-amber-300"}`}>
