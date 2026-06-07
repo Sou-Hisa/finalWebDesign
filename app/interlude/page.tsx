@@ -169,7 +169,11 @@ export default function Interlude() {
               transition={{ duration: 0.8 }}
               className="mt-8 flex items-center justify-end"
             >
-              <ActionButton text="探索屋子" href="/explore" variant="gold" />
+              <ActionButton 
+                text="探索屋子" 
+                href="/explore" 
+                variant="red"
+              />
             </motion.div>
           )}
         </AnimatePresence>

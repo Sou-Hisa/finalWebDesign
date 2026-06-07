@@ -171,7 +171,6 @@ export default function EndingSuccess() {
             <ActionButton
               onClick={() => { resetGame(); router.push("/"); }}
               variant="gold"
-              className="px-10 py-3 font-ui font-bold tracking-wider hover:brightness-125"
             >
               再玩一次
             </ActionButton>

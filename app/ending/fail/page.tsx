@@ -164,7 +164,6 @@ export default function EndingFail() {
             <ActionButton
               onClick={() => router.push("/battle")}
               variant="red"
-              className="px-10 py-3 font-ui font-bold tracking-wider"
             >
               再試一次
             </ActionButton>

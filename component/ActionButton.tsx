@@ -12,7 +12,7 @@ type ActionButtonProps = {
   href?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
   disabled?: boolean;
-  variant?: "gold" | "red" | "purple" | "ghost";
+  variant?: "gold" | "red" | "purple" | "ghost" | "white";
   className?: string;
   children?: React.ReactNode;
 } & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">;
@@ -22,6 +22,7 @@ const variantClass = {
   red:    "border-[var(--color-candy-red)] text-[var(--color-candy-red)] hover:bg-[var(--color-candy-red)] hover:text-white",
   purple: "border-[var(--color-purple)] text-[var(--color-purple)] hover:bg-[var(--color-purple)] hover:text-white border-glow-purple",
   ghost:  "border-stone-600 text-stone-400 hover:bg-stone-800 hover:text-stone-100",
+  white:  "border-white/90 text-white/90 hover:bg-white/90 hover:text-gray-600",
 };
 
 export default function ActionButton({

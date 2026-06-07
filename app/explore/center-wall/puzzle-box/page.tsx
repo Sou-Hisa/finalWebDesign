@@ -61,30 +61,37 @@ export default function PuzzleBox() {
   /* ── inspect ── */
   if (step === "inspect") {
     return (
-      <div className="w-full h-screen relative flex flex-col items-center justify-center gap-6 bg-stone-900 px-6">
+      <div className="w-full h-screen relative flex flex-col items-center justify-center gap-6 bg-black overflow-hidden px-6">
+        <Img
+          src="/images/explore_middle.png"
+          alt="center_wall"
+          width={1920}
+          height={1080}
+          className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80 blur-xs"
+        />
         <ActionButton
           href="/explore/center-wall"
-          variant="ghost"
-          className="absolute top-4 left-4 text-stone-400 text-sm border border-stone-700 px-3 py-1 font-ui"
+          variant="white"
+          className="absolute top-4 left-4 z-20 text-sm font-ui"
         >
           返回
         </ActionButton>
 
-        <div className="w-full max-w-sm bg-stone-800 border border-stone-600 rounded-lg p-6 flex flex-col items-center gap-4 shadow-2xl">
-        <Img
-          src="/images/explore_item_box.png"
-          className="w-40 h-auto"
-          alt="[箱子圖片]"
-          width={160}
-          height={120}
-        />
-          <p className="text-stone-300 text-sm font-body leading-relaxed text-center">
+        <div className="relative z-10 w-full max-w-md mx-4 rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl flex flex-col items-center gap-5">
+          <Img
+            src="/images/explore_item_box.png"
+            className="w-40 h-auto"
+            alt="[箱子圖片]"
+            width={160}
+            height={120}
+          />
+          <p className="text-stone-200 text-sm font-body leading-relaxed text-center">
             這個木盒……似乎要解開機關才能打開呢？
           </p>
           <ActionButton
             onClick={() => setStep("puzzle")}
             variant="gold"
-            className="px-8 py-2 font-ui"
+            className="w-full"
           >
             查看機關
           </ActionButton>
@@ -96,19 +103,26 @@ export default function PuzzleBox() {
   /* ── puzzle ── */
   if (step === "puzzle") {
     return (
-      <div className="w-full h-screen relative flex flex-col items-center justify-center gap-6 bg-stone-900">
+      <div className="w-full h-screen relative flex flex-col items-center justify-center gap-6 bg-black overflow-hidden">
+        <Img
+          src="/images/explore_middle.png"
+          alt="center_wall"
+          width={1920}
+          height={1080}
+          className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80 blur-xs"
+        />
         <ActionButton
           onClick={() => setStep("inspect")}
-          variant="ghost"
-          className="absolute top-4 left-4 text-stone-400 text-sm border border-stone-700 px-3 py-1 font-ui"
+          variant="white"
+          className="absolute top-4 left-4 z-20 text-sm font-ui"
         >
           返回
         </ActionButton>
 
-        <p className="text-stone-400 text-xs font-ui tracking-widest">滑動方塊，將圖案復原</p>
+        <p className="relative z-10 text-stone-300 text-xs font-ui tracking-widest">滑動方塊，將圖案復原</p>
 
         <div
-          className="grid gap-[2px]"
+          className="relative z-10 grid gap-[2px]"
           style={{
             gridTemplateColumns: `repeat(${SIZE}, 120px)`,
             width: 360,
@@ -167,7 +181,7 @@ export default function PuzzleBox() {
 
         <button
           onClick={() => setTiles(generatePuzzle())}
-          className="text-stone-600 text-xs font-ui hover:text-stone-400 transition-colors"
+          className="relative z-10 text-stone-400 text-xs font-ui hover:text-stone-200 transition-colors"
         >
           重新打亂
         </button>
@@ -177,33 +191,39 @@ export default function PuzzleBox() {
 
   /* ── solved ── */
   return (
-    <div className="w-full h-screen relative flex flex-col items-center justify-center gap-5 bg-stone-900 px-6">
+    <div className="w-full h-screen relative flex flex-col items-center justify-center gap-5 bg-black overflow-hidden px-6">
+      <Img
+        src="/images/explore_middle.png"
+        alt="center_wall"
+        width={1920}
+        height={1080}
+        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80 blur-xs"
+      />
       <ActionButton
         href="/explore/center-wall"
-        variant="ghost"
-        className="absolute top-4 left-4 text-stone-400 text-sm border border-stone-700 px-3 py-1 font-ui"
+        variant="white"
+        className="absolute top-4 left-4 z-20 text-sm font-ui"
       >
         返回
       </ActionButton>
 
-      <p className="text-gray-300 font-bold text-base font-ui">機關解開了！</p>
-
-      <div className="w-64 h-44 bg-stone-700 border border-stone-500 rounded flex items-center justify-center text-stone-400 text-xs font-ui">
-        [巫婆吃人的圖片]
+      <div className="relative z-10 w-full max-w-md mx-4 rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl flex flex-col items-center gap-5">
+        <p className="text-stone-200 font-bold text-base font-ui">機關解開了！</p>
+        <div className="w-64 h-44 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center text-stone-300 text-xs font-ui">
+          [巫婆吃人的圖片]
+        </div>
+        <p className="text-stone-200 text-sm font-body text-center leading-loose">
+          木盒裡藏著一張畫——畫中是女巫的煮小孩食譜<br />
+          <span className="text-red-400">這就是她的計畫……</span>
+        </p>
+        <ActionButton
+          onClick={() => router.push("/explore")}
+          variant="gold"
+          className="w-full"
+        >
+          返回場景
+        </ActionButton>
       </div>
-
-      <p className="text-stone-300 text-sm font-body text-center max-w-xs leading-loose">
-        木盒裡藏著一張畫——畫中是女巫的煮小孩食譜<br />
-        <span className=" text-red-400">這就是她的計畫……</span>
-      </p>
-
-      <ActionButton
-        onClick={() => router.push("/explore")}
-        variant="ghost"
-        className="mt-2 px-8 py-2 font-ui text-stone-400 border border-stone-700"
-      >
-        返回場景
-      </ActionButton>
     </div>
   );
 }

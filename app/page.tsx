@@ -15,7 +15,7 @@ export default function Home() {
       <div className="absolute inset-0 bg-black/55" />
           
       {/* 主內容 */}
-      <div className="relative z-10 flex flex-col items-center justify-center gap-16 w-full">
+      <div className="relative z-10 flex flex-col items-center justify-center gap-20 w-full">
         <div>
           <h1 className="font-title text-7xl tracking-widest pb-3" style={{ color: "var(--color-gold)" }}>
             逃離糖果屋

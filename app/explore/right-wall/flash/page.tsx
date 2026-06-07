@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Img from "next/image";
 import { useGameStore } from "../../../../store/store";
 import ActionButton from "../../../../component/ActionButton";
-import ItemBar from "../../../../component/ItemBar";
 
 type Step = "inspect" | "collect";
 
@@ -35,41 +35,44 @@ export default function RightWallFlash() {
   /* ── Inspect: image 2 style ── */
   if (step === "inspect") {
     return (
-      <div className="w-full h-screen relative overflow-hidden flex flex-col gap-5 items-center justify-center">
-        <div className="absolute pointer-events-none" />
+      <div className="w-full h-screen relative overflow-hidden flex flex-col gap-5 items-center justify-center bg-black">
+        <Img
+          src="/images/explore_right.png"
+          alt="right_wall"
+          width={1920}
+          height={1080}
+          className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80 blur-xs"
+        />
 
-        <div className="relative z-10 w-full max-w-sm mx-4 bg-white rounded-lg">
-          <div className="p-5 flex flex-col gap-3">
-            <p className="text-gray-700 text-sm font-body leading-relaxed">
-              地板上有一張折疊的紙片，上面印著一些奇怪的符號……看起來像某種對照密碼表。
-            </p>
-            {/* 密碼對照表 */}
-            <div className=" bg-stone-800 border border-amber-700 rounded-lg p-3">
-              <p className="text-amber-400 text-xs font-bold mb-2 text-center font-ui">密碼對照表</p>
-              <div className="grid grid-cols-13 gap-x-2 gap-y-1 font-mono text-[10px] text-center">
-                {"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((ch, i) => (
-                  <span key={ch} className="flex flex-col items-center">
-                    <span className="text-stone-300">{ch}</span>
-                    <span className="text-amber-400">{i + 1}</span>
-                  </span>
-                ))}
-              </div>
+        <div className="relative z-10 w-full mx-4 max-w-md rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl flex flex-col gap-4">
+          <p className="text-stone-200 text-sm font-body leading-relaxed">
+            地板上有一張折疊的紙片，上面印著一些奇怪的符號……看起來像某種對照密碼表。
+          </p>
+          {/* 密碼對照表 */}
+          <div className="bg-stone-800/70 border border-white/40 rounded-lg p-3">
+            <p className="text-amber-400 text-xs font-bold mb-2 text-center font-ui">密碼對照表</p>
+            <div className="grid grid-cols-13 gap-x-2 gap-y-1 font-mono text-[10px] text-center">
+              {"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((ch, i) => (
+                <span key={ch} className="flex flex-col items-center">
+                  <span className="text-stone-300">{ch}</span>
+                  <span className="text-amber-400">{i + 1}</span>
+                </span>
+              ))}
             </div>
           </div>
         </div>
-        
-        <div className="flex justify-around gap-5 items-center">
+
+        <div className="relative z-10 flex justify-around gap-5 items-center">
           <ActionButton
             onClick={handleCollect}
             href="/explore/right-wall"
-            variant="red"
+            variant="gold"
           >
             收集紙片
           </ActionButton>
-
           <ActionButton
             onClick={() => router.push("/explore/right-wall")}
-            variant="ghost"
+            variant="white"
           >
             離開
           </ActionButton>

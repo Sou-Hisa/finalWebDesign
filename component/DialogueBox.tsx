@@ -45,7 +45,7 @@ export default function DialogueBox({
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.25 }}
-          className="flex items-center px-4 py-2 text-sm font-semibold font-title bg-black/80 rounded-md border-l-4"
+          className="flex items-center px-1 text-sm font-semibold font-title rounded-md"
           style={{ color, borderLeftColor: color }}
         >
           {character}
@@ -68,8 +68,8 @@ export default function DialogueBox({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -4 }}
           transition={{ duration: 0.28 }}
-          className="px-7 py-7 text-lg font-body rounded-md border backdrop-blur-sm bg-black/70"
-          style={{ borderColor: color, boxShadow: `0 0 12px ${color}33`, color: "#e8d5b0" }}
+          className="px-7 py-7 text-lg font-body rounded-md bg-black/20 backdrop-blur-sm border"
+          style={{ borderColor: "#fff", boxShadow: `0 0 12px ${color}33`, color: "#fff" }}
         >
           {text}
         </motion.div>

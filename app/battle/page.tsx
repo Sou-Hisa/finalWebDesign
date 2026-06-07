@@ -496,12 +496,11 @@ export default function Battle() {
       {/* ════ 對話階段 ════ */}
       {phase === "dialogue" && (
         <>
-          <div className="flex-1 relative">
-            {/*<Placeholder label="[決戰場景 背景圖]" className="absolute inset-0" />*/}
+          <div className="flex-1 relative bg-black">
             <Img
               src="/images/battle_bg1.png"
               alt="決戰場景背景"
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover opacity-80"
               width={1920} height={1080}
             />
             {/* 角色：3:4 比例 */}
@@ -565,7 +564,7 @@ export default function Battle() {
 
                 <ActionButton
                   onClick={() => { setCanDraw(false); setPhase("battle"); }}
-                  variant="purple"
+                  variant="red"
                   className="px-12 py-3"
                 >
                   施法

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Img from "next/image";
 import { useGameStore } from "../../../../store/store";
 import ActionButton from "../../../../component/ActionButton";
 import ItemBar from "../../../../component/ItemBar";
@@ -38,23 +39,26 @@ export default function LeftWallBox() {
   /* ── Inspect: image 2 style ── */
   if (step === "inspect") {
     return (
-      <div className="w-full h-screen relative flex flex-col items-center justify-center gap-5">
-        <div className="absolute inset-0 pointer-events-none" />
+      <div className="w-full h-screen relative flex flex-col items-center justify-center gap-5 bg-black overflow-hidden">
+        <Img
+          src="/images/explore_left.png"
+          alt="left_wall"
+          width={1920}
+          height={1080}
+          className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80 blur-xs"
+        />
 
-        <div className="relative z-10 w-full max-w-sm mx-4 bg-white rounded-lg overflow-hidden shadow-2xl">
+        <div className="relative z-10 w-full mx-4 max-w-md rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl flex flex-col gap-4">
           {/* Description */}
-          <div className="p-5">
-            <p className="text-gray-700 text-sm font-body leading-relaxed">
-              箱子裡裝著一些奇怪的白色長條物……等等，這好像是骨頭！？仔細把它們收集到背包裡，或許能在哪裡查出這是什麼生物的骨頭。
-            </p>
-          </div>
+          <p className="text-stone-200 text-sm font-body leading-relaxed">
+            箱子裡裝著一些奇怪的白色長條物……等等，這好像是骨頭！？仔細把它們收集到背包裡，或許能在哪裡查出這是什麼生物的骨頭。
+          </p>
           {/* Item label */}
-          <div className="mx-4 mb-4 px-3 py-2 bg-gray-100 border border-gray-300 rounded text-center">
-            <span className="text-gray-600 text-xs font-ui">打開的舊箱子（裡面裝滿人骨頭）[圖片]</span>
+          <div className="px-3 py-2 bg-white/10 border border-white/20 rounded text-center">
+            <span className="text-stone-300 text-xs font-ui">打開的舊箱子（裡面裝滿人骨頭）[圖片]</span>
           </div>
-          {/* Buttons */}
         </div>
-        <div className="flex justify-around gap-5 items-center border-gray-200">
+        <div className="relative z-10 flex justify-around gap-5 items-center border-gray-200">
           <ActionButton
             onClick={handleCollect}
             href="/explore/left-wall"
@@ -64,7 +68,7 @@ export default function LeftWallBox() {
           </ActionButton>
           <ActionButton
             href="/explore/left-wall"
-            variant="ghost"
+            variant="white"
           >
             離開
           </ActionButton>

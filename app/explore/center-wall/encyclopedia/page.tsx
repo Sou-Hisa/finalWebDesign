@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Img from "next/image";
 import { useGameStore } from "../../../../store/store";
 import ActionButton from "../../../../component/ActionButton";
 
@@ -72,11 +73,18 @@ export default function CenterWallEncyclopedia() {
   }
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center bg-stone-950 px-6 gap-6 relative">
+    <div className="w-full h-screen flex flex-col items-center justify-center bg-black px-6 gap-6 relative overflow-hidden">
+      <Img
+        src="/images/explore_middle.png"
+        alt="center_wall"
+        width={1920}
+        height={1080}
+        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80 blur-xs"
+      />
       <ActionButton
         href="/explore/center-wall"
-        variant="ghost"
-        className="absolute top-4 left-4 text-stone-400 text-sm border border-stone-700 px-3 py-1 font-ui"
+        variant="white"
+        className="absolute top-4 left-4 z-20 text-stone-400 text-sm border border-stone-700 px-3 py-1 font-ui"
       >
         返回
       </ActionButton>
@@ -84,14 +92,12 @@ export default function CenterWallEncyclopedia() {
 
       {/* ── Step: inspect ── */}
       {step === "inspect" && (
-        <div className="flex flex-col items-center gap-5 max-w-sm text-center">
-          <div className="bg-stone-800 border border-stone-600 rounded-lg p-4 text-left text-sm text-stone-300 leading-relaxed font-body">
-            <p>骨頭百科全書[圖片]</p>
-          </div>
+        <div className="relative z-10 flex flex-col items-center gap-5 w-full max-w-md mx-4 rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl">
+          <p className="text-stone-200 text-sm text-center font-body leading-relaxed w-full">骨頭百科全書[圖片]</p>
           <ActionButton
             onClick={() => setStep("compare")}
-            variant="red"
-            className="border-2 border-red-600 px-8 py-2 text-red-400 font-bold font-ui"
+            variant="gold"
+            className="w-full"
           >
             開始比對箱子裡的是誰的骨頭
           </ActionButton>
@@ -100,7 +106,7 @@ export default function CenterWallEncyclopedia() {
 
       {/* ── Step: compare ── */}
       {step === "compare" && (
-        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+        <div className="relative z-10 flex flex-col items-center gap-5 w-full max-w-md mx-4 rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl">
           <p className="text-stone-300 text-sm text-center font-body">
             看完書架上的《骨頭百科全書》與對照箱子裡的骨頭後<br />
             <span className="text-amber-300">根據你觀察到的特徵，選出符合的骨骼類型</span>
@@ -113,17 +119,18 @@ export default function CenterWallEncyclopedia() {
                 <ActionButton
                   key={opt.id}
                   onClick={() => handleOptionClick(opt.id)}
-                  className={`w-full text-left border-2 rounded-lg p-4 transition-all ${
+                  variant="white"
+                  className={`w-full text-left border! rounded-lg p-4 transition-all ${
                     isSelected
-                      ? "border-amber-400 bg-amber-950/40"
-                      : "border-stone-600 bg-stone-900/40 hover:border-stone-400"
+                      ? "border-amber-400! bg-amber-950/40!"
+                      : "border-stone-600! bg-stone-900/40! hover:border-stone-400!"
                   } group`}
                 >
                   <div className="flex flex-col justify-center items-center">
                     <p className={`font-bold text-sm font-ui ${isSelected ? "text-amber-300" : "text-stone-200 group-hover:text-stone-100"}`}>
                       {opt.label}
                     </p>
-                    <p className={`text-xs mt-1 font-body ${isSelected ? "text-amber-100" : "text-stone-400 group-hover:text-stone-200"}`}>
+                    <p className={`text-xs mt-1 font-body ${isSelected ? "text-amber-100" : "text-stone-300 group-hover:text-stone-100"}`}>
                       {opt.desc}
                     </p>
                   </div>
@@ -149,15 +156,16 @@ export default function CenterWallEncyclopedia() {
           <div className="w-full flex flex-row flex-nowrap items-center justify-between gap-4">
             <ActionButton
               onClick={() => setStep("inspect")}
-              variant="ghost"
+              variant="white"
               className="flex-1 px-6 py-2 text-sm font-bold text-stone-500 font-ui"
             >
               回去看骨頭特徵
             </ActionButton>
             <ActionButton
               onClick={handleConfirm}
+              variant="gold"
               disabled={!selected || !!correctConfirmed}
-              className="flex-1 px-6 py-2 text-sm font-bold font-ui border-2 border-red-600 text-red-400 hover:bg-red-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex-1 px-6 py-2 text-sm font-bold font-ui disabled:opacity-40 disabled:cursor-not-allowed"
             >
               確認比對
             </ActionButton>

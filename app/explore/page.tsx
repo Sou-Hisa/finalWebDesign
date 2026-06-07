@@ -61,18 +61,18 @@ export default function Explore() {
   }, [allCollected, recipeFound]);
 
   return (
-    <div className="w-full h-screen flex flex-col bg-black relative overflow-hidden">
+    <div className="w-full h-screen flex flex-col relative overflow-hidden">
       {/* 頂部物品欄 — 收集到的物品可點擊查看 */}
       <ItemBar collectedItems={collectedItems} onItemClick={setViewingItem}/>
 
       {/* 主場景：全景底圖 + 三個互動熱區 */}
-      <div className="flex-1 relative overflow-hidden bg-stone-950">
+      <div className="flex-1 relative overflow-hidden bg-black">
         <Img
           src="/images/explore_bg1.png"
           alt="糖果屋內部"
           fill
           priority
-          className="object-cover object-center"
+          className="object-cover object-center opacity-80"
         />
 
         {/* 三個互動熱區，覆蓋在底圖上 */}
@@ -124,20 +124,20 @@ export default function Explore() {
       {viewingItem && ITEM_DETAIL[viewingItem] && (() => {
         const detail = ITEM_DETAIL[viewingItem];
         return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="w-full max-w-sm mx-4 bg-stone-900/95 border border-stone-700 rounded-lg overflow-hidden shadow-2xl">
-              <div className="w-full h-44 bg-black/60 flex items-center justify-center text-stone-500 text-xs font-ui">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+            <div className="w-full max-w-md mx-4 rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl flex flex-col gap-4">
+              <div className="w-full h-44 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center text-stone-300 text-xs font-ui">
                 {detail.imgLabel}
               </div>
-              <div className="p-5 flex flex-col gap-3">
+              <div className="flex flex-col gap-2">
                 <p className="text-amber-300 text-sm font-title font-bold">{detail.title}</p>
-                <p className="text-stone-300 text-sm font-body leading-relaxed">{detail.desc}</p>
+                <p className="text-stone-200 text-sm font-body leading-relaxed">{detail.desc}</p>
               </div>
-              <div className="px-5 pb-5 flex justify-center">
+              <div className="flex justify-center">
                 <ActionButton
                   onClick={() => setViewingItem(null)}
-                  variant="ghost"
-                  className="px-8 py-2"
+                  variant="white"
+                  className="px-8"
                 >
                   關閉
                 </ActionButton>
@@ -162,7 +162,7 @@ export default function Explore() {
           <div className="flex justify-center">
             <ActionButton
               onClick={() => { setRecipeFound(); router.push("/chapter02"); }}
-              variant="red"
+              variant="white"
               className="px-8 py-2 font-bold"
             >
               繼續
