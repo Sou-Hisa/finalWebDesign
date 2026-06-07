@@ -209,9 +209,18 @@ export default function PuzzleBox() {
 
       <div className="relative z-10 w-full max-w-md mx-4 rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl flex flex-col items-center gap-5">
         <p className="text-stone-200 font-bold text-base font-ui">機關解開了！</p>
-        <div className="w-64 h-44 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center text-stone-300 text-xs font-ui">
-          [巫婆吃人的圖片]
-        </div>
+        <img
+          src="/images/explore_item_recipe.png"
+          alt="木盒中的食譜"
+          className="
+            w-64
+            h-44
+            rounded-lg
+            border
+            border-white/20
+            object-cover
+          "
+        />
         <p className="text-stone-200 text-sm font-body text-center leading-loose">
           木盒裡藏著一張畫——畫中是女巫的煮小孩食譜<br />
           <span className="text-red-400">這就是她的計畫……</span>

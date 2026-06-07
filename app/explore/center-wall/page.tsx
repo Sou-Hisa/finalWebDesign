@@ -39,13 +39,25 @@ export default function ExploreCenterWall() {
           className="flex-col gap-2 border-0! p-0! bg-transparent! hover:bg-transparent! group"
         >
           <div
-            className={`w-20 h-28 border-2 flex items-center justify-center text-xs font-ui rounded transition-colors
-              ${bonesCollected
-                ? "bg-stone-800/60 border-dashed border-stone-700 text-stone-600"
-                : "bg-stone-700 border-stone-500 text-stone-400 group-hover:border-amber-400"}`}
-          >
-            [百科全書]
-          </div>
+              className={`
+                w-20 h-28
+                rounded
+                overflow-hidden
+                border-2
+                transition-colors
+                ${
+                  bonesCollected
+                    ? "border-stone-700 opacity-60"
+                    : "border-stone-500 group-hover:border-amber-400"
+                }
+              `}
+            >
+              <img
+                src="/images/explore_item_encyclopedia.png"
+                alt="百科全書"
+                className="w-full h-full object-cover"
+              />
+            </div>
           <span className={`text-xs font-ui transition-colors
             ${bonesCollected ? "text-stone-600" : "text-stone-500 group-hover:text-amber-300"}`}>
             {bonesCollected ? "✓ 已對照" : "百科全書"}
@@ -58,12 +70,25 @@ export default function ExploreCenterWall() {
           className="flex-col gap-2 border-0! p-0! bg-transparent! hover:bg-transparent! group"
         >
           <div
-            className={`w-16 h-24 border-2 flex items-center justify-center text-xs font-ui rounded transition-colors
-              ${noteCollected
-                ? "bg-stone-800/60 border-dashed border-stone-700 text-stone-600"
-                : "bg-stone-700 border-stone-500 text-stone-400 group-hover:border-amber-400"}`}
+            className={`
+              w-16
+              h-24
+              rounded
+              overflow-hidden
+              border-2
+              transition-colors
+              ${
+                noteCollected
+                  ? "border-stone-700 opacity-60"
+                  : "border-stone-500 group-hover:border-amber-400"
+              }
+            `}
           >
-            [密碼食譜]
+            <img
+              src="/images/explore_item_sheet.png"
+              alt="密碼食譜"
+              className="w-full h-full object-cover"
+            />
           </div>
           <span className={`text-xs font-ui transition-colors
             ${noteCollected ? "text-stone-600" : "text-stone-500 group-hover:text-amber-300"}`}>
