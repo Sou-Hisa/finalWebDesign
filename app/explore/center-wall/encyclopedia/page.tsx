@@ -85,7 +85,7 @@ export default function Encyclopedia() {
 {step === "inspect" && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 animate-fade-in">
           <Img
-            src="/item_images/book.png"
+            src="/item_images/Book.png"
             alt="百科全書背景"
             width={850}
             height={750}

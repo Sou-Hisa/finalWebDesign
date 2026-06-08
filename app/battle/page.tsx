@@ -510,8 +510,6 @@ export default function Battle() {
                 <Img src="/item_images/gretel_fight.png" alt="葛麗特" fill className="object-contain" />
               </div>
 
-              {/* 火爐 */}
-              <Placeholder label="[火爐]" className="w-28 h-40" />
 
               {/* 女巫 */}
               <div className="relative w-45 h-70">
@@ -719,8 +717,8 @@ export default function Battle() {
                 </div>
               </div>
 
-              {/* 火爐 */}
-              <Placeholder label="[火爐]" className="w-28 h-28" />
+              {/* 火爐 
+              <Placeholder label="[火爐]" className="w-28 h-28" />*/}
 
               {/* 女巫 */}
               <div className="relative w-32 h-43">
