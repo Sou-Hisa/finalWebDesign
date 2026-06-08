@@ -4,7 +4,7 @@ import { useGameStore } from "../../../store/store";
 import ActionButton from "../../../component/ActionButton";
 import Img from "next/image";
 
-export default function ExploreCenterWall() {
+export default function CenterWall() {
   const { collectedItems } = useGameStore();
   const bonesCollected  = collectedItems.includes("bones");
   const noteCollected   = collectedItems.includes("note");
@@ -77,6 +77,7 @@ export default function ExploreCenterWall() {
             width={130}
             height={160}
             unoptimized
+            loading="eager"
             className={`
               object-contain
               rotate-90

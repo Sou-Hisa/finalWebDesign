@@ -87,7 +87,7 @@ export default function Encyclopedia() {
           <Img
             src="/item_images/Book.png"
             alt="百科全書背景"
-            width={850}
+            width={500}
             height={750}
             loading="eager"
             className="object-contain h-auto drop-shadow-[0_0_40px_rgba(251,191,36,0.3)] transform -translate-y-15" 
@@ -106,7 +106,7 @@ export default function Encyclopedia() {
 
       {/* ── Step: inspect ── */}
       {step === "inspect" && (
-        <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-2xl mb-6 p-10 transform translate-y-60">
+        <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-2xl mb-6 p-10 transform translate-y-40">
           <ActionButton
             onClick={() => setStep("compare")}
             variant="gold"

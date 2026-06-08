@@ -4,7 +4,7 @@ import { useGameStore } from "../../../store/store";
 import ActionButton from "../../../component/ActionButton";
 import Img from "next/image";
 
-export default function ExploreLeftWall() {
+export default function LeftWall() {
   const { collectedItems } = useGameStore();
   const boxCollected = collectedItems.includes("box");
 

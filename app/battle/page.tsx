@@ -504,15 +504,15 @@ export default function Battle() {
               width={1920} height={1080}
             />
             {/* 角色：3:4 比例 */}
-            <div className="absolute bottom-25 left-1/2 -translate-x-1/2 flex gap-10 items-end pb-2">
+            <div className="flex gap-10 items-end pb-2">
               {/* 葛麗特 */}
-              <div className="relative w-45 h-60">
+              <div className="absolute bottom-25 left-1/3 w-45 h-60">
                 <Img src="/item_images/gretel_fight.png" alt="葛麗特" fill className="object-contain" />
               </div>
 
 
               {/* 女巫 */}
-              <div className="relative w-45 h-70">
+              <div className="absolute bottom-25 right-1/6 w-45 h-70">
                 <Img 
                   src="/item_images/witch.png" 
                   alt="女巫" 
@@ -676,7 +676,7 @@ export default function Battle() {
                 <motion.div
                   key={hitFx.id}
                   initial={{ x: 0, y: 0, opacity: 1, scale: 1.2 }}
-                  animate={{ x: "-38vw", y: "55vh", opacity: 0, scale: 0.3 }}
+                  animate={{ x: "38vw", y: "55vh", opacity: 0, scale: 0.3 }}
                   transition={{ duration: 0.42, ease: "easeIn" }}
                   className="absolute z-30 pointer-events-none w-20 h-20 rounded-full"
                   style={{
@@ -702,11 +702,11 @@ export default function Battle() {
             />
 
             {/* ── 角色（底部橫排，3:4 比例） ── */}
-            <div className="absolute bottom-0 w-full flex items-end justify-between px-6 pb-2 pointer-events-none z-8">
+            <div className="w-full flex items-end justify-between px-6 pb-2 pointer-events-none z-8">
               
               <div className="flex flex-col items-center gap-1">
                 {/* 葛麗特 */}
-                <div className="relative w-28 h-36">
+                <div className="absolute left-1/6 bottom-0 w-28 h-36">
                   <Img
                     src="/item_images/gretel_fight.png"
                     alt="葛麗特"
@@ -721,7 +721,7 @@ export default function Battle() {
               <Placeholder label="[火爐]" className="w-28 h-28" />*/}
 
               {/* 女巫 */}
-              <div className="relative w-32 h-43">
+              <div className="absolute right-1/6 bottom-0 w-32 h-43">
                 <Img
                   src={witchHp > 0 ? "/item_images/witch.png" : "[女巫倒下]"}
                   alt="女巫"

@@ -4,7 +4,7 @@ import { useGameStore } from "../../../store/store";
 import ActionButton from "../../../component/ActionButton";
 import Img from "next/image";
 
-export default function ExploreRightWall() {
+export default function RightWall() {
   const { collectedItems } = useGameStore();
   const cipherCollected = collectedItems.includes("wand");
   const wandCollected   = collectedItems.includes("magicwand");
