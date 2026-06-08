@@ -80,7 +80,7 @@ export default function PuzzleBox() {
         <div className="relative z-10 w-full max-w-2xl mx-8 rounded-xl p-10 bg-stone-950/92 border border-amber-900/50 shadow-[0_0_60px_rgba(0,0,0,0.95)] flex flex-col items-center gap-6">
           <Img
             src="/images/explore_item_box.png"
-            className="w-40 h-auto"
+            className="w-40 h-auto brightness-160"
             alt="[箱子圖片]"
             width={160}
             height={120}

@@ -105,7 +105,7 @@ export default function CenterWallEncyclopedia() {
 
       {/* ── Step: inspect ── */}
       {step === "inspect" && (
-        <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-2xl mx-8 rounded-xl p-10 bg-stone-950/92 border border-amber-900/50 shadow-[0_0_60px_rgba(0,0,0,0.95)] transform translate-y-50">
+        <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-2xl mb-6 p-10 transform translate-y-60">
           <ActionButton
             onClick={() => setStep("compare")}
             variant="gold"
@@ -135,7 +135,7 @@ export default function CenterWallEncyclopedia() {
                   className={`w-full text-left border! rounded-lg p-4 transition-all ${
                     isSelected
                       ? "border-amber-500! bg-amber-950/60!"
-                      : "border-stone-700! bg-stone-900/60! hover:border-amber-800!"
+                      : "border-stone-700! bg-stone-900/60! hover:border-amber-500!"
                   } group`}
                 >
                   <div className="flex flex-col justify-center items-center">

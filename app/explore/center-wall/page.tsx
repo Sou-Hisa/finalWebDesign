@@ -97,34 +97,25 @@ export default function ExploreCenterWall() {
           <ActionButton
             href={puzzleSolved ? undefined : "/explore/center-wall/puzzle-box"}
              variant="ghost"
-            className="absolute bottom-1/6 left-1/2 -translate-x-1/2 flex-col gap-2 border-none! p-0! bg-transparent! hover:bg-transparent! group"
+            className="absolute bottom-1/250 right-1/4 -translate-x-1/2 flex-col gap-2 border-none! p-0! bg-transparent! hover:bg-transparent! group"
           >
-          <Img
-            src="/images/explore_item_box.png"
-            alt="神秘木盒"
-            width={140}
-            height={155}
-            unoptimized
-            className={`
-              object-contain
-              transition-all duration-200
-              brightness-140
-              ${
-                puzzleSolved
-                  ? "opacity-50 grayscale"
-                  : "group-hover:scale-110 drop-shadow-[0_0_16px_rgba(251,191,36,0.85)]"
-              }
-            `}
-          />
-            
-            {/* <div
-              className={`w-20 h-16 border-2 flex items-center justify-center text-xs font-ui rounded transition-colors
-                ${puzzleSolved
-                  ? "bg-stone-800/60 border-dashed border-stone-700 text-stone-600"
-                  : "bg-amber-900 border-amber-700 text-amber-400 group-hover:border-amber-400 animate-pulse"}`}
-            >
-              {puzzleSolved ? "✓" : "[木盒]"}
-            </div> */}
+            <Img
+              src="/images/explore_item_box.png"
+              alt="神秘木盒"
+              width={120}
+              height={155}
+              unoptimized
+              className={`
+                object-contain
+                transition-all duration-200
+                brightness-140
+                ${
+                  puzzleSolved
+                    ? "opacity-50 grayscale"
+                    : "group-hover:scale-110 drop-shadow-[0_0_16px_rgba(251,191,36,0.85)]"
+                }
+              `}
+            />
             <span className={`text-xs font-ui transition-colors
               ${puzzleSolved ? "text-stone-600" : "text-amber-500 group-hover:text-amber-300"}`}>
               {puzzleSolved ? "✓ 已開啟" : "神秘木盒"}

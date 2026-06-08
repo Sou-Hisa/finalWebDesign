@@ -24,7 +24,7 @@ const ZONES = [
 const ITEM_DETAIL: Record<string, { title: string; desc: string; imgLabel: string; imgSrc: string }> = {
   box: {
     title: "打開的舊箱子",
-    desc:  "箱子裡裝滿了細長均衡的白色骨頭。四肢比例對稱，頭骨碎片偏圓，整體輕薄——這是人類小孩的骨骸。",
+    desc:  "箱子裡裝滿了細長均衡的白色骨頭。四肢比例對稱，頭骨碎片偏圓，整體輕薄。",
     imgLabel: "[箱子內容物圖片]",
     imgSrc: "/item_images/box_open.png",
   },
@@ -32,7 +32,7 @@ const ITEM_DETAIL: Record<string, { title: string; desc: string; imgLabel: strin
     title: "白色骨頭（人類幼童）",
     desc:  "與書架上《骨骼圖鑑》的人類幼童項目完全吻合。箱子裡的骨頭，確定是人類小孩的。",
     imgLabel: "[骨頭比對圖片]",
-    imgSrc: "/item_images/bones.png",
+    imgSrc: "/item_images/kid_head.png",
   },
   wand: {
     title: "密碼對照表",
