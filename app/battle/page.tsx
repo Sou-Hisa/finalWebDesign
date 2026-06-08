@@ -716,7 +716,7 @@ export default function Battle() {
               {/* 女巫 */}
               <div className="absolute right-1/6 bottom-0 w-32 h-43">
                 <Img
-                  src={witchHp > 0 ? "/item_images/witch.png" : "[女巫倒下]"}
+                  src={witchHp > 0 ? "/item_images/witch.png" : "/item_images/witch_lose.png"}
                   alt="女巫"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
