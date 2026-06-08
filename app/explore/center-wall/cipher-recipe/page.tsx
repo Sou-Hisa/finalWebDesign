@@ -42,19 +42,19 @@ export default function CenterWallCipherRecipe() {
         alt="center_wall"
         width={1920}
         height={1080}
-        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80 blur-xs"
+        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-35 blur-xs"
       />
       <ActionButton
         href="/explore/center-wall"
-        variant="white"
-        className="absolute top-4 left-4 z-20 text-sm px-3 py-1 font-ui"
+        variant="back"
+        className="absolute top-4 left-4 z-20"
       >
-        返回
+        ← 返回
       </ActionButton>
 
       {/* Step 1: note (+ cipher table hint if collected) */}
       {step === "note" && (
-        <div className="relative z-10 flex flex-col items-center gap-5 w-full max-w-md mx-4 rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl">
+        <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-2xl mx-8 rounded-xl p-10 bg-stone-950/92 border border-amber-900/50 shadow-[0_0_60px_rgba(0,0,0,0.95)]">
           <div className="w-full bg-amber-50 rounded-lg p-5 shadow-2xl rotate-1 flex flex-col gap-3">
             <p className="text-center font-bold text-amber-900 text-sm font-title">神秘紙條</p>
             <p className="text-xs text-stone-600 leading-relaxed italic font-body">

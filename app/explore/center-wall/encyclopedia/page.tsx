@@ -79,20 +79,20 @@ export default function CenterWallEncyclopedia() {
         alt="center_wall"
         width={1920}
         height={1080}
-        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80 blur-xs"
+        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-35 blur-xs"
       />
       <ActionButton
         href="/explore/center-wall"
-        variant="white"
-        className="absolute top-4 left-4 z-20 text-stone-400 text-sm border border-stone-700 px-3 py-1 font-ui"
+        variant="back"
+        className="absolute top-4 left-4 z-20"
       >
-        返回
+        ← 返回
       </ActionButton>
 
 
       {/* ── Step: inspect ── */}
       {step === "inspect" && (
-        <div className="relative z-10 flex flex-col items-center gap-5 w-full max-w-md mx-4 rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl">
+        <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-2xl mx-8 rounded-xl p-10 bg-stone-950/92 border border-amber-900/50 shadow-[0_0_60px_rgba(0,0,0,0.95)]">
           <p className="text-stone-200 text-sm text-center font-body leading-relaxed w-full">骨頭百科全書[圖片]</p>
           <ActionButton
             onClick={() => setStep("compare")}
@@ -106,7 +106,7 @@ export default function CenterWallEncyclopedia() {
 
       {/* ── Step: compare ── */}
       {step === "compare" && (
-        <div className="relative z-10 flex flex-col items-center gap-5 w-full max-w-md mx-4 rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl">
+        <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-2xl mx-8 rounded-xl p-10 bg-stone-950/92 border border-amber-900/50 shadow-[0_0_60px_rgba(0,0,0,0.95)]">
           <p className="text-stone-300 text-sm text-center font-body">
             看完書架上的《骨頭百科全書》與對照箱子裡的骨頭後<br />
             <span className="text-amber-300">根據你觀察到的特徵，選出符合的骨骼類型</span>
@@ -122,8 +122,8 @@ export default function CenterWallEncyclopedia() {
                   variant="white"
                   className={`w-full text-left border! rounded-lg p-4 transition-all ${
                     isSelected
-                      ? "border-amber-400! bg-amber-950/40!"
-                      : "border-stone-600! bg-stone-900/40! hover:border-stone-400!"
+                      ? "border-amber-500! bg-amber-950/60!"
+                      : "border-stone-700! bg-stone-900/60! hover:border-amber-800!"
                   } group`}
                 >
                   <div className="flex flex-col justify-center items-center">

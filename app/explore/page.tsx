@@ -56,6 +56,7 @@ export default function Explore() {
 
   const collected = (key: string) => collectedItems.includes(key);
   const allCollected = ["box", "bones", "wand", "note", "magicwand", "puzzle"].every(collected);
+  const puzzleUnlocked = ["box", "bones", "wand", "magicwand"].every(collected) && !collected("puzzle");
 
   useEffect(() => {
     if (allCollected && !recipeFound) {
@@ -97,18 +98,30 @@ export default function Explore() {
               />
 
               {/* 未探索：精準定位在底圖物件上的脈衝光點 */}
-              {!done && zone.dots.map((dot, di) => (
-                <div
-                  key={di}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-                  style={{ left: dot.x, top: dot.y }}
-                >
-                  <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-55" />
-                    <span className="relative inline-flex h-3 w-3 rounded-full bg-amber-200 opacity-85" />
-                  </span>
-                </div>
-              ))}
+              {!done && zone.dots.map((dot, di) => {
+                const isSpecial = puzzleUnlocked && zone.href === "/explore/center-wall" && di === 0;
+                return (
+                  <div
+                    key={di}
+                    className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none flex flex-col items-center gap-1"
+                    style={{ left: isSpecial ? "50%" : dot.x, top: isSpecial ? "50%" : dot.y }}
+                  >
+                    {isSpecial ? (
+                      <span className="relative flex h-8 w-8">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-80" />
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-200 opacity-50 [animation-delay:0.3s]" />
+                        <span className="relative inline-flex h-8 w-8 rounded-full bg-amber-300 opacity-100 shadow-[0_0_18px_8px_rgba(251,191,36,0.7)]" />
+                      </span>
+                    ) : (
+                      <span className="relative flex h-5 w-5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-70" />
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-40 [animation-delay:0.4s]" />
+                        <span className="relative inline-flex h-5 w-5 rounded-full bg-amber-200 opacity-95 shadow-[0_0_10px_4px_rgba(251,191,36,0.6)]" />
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           );
         })}
@@ -120,7 +133,14 @@ export default function Explore() {
         const hints = ["這裡一定還藏著什麼……", "再仔細找找。", "線索越來越清晰了……", "所有線索已收集完畢……"];
         const hint  = allCollected ? hints[3] : hints[Math.floor((collectedCount / 6) * (hints.length - 1))];
         return (
-          <div className="px-6 py-4 text-xs font-ui text-stone-400 text-right italic">{hint}</div>
+          <div className="px-6 py-4 text-xs font-ui text-right italic flex items-center justify-end gap-3">
+            {puzzleUnlocked && (
+              <span className="text-amber-400 animate-pulse">
+                中間書架深處似乎有什麼東西彈出來了……
+              </span>
+            )}
+            <span className="text-stone-400">{hint}</span>
+          </div>
         );
       })()}
 

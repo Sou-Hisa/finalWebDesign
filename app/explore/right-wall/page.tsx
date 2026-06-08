@@ -17,16 +17,16 @@ export default function ExploreRightWall() {
         alt="right_wall"
         width={1920}
         height={1080}
-        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80"
+        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-65"
       />
 
       {/* Return */}
       <ActionButton
         href="/explore"
-        variant="white"
-        className="absolute top-4 left-4 z-20 text-sm font-ui"
+        variant="back"
+        className="absolute top-4 left-4 z-20"
       >
-        返回
+        ← 返回
       </ActionButton>
 
       {/* Room scene */}
@@ -41,16 +41,16 @@ export default function ExploreRightWall() {
           <Img
             src="/item_images/wand.png"
             alt="魔杖"
-            width={50}
-            height={120}
+            width={75}
+            height={180}
             className={`
               object-contain
-              transition-all
+              transition-all duration-200
               -rotate-40
               ${
                 wandCollected
                   ? "opacity-50 grayscale"
-                  : "group-hover:scale-105 drop-shadow-[0_0_12px_rgba(251,191,36,0.8)]"
+                  : "group-hover:scale-110 drop-shadow-[0_0_18px_rgba(251,191,36,0.95)]"
               }
             `}
           />

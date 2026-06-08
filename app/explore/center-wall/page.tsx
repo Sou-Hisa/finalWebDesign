@@ -18,16 +18,16 @@ export default function ExploreCenterWall() {
         alt="background"
         width={1920}
         height={1080}
-        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80"
+        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-45"
       />
 
       {/* Return */}
       <ActionButton
         href="/explore"
-        variant="white"
-        className="absolute top-4 left-4 z-20 text-sm font-ui"
+        variant="back"
+        className="absolute top-4 left-4 z-20"
       >
-        返回
+        ← 返回
       </ActionButton>
 
       {/* Room scene — bookshelf with items */}
@@ -42,8 +42,8 @@ export default function ExploreCenterWall() {
           <Img
             src="/images/explore_item_encyclopedia.png"
             alt="百科全書"
-            width={160}
-            height={200}
+            width={210}
+            height={260}
             className={`
               object-contain
               transition-all
@@ -72,17 +72,17 @@ export default function ExploreCenterWall() {
           <Img
             src="/images/explore_item_sheet.png"
             alt="密碼食譜"
-            width={80}
-            height={100}
+            width={130}
+            height={160}
             unoptimized
             className={`
               object-contain
               rotate-90
-              transition-transform
+              transition-all duration-200
               ${
                 noteCollected
                   ? "opacity-50 grayscale"
-                  : "group-hover:scale-105"
+                  : "group-hover:scale-110 drop-shadow-[0_0_16px_rgba(251,191,36,0.85)]"
               }
             `}
           />
@@ -97,22 +97,22 @@ export default function ExploreCenterWall() {
           <ActionButton
             href={puzzleSolved ? undefined : "/explore/center-wall/puzzle-box"}
              variant="ghost"
-            className="absolute top-5/6 right-1/4 flex-col gap-2 border-none! p-0! bg-transparent! hover:bg-transparent! group"
+            className="absolute bottom-1/6 left-1/2 -translate-x-1/2 flex-col gap-2 border-none! p-0! bg-transparent! hover:bg-transparent! group"
           >
           <Img
             src="/images/explore_item_box.png"
             alt="神秘木盒"
-            width={90}
-            height={100}
+            width={140}
+            height={155}
             unoptimized
             className={`
               object-contain
-              transition-transform
+              transition-all duration-200
               brightness-140
               ${
                 puzzleSolved
                   ? "opacity-50 grayscale"
-                  : "group-hover:scale-105"
+                  : "group-hover:scale-110 drop-shadow-[0_0_16px_rgba(251,191,36,0.85)]"
               }
             `}
           />

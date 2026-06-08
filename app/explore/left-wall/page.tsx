@@ -16,16 +16,16 @@ export default function ExploreLeftWall() {
         alt="left_wall"
         width={1920}
         height={1080}
-        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80"
+        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-65"
       />
 
       {/* Return */}
       <ActionButton
         href="/explore"
-        variant="white"
-        className="absolute top-4 left-4 z-20 text-sm font-ui"
+        variant="back"
+        className="absolute top-4 left-4 z-20"
       >
-        返回
+        ← 返回
       </ActionButton>
 
       {/* Room scene — clickable items */}
@@ -39,15 +39,15 @@ export default function ExploreLeftWall() {
             <Img
               src="/item_images/box_close.png"
               alt="箱子關"
-              width={160}
-              height={100}
+              width={220}
+              height={140}
               className={`
                 object-contain
-                transition-transform
+                transition-all duration-200
                 ${
                   boxCollected
                     ? "opacity-50 grayscale"
-                    : "group-hover:scale-105"
+                    : "group-hover:scale-110 drop-shadow-[0_0_16px_rgba(251,191,36,0.85)]"
                 }
             `}
             />
