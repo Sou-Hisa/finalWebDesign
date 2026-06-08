@@ -32,20 +32,24 @@ export default function ExploreLeftWall() {
       <div className="relative z-10 w-full h-full flex items-end justify-center pb-16">
         <ActionButton
           href={boxCollected ? undefined : "/explore/left-wall/box"}
-          className="flex-col gap-2 mb-4 border-0! p-0! bg-transparent! hover:bg-transparent! group"
+          variant="ghost"
+          className="absolute top-3/5 left-2/3 flex-col gap-2 border-none! p-0! bg-transparent! hover:bg-transparent! group"
         >
-          <div
-            className={`w-28 h-20 border-2 flex items-center justify-center text-xs font-ui rounded transition-colors
-              ${boxCollected
-                ? "bg-stone-800/60 border-dashed border-stone-700 text-stone-600 cursor-default"
-                : "bg-stone-700 border-stone-500 text-stone-400 group-hover:border-amber-400"}`}
-          >
-            <Img 
+          <div>
+            <Img
               src="/item_images/box_close.png"
               alt="箱子關"
-              width={240}
-              height={160}
-              className="object-contain w-full h-full"
+              width={160}
+              height={100}
+              className={`
+                object-contain
+                transition-transform
+                ${
+                  boxCollected
+                    ? "opacity-50 grayscale"
+                    : "group-hover:scale-105"
+                }
+            `}
             />
           </div>
           <span className={`text-xs font-ui transition-colors

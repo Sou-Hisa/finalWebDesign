@@ -12,13 +12,13 @@ export default function ExploreRightWall() {
   return (
     <div className="w-full h-screen relative overflow-hidden bg-black">
       {/* Background */}
-    <Img
-      src="/images/explore_right.png"
-      alt="right_wall"
-      width={1920}
-      height={1080}
-      className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80"
-    />
+      <Img
+        src="/images/explore_right.png"
+        alt="right_wall"
+        width={1920}
+        height={1080}
+        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80"
+      />
 
       {/* Return */}
       <ActionButton
@@ -35,21 +35,25 @@ export default function ExploreRightWall() {
         {/* 魔仗 */}
         <ActionButton
           href={wandCollected ? undefined : "/explore/right-wall/wand"}
-          className="flex-col gap-2 mb-4 border-0! p-0! bg-transparent! hover:bg-transparent! group"
+          variant="ghost"
+          className="absolute bottom-1/3 right-1/5 flex-col gap-2 mb-4 border-none! p-0! bg-transparent! hover:bg-transparent! group"
         >
-          <div className={`w-12 h-28 border-2 flex items-center justify-center rounded transition-all p-1
-            ${wandCollected
-              ? "bg-stone-800/60 border-dashed border-stone-700 cursor-default opacity-40 grayscale"
-              : "bg-stone-700 border-stone-500 group-hover:border-amber-400 cursor-pointer"}`}
-          >
-            <Img 
-              src="/item_images/wand.png"
-              alt="魔杖"
-              width={50} 
-              height={120}
-              className="object-contain w-full h-full"
-            />
-          </div>
+          <Img
+            src="/item_images/wand.png"
+            alt="魔杖"
+            width={50}
+            height={120}
+            className={`
+              object-contain
+              transition-all
+              -rotate-40
+              ${
+                wandCollected
+                  ? "opacity-50 grayscale"
+                  : "group-hover:scale-105 drop-shadow-[0_0_12px_rgba(251,191,36,0.8)]"
+              }
+            `}
+          />
           <span className={`text-xs font-ui transition-colors
             ${wandCollected ? "text-stone-600" : "text-stone-500 group-hover:text-amber-300"}`}>
             {wandCollected ? "✓ 已蒐集" : "魔仗"}
@@ -57,17 +61,18 @@ export default function ExploreRightWall() {
         </ActionButton>
 
         {/* 地板發光點（密碼表） */}
-        <div className="flex flex-col items-center mb-4">
+        <div className="relative top-1/12 right-1/3 flex flex-col items-center mb-4">
           {cipherCollected ? (
             <p className="text-stone-500 text-xs font-ui">地板上的發光點消失了</p>
           ) : (
             <ActionButton
               href="/explore/right-wall/flash"
-              className="flex-col gap-3 border-0! p-0! bg-transparent! hover:bg-transparent! group"
+              variant="ghost"
+              className="flex-col gap-3 border-none! p-0! bg-transparent! hover:bg-transparent! group"
             >
-              <div className="relative w-10 h-10 flex items-center justify-center">
+              <div className="relative w-8 h-8 flex items-center justify-center">
                 <div className="absolute inset-0 rounded-full bg-yellow-400/60 animate-ping" />
-                <div className="relative w-10 h-10 rounded-full bg-yellow-300 border-2 border-yellow-100 flex items-center justify-center z-10">
+                <div className="relative w-8 h-8 rounded-full bg-yellow-300 border-2 border-yellow-100 flex items-center justify-center z-10">
                   <span className="text-yellow-800 text-sm">✦</span>
                 </div>
               </div>

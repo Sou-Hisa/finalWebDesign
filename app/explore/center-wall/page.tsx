@@ -36,14 +36,15 @@ export default function ExploreCenterWall() {
         {/* Encyclopedia */}
         <ActionButton
           href={bonesCollected ? undefined : "/explore/center-wall/encyclopedia"}
-          className="flex-col gap-3 border-0! p-0! bg-transparent! hover:bg-transparent! group"
+           variant="ghost"
+          className="absolute bottom-1/8 left-1/7 flex-col gap-2 border-none! p-0! bg-transparent! hover:bg-transparent! group"
         >
-          <img
+          <Img
             src="/images/explore_item_encyclopedia.png"
             alt="百科全書"
+            width={160}
+            height={200}
             className={`
-              w-36
-              h-auto
               object-contain
               transition-all
               ${
@@ -65,15 +66,18 @@ export default function ExploreCenterWall() {
         {/* Cipher recipe */}
         <ActionButton
           href={noteCollected ? undefined : "/explore/center-wall/cipher-recipe"}
-          className="flex-col gap-2 border-0! p-0! bg-transparent! hover:bg-transparent! group"
+           variant="ghost"
+          className="absolute top-1/9 right-5/27 flex-col gap-2 border-none! p-0! bg-transparent! hover:bg-transparent! group"
         >
-          <img
+          <Img
             src="/images/explore_item_sheet.png"
             alt="密碼食譜"
+            width={80}
+            height={100}
+            unoptimized
             className={`
-              w-20
-              h-auto
               object-contain
+              rotate-90
               transition-transform
               ${
                 noteCollected
@@ -92,16 +96,35 @@ export default function ExploreCenterWall() {
         {showPuzzleBox && (
           <ActionButton
             href={puzzleSolved ? undefined : "/explore/center-wall/puzzle-box"}
-            className="flex-col gap-2 border-0! p-0! bg-transparent! hover:bg-transparent! group"
+             variant="ghost"
+            className="absolute top-5/6 right-1/4 flex-col gap-2 border-none! p-0! bg-transparent! hover:bg-transparent! group"
           >
-            <div
+          <Img
+            src="/images/explore_item_box.png"
+            alt="神秘木盒"
+            width={90}
+            height={100}
+            unoptimized
+            className={`
+              object-contain
+              transition-transform
+              brightness-140
+              ${
+                puzzleSolved
+                  ? "opacity-50 grayscale"
+                  : "group-hover:scale-105"
+              }
+            `}
+          />
+            
+            {/* <div
               className={`w-20 h-16 border-2 flex items-center justify-center text-xs font-ui rounded transition-colors
                 ${puzzleSolved
                   ? "bg-stone-800/60 border-dashed border-stone-700 text-stone-600"
                   : "bg-amber-900 border-amber-700 text-amber-400 group-hover:border-amber-400 animate-pulse"}`}
             >
               {puzzleSolved ? "✓" : "[木盒]"}
-            </div>
+            </div> */}
             <span className={`text-xs font-ui transition-colors
               ${puzzleSolved ? "text-stone-600" : "text-amber-500 group-hover:text-amber-300"}`}>
               {puzzleSolved ? "✓ 已開啟" : "神秘木盒"}
