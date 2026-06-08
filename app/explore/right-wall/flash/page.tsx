@@ -41,41 +41,33 @@ export default function RightWallFlash() {
           alt="right_wall"
           width={1920}
           height={1080}
-          className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80 blur-xs"
+          className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-35 blur-xs"
         />
 
-        <div className="relative z-10 w-full mx-4 max-w-md rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl flex flex-col gap-4">
-          <p className="text-stone-200 text-sm font-body leading-relaxed">
+        <div className="relative z-10 w-full mx-8 max-w-2xl rounded-xl p-10 bg-stone-950/92 border border-amber-900/50 shadow-[0_0_60px_rgba(0,0,0,0.95)] flex flex-col gap-6">
+          <p className="text-stone-300 text-base font-body leading-relaxed">
             地板上有一張折疊的紙片，上面印著一些奇怪的符號……看起來像某種對照密碼表。
           </p>
-          {/* 密碼對照表 */}
-          <div className="bg-stone-800/70 border border-white/40 rounded-lg p-3">
-            <p className="text-amber-400 text-xs font-bold mb-2 text-center font-ui">密碼對照表</p>
-            <div className="grid grid-cols-13 gap-x-2 gap-y-1 font-mono text-[10px] text-center">
+          <div className="bg-stone-900/80 border border-amber-800/40 rounded-lg p-5">
+            <p className="text-amber-400 text-sm font-bold mb-3 text-center font-ui tracking-widest">密碼對照表</p>
+            <div className="grid grid-cols-13 gap-x-3 gap-y-2 font-mono text-xs text-center">
               {"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((ch, i) => (
-                <span key={ch} className="flex flex-col items-center">
+                <span key={ch} className="flex flex-col items-center gap-0.5">
                   <span className="text-stone-300">{ch}</span>
                   <span className="text-amber-400">{i + 1}</span>
                 </span>
               ))}
             </div>
           </div>
-        </div>
 
-        <div className="relative z-10 flex justify-around gap-5 items-center">
-          <ActionButton
-            onClick={handleCollect}
-            href="/explore/right-wall"
-            variant="gold"
-          >
-            收集紙片
-          </ActionButton>
-          <ActionButton
-            onClick={() => router.push("/explore/right-wall")}
-            variant="white"
-          >
-            離開
-          </ActionButton>
+          <div className="flex justify-center gap-6">
+            <ActionButton onClick={handleCollect} href="/explore/right-wall" variant="gold">
+              收集紙片
+            </ActionButton>
+            <ActionButton onClick={() => router.push("/explore/right-wall")} variant="ghost">
+              離開
+            </ActionButton>
+          </div>
         </div>
       </div>
     );

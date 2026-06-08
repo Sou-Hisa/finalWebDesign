@@ -67,17 +67,17 @@ export default function PuzzleBox() {
           alt="center_wall"
           width={1920}
           height={1080}
-          className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80 blur-xs"
+          className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-35 blur-xs"
         />
         <ActionButton
           href="/explore/center-wall"
-          variant="white"
-          className="absolute top-4 left-4 z-20 text-sm font-ui"
+          variant="back"
+          className="absolute top-4 left-4 z-20"
         >
-          返回
+          ← 返回
         </ActionButton>
 
-        <div className="relative z-10 w-full max-w-md mx-4 rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl flex flex-col items-center gap-5">
+        <div className="relative z-10 w-full max-w-2xl mx-8 rounded-xl p-10 bg-stone-950/92 border border-amber-900/50 shadow-[0_0_60px_rgba(0,0,0,0.95)] flex flex-col items-center gap-6">
           <Img
             src="/images/explore_item_box.png"
             className="w-40 h-auto"
@@ -109,14 +109,14 @@ export default function PuzzleBox() {
           alt="center_wall"
           width={1920}
           height={1080}
-          className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80 blur-xs"
+          className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-35 blur-xs"
         />
         <ActionButton
           onClick={() => setStep("inspect")}
-          variant="white"
-          className="absolute top-4 left-4 z-20 text-sm font-ui"
+          variant="back"
+          className="absolute top-4 left-4 z-20"
         >
-          返回
+          ← 返回
         </ActionButton>
 
         <p className="relative z-10 text-stone-300 text-xs font-ui tracking-widest">滑動方塊，將圖案復原</p>
@@ -197,7 +197,7 @@ export default function PuzzleBox() {
         alt="center_wall"
         width={1920}
         height={1080}
-        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-80 blur-xs"
+        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-35 blur-xs"
       />
       <ActionButton
         href="/explore/center-wall"
@@ -207,11 +207,20 @@ export default function PuzzleBox() {
         返回
       </ActionButton>
 
-      <div className="relative z-10 w-full max-w-md mx-4 rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl flex flex-col items-center gap-5">
+      <div className="relative z-10 w-full max-w-2xl mx-8 rounded-xl p-10 bg-stone-950/92 border border-amber-900/50 shadow-[0_0_60px_rgba(0,0,0,0.95)] flex flex-col items-center gap-6">
         <p className="text-stone-200 font-bold text-base font-ui">機關解開了！</p>
-        <div className="w-64 h-44 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center text-stone-300 text-xs font-ui">
-          [巫婆吃人的圖片]
-        </div>
+        <img
+          src="/images/explore_item_recipe.png"
+          alt="木盒中的食譜"
+          className="
+            w-64
+            h-44
+            rounded-lg
+            border
+            border-white/20
+            object-cover
+          "
+        />
         <p className="text-stone-200 text-sm font-body text-center leading-loose">
           木盒裡藏著一張畫——畫中是女巫的煮小孩食譜<br />
           <span className="text-red-400">這就是她的計畫……</span>

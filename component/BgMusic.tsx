@@ -1,6 +1,7 @@
 "use client"
 import { createPortal } from "react-dom";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 
 import { FaVolumeMute } from "react-icons/fa";
 import { FaVolumeUp } from "react-icons/fa";
@@ -15,20 +16,37 @@ export default function BgMusic() {
     () => false
   );
 
+  const pathname = usePathname();
+  const src = pathname?.startsWith("/battle")
+    ? "/audio/Take a Chance.mp3"
+    : "/audio/Dreamy Flashback.mp3";
+
   useEffect(() => {
-    const audio = new Audio("/audio/Dreamy Flashback.mp3");
+    const prevAudio = audioRef.current;
+    const wasPlaying = isPlaying;
+
+    if (prevAudio) {
+      prevAudio.pause();
+      document.removeEventListener("click", handleFirstClickRef.current);
+    }
+
+    const audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.4;
     audioRef.current = audio;
 
-    // 先嘗試自動播放（大部分瀏覽器會封鎖，若被封鎖會抓到錯誤並保留下方的點擊備援）
-    audio.play()
-      .then(() => {
-        setIsPlaying(true);
-      })
-      .catch(() => {
-        // Autoplay 被封鎖，使用者互動作為備援
-      });
+    if (wasPlaying) {
+      audio.play().then(() => setIsPlaying(true)).catch(() => {});
+    } else {
+      // 先嘗試自動播放（大部分瀏覽器會封鎖，若被封鎖會抓到錯誤並保留下方的點擊備援）
+      audio.play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch(() => {
+          // Autoplay 被封鎖，使用者互動作為備援
+        });
+    }
 
     // 定義首次點擊自動播放的備援邏輯（在某些瀏覽器必須由 user gesture 啟動）
     const handleFirstClick = () => {
@@ -49,7 +67,8 @@ export default function BgMusic() {
       audio.pause();
       document.removeEventListener("click", handleFirstClick);
     };
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [src]);
 
   const toggleBgm = () => {
     if (!audioRef.current) return;
