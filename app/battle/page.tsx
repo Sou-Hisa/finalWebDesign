@@ -8,14 +8,6 @@ import DialogueBox from "../../component/DialogueBox";
 import ActionButton from "../../component/ActionButton";
 import Img from "next/image";
 
-function Placeholder({ label, className = "" }: { label: string; className?: string }) {
-  return (
-    <div className={`flex items-center justify-center bg-stone-700 text-gray-100 border border-stone-500 text-xs font-ui ${className}`}>
-      {label}
-    </div>
-  );
-}
-
 // ══════════════════════════════════════════════════════════
 //  符文定義（多筆畫形狀：V / Z / N / L / 圓）
 // ══════════════════════════════════════════════════════════
@@ -373,7 +365,6 @@ export default function Battle() {
       });
     }, 1000);
     return () => { if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; } };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, endBattle]);
 
   // 心跳音：≤20s 開始，每秒 lub-dub，越緊張越響
@@ -397,7 +388,7 @@ export default function Battle() {
     }
     const t = setTimeout(() => { setIntroLineIdx(i => i + 1); setIntroCharIdx(0); }, 500);
     return () => clearTimeout(t);
-  }, [phase, introLineIdx, introCharIdx]);
+  });
 
   // 每當符文切換，短暫鎖定畫布，並畫出引導路徑
   useEffect(() => {
@@ -507,7 +498,12 @@ export default function Battle() {
             <div className="flex gap-10 items-end pb-2">
               {/* 葛麗特 */}
               <div className="absolute bottom-25 left-1/3 w-45 h-60">
-                <Img src="/item_images/gretel_fight.png" alt="葛麗特" fill className="object-contain" />
+                <Img 
+                  src="/item_images/gretel_fight.png" 
+                  alt="葛麗特" 
+                  fill 
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-contain" />
               </div>
 
 
@@ -716,9 +712,6 @@ export default function Battle() {
                   />
                 </div>
               </div>
-
-              {/* 火爐 
-              <Placeholder label="[火爐]" className="w-28 h-28" />*/}
 
               {/* 女巫 */}
               <div className="absolute right-1/6 bottom-0 w-32 h-43">

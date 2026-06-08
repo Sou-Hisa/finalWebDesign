@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Img from "next/image";
 import { useGameStore } from "../../../../store/store";
 import ActionButton from "../../../../component/ActionButton";
-import ItemBar from "../../../../component/ItemBar";
 
 type Step = "inspect" | "collect";
 
