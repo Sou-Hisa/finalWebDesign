@@ -12,7 +12,7 @@ export default function ExploreLeftWall() {
     <div className="w-full h-screen relative overflow-hidden bg-black">
       {/* Background */}
       <Img
-        src="/images/explore_left.png"
+        src="/images/explore_left0.png"
         alt="left_wall"
         width={1920}
         height={1080}

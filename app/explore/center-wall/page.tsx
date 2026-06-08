@@ -14,7 +14,7 @@ export default function ExploreCenterWall() {
   return (
     <div className="w-full h-screen relative overflow-hidden bg-black">
       <Img
-        src="/images/explore_middle.png"
+        src="/images/explore_middle1.png"
         alt="background"
         width={1920}
         height={1080}
