@@ -24,7 +24,7 @@ const ZONES = [
 const ITEM_DETAIL: Record<string, { title: string; desc: string; imgLabel: string; imgSrc: string }> = {
   box: {
     title: "打開的舊箱子",
-    desc:  "箱子裡裝滿了細長均勻的白色骨頭。四肢比例對稱，頭骨碎片偏圓，整體輕薄——這是人類小孩的骨骸。",
+    desc:  "箱子裡裝滿了細長均衡的白色骨頭。四肢比例對稱，頭骨碎片偏圓，整體輕薄——這是人類小孩的骨骸。",
     imgLabel: "[箱子內容物圖片]",
     imgSrc: "/item_images/box_open.png",
   },
