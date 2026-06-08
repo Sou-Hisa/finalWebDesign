@@ -32,7 +32,7 @@ export default function RightWallWand() {
   return (
     <div className="w-full h-screen relative flex flex-col items-center justify-center gap-5 bg-black overflow-hidden">
       <Img
-        src="/images/explore_right.png"
+        src="/images/explore_right1.png"
         alt="right_wall"
         width={1920}
         height={1080}

@@ -37,7 +37,7 @@ export default function RightWallFlash() {
     return (
       <div className="w-full h-screen relative overflow-hidden flex flex-col gap-5 items-center justify-center bg-black">
         <Img
-          src="/images/explore_right.png"
+          src="/images/explore_right1.png"
           alt="right_wall"
           width={1920}
           height={1080}
