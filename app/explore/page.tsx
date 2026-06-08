@@ -150,14 +150,12 @@ export default function Explore() {
         return (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
             <div className="w-full max-w-md mx-4 rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl flex flex-col gap-4">
-              <div className="w-full h-44 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center text-stone-300 text-xs font-ui">
-                {/* {detail.imgLabel} */}
+              <div className="relative w-full h-44 bg-white/10 border border-white/20 rounded-lg overflow-hidden">
                 <Img
                   src={detail.imgSrc}
                   alt={detail.imgLabel}
-                  width={1920}
-                  height={1080}
-                  className="object-contain h-auto"
+                  fill
+                  className="object-contain"
                 />
               </div>
               <div className="flex flex-col gap-2">
