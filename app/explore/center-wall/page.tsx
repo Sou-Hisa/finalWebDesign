@@ -44,6 +44,7 @@ export default function ExploreCenterWall() {
             alt="百科全書"
             width={210}
             height={260}
+            loading="eager"
             className={`
               object-contain
               transition-all

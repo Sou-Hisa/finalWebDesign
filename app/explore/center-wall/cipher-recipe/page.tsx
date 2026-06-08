@@ -62,7 +62,7 @@ export default function CenterWallCipherRecipe() {
             </p>
             <div className="border-t border-amber-300 pt-3 text-center">
               <p className="text-xs text-stone-500 mb-1 font-ui">紙條上寫著：</p>
-              <p className="text-3xl font-black text-amber-900 tracking-[0.1em] font-ui">8 · 5 · 12 · 16</p>
+              <p className="text-3xl font-black text-amber-900 tracking-widest font-ui">8 · 5 · 12 · 16</p>
             </div>
           </div>
 

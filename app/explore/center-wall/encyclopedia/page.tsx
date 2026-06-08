@@ -89,6 +89,7 @@ export default function CenterWallEncyclopedia() {
             alt="百科全書背景"
             width={850}
             height={750}
+            loading="eager"
             className="object-contain drop-shadow-[0_0_40px_rgba(251,191,36,0.3)] transform -translate-y-15" 
           />
         </div>
