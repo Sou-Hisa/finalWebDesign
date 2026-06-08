@@ -84,7 +84,7 @@ export default function CenterWallCipherRecipe() {
 
       {/* Step 2: input answer */}
       {step === "input" && (
-        <div className="relative z-10 flex flex-col justify-center items-center gap-5 w-full max-w-md mx-4 rounded-lg p-8 backdrop-blur-md bg-white/20 border border-white/30 shadow-2xl">
+        <div className="relative z-10 flex flex-col justify-center items-center gap-5 w-full max-w-md mx-4 rounded-xl p-10 bg-stone-950/92 border border-amber-900/50 shadow-[0_0_60px_rgba(0,0,0,0.95)]">
           <div className="w-full bg-amber-50 border-4 border-amber-900 rounded-lg p-4 shadow-2xl rotate-1 flex flex-col gap-2">
             <p className="text-center font-bold text-amber-900 text-sm font-title">神秘紙條</p>
             <div className="border-t border-amber-900 pt-2 text-center">

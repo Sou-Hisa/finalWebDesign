@@ -17,7 +17,7 @@ const BONE_OPTIONS = [
   {
     id: "human_child",
     label: "人類幼童骨骼",
-    desc: "細長均勻，四肢比例對稱，頭骨偏圓，整體輕薄",
+    desc: "細長均衡，四肢比例對稱，頭骨偏圓，整體輕薄",
     correct: true,
     msg: "比例完全吻合——箱子裡的骨頭，是人類小孩的",
   },
@@ -81,6 +81,19 @@ export default function CenterWallEncyclopedia() {
         height={1080}
         className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none opacity-35 blur-xs"
       />
+
+{step === "inspect" && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 animate-fade-in">
+          <Img
+            src="/item_images/book.png"
+            alt="百科全書背景"
+            width={850}
+            height={750}
+            className="object-contain drop-shadow-[0_0_40px_rgba(251,191,36,0.3)] transform -translate-y-15" 
+          />
+        </div>
+      )}
+
       <ActionButton
         href="/explore/center-wall"
         variant="back"
@@ -92,8 +105,7 @@ export default function CenterWallEncyclopedia() {
 
       {/* ── Step: inspect ── */}
       {step === "inspect" && (
-        <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-2xl mx-8 rounded-xl p-10 bg-stone-950/92 border border-amber-900/50 shadow-[0_0_60px_rgba(0,0,0,0.95)]">
-          <p className="text-stone-200 text-sm text-center font-body leading-relaxed w-full">骨頭百科全書[圖片]</p>
+        <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-2xl mb-6 p-10 transform translate-y-60">
           <ActionButton
             onClick={() => setStep("compare")}
             variant="gold"
@@ -123,7 +135,7 @@ export default function CenterWallEncyclopedia() {
                   className={`w-full text-left border! rounded-lg p-4 transition-all ${
                     isSelected
                       ? "border-amber-500! bg-amber-950/60!"
-                      : "border-stone-700! bg-stone-900/60! hover:border-amber-800!"
+                      : "border-stone-700! bg-stone-900/60! hover:border-amber-500!"
                   } group`}
                 >
                   <div className="flex flex-col justify-center items-center">
