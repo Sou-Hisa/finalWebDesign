@@ -55,7 +55,7 @@ export default function LeftWallBox() {
               alt="箱子開"
               width={320}
               height={220}
-              className="object-contain drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]"
+              className="h-auto object-contain drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]"
             />
           </div>
 

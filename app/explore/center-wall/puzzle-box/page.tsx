@@ -63,7 +63,7 @@ export default function PuzzleBox() {
     return (
       <div className="w-full h-screen relative flex flex-col items-center justify-center gap-6 bg-black overflow-hidden px-6">
         <Img
-          src="/images/explore_middle.png"
+          src="/images/explore_middle1.png"
           alt="center_wall"
           width={1920}
           height={1080}
@@ -105,7 +105,7 @@ export default function PuzzleBox() {
     return (
       <div className="w-full h-screen relative flex flex-col items-center justify-center gap-6 bg-black overflow-hidden">
         <Img
-          src="/images/explore_middle.png"
+          src="/images/explore_middle1.png"
           alt="center_wall"
           width={1920}
           height={1080}
@@ -193,7 +193,7 @@ export default function PuzzleBox() {
   return (
     <div className="w-full h-screen relative flex flex-col items-center justify-center gap-5 bg-black overflow-hidden px-6">
       <Img
-        src="/images/explore_middle.png"
+        src="/images/explore_middle1.png"
         alt="center_wall"
         width={1920}
         height={1080}
@@ -209,12 +209,13 @@ export default function PuzzleBox() {
 
       <div className="relative z-10 w-full max-w-2xl mx-8 rounded-xl p-10 bg-stone-950/92 border border-amber-900/50 shadow-[0_0_60px_rgba(0,0,0,0.95)] flex flex-col items-center gap-6">
         <p className="text-stone-200 font-bold text-base font-ui">機關解開了！</p>
-        <img
+        <Img
           src="/images/explore_item_recipe.png"
           alt="木盒中的食譜"
+          width={300}
+          height={300}
           className="
-            w-64
-            h-44
+            h-auto
             rounded-lg
             border
             border-white/20

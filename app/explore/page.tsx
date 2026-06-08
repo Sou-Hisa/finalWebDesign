@@ -157,7 +157,7 @@ export default function Explore() {
                   alt={detail.imgLabel}
                   width={1920}
                   height={1080}
-                  className="object-contain w-full h-full"
+                  className="object-contain h-auto"
                 />
               </div>
               <div className="flex flex-col gap-2">

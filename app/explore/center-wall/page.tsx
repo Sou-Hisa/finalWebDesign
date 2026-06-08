@@ -37,7 +37,7 @@ export default function ExploreCenterWall() {
         <ActionButton
           href={bonesCollected ? undefined : "/explore/center-wall/encyclopedia"}
            variant="ghost"
-          className="absolute bottom-1/8 left-1/7 flex-col gap-2 border-none! p-0! bg-transparent! hover:bg-transparent! group"
+          className="absolute bottom-1/8 left-1/7 flex-col gap-2 border-none! p-0! bg-transparent! hover:bg-transparent! group h-auto"
         >
           <Img
             src="/images/explore_item_encyclopedia.png"
@@ -47,6 +47,7 @@ export default function ExploreCenterWall() {
             loading="eager"
             className={`
               object-contain
+              h-auto
               transition-all
               ${
                 bonesCollected
@@ -68,7 +69,7 @@ export default function ExploreCenterWall() {
         <ActionButton
           href={noteCollected ? undefined : "/explore/center-wall/cipher-recipe"}
            variant="ghost"
-          className="absolute top-1/9 right-5/27 flex-col gap-2 border-none! p-0! bg-transparent! hover:bg-transparent! group"
+          className="absolute top-1/9 right-5/27 flex-col gap-2 border-none! p-0! bg-transparent! hover:bg-transparent! group h-auto"
         >
           <Img
             src="/images/explore_item_sheet.png"

@@ -32,7 +32,7 @@ const BONE_OPTIONS = [
 
 type Step = "inspect" | "compare";
 
-export default function CenterWallEncyclopedia() {
+export default function Encyclopedia() {
   const router = useRouter();
   const { addItem, collectedItems } = useGameStore();
   const alreadyCollected = collectedItems.includes("bones");
@@ -90,7 +90,7 @@ export default function CenterWallEncyclopedia() {
             width={850}
             height={750}
             loading="eager"
-            className="object-contain drop-shadow-[0_0_40px_rgba(251,191,36,0.3)] transform -translate-y-15" 
+            className="object-contain h-auto drop-shadow-[0_0_40px_rgba(251,191,36,0.3)] transform -translate-y-15" 
           />
         </div>
       )}

@@ -43,6 +43,7 @@ export default function ExploreLeftWall() {
               height={140}
               className={`
                 object-contain
+                h-auto
                 transition-all duration-200
                 ${
                   boxCollected
