@@ -12,7 +12,7 @@ export default function Home() {
           bg-no-repeat
         "
       />
-      <div className="absolute inset-0 bg-black/55" />
+      <div className="absolute inset-0 bg-black/40" />
           
       {/* 主內容 */}
       <div className="relative z-10 flex flex-col items-center justify-center gap-20 w-full">

@@ -41,7 +41,7 @@ export default function CenterWall() {
         >
           <Img
             src="/images/explore_item_encyclopedia.png"
-            alt="百科全書"
+            alt="骨骼百科全書"
             width={210}
             height={260}
             loading="eager"
@@ -61,7 +61,7 @@ export default function CenterWall() {
           />
           <span className={`text-xs font-ui transition-colors
             ${bonesCollected ? "text-stone-600" : "text-stone-500 group-hover:text-amber-300"}`}>
-            {bonesCollected ? "✓ 已對照" : "百科全書"}
+            {bonesCollected ? "✓ 已對照" : "骨骼百科全書"}
           </span>
         </ActionButton>
 
@@ -73,7 +73,7 @@ export default function CenterWall() {
         >
           <Img
             src="/images/explore_item_sheet.png"
-            alt="密碼食譜"
+            alt="神秘紙條"
             width={130}
             height={160}
             unoptimized
@@ -91,7 +91,7 @@ export default function CenterWall() {
           />
           <span className={`text-xs font-ui transition-colors
             ${noteCollected ? "text-stone-600" : "text-stone-500 group-hover:text-amber-300"}`}>
-            {noteCollected ? "✓ 已解碼" : "密碼食譜"}
+            {noteCollected ? "✓ 已解碼" : "神秘紙條"}
           </span>
         </ActionButton>
 

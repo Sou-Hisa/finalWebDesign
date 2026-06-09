@@ -72,7 +72,7 @@ export default function RightWall() {
             >
               <div className="relative w-8 h-8 flex items-center justify-center">
                 <div className="absolute inset-0 rounded-full bg-yellow-400/60 animate-ping" />
-                <div className="relative w-8 h-8 rounded-full bg-yellow-300 border-2 border-yellow-100 flex items-center justify-center z-10">
+                <div className="relative w-8 h-8 rounded-full bg-yellow-400 border-2 border-yellow-100 flex items-center justify-center z-10">
                   <span className="text-yellow-800 text-sm">✦</span>
                 </div>
               </div>

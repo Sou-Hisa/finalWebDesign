@@ -26,7 +26,17 @@ const notoSansTC = Noto_Sans_TC({
 
 export const metadata: Metadata = {
   title: "逃離糖果屋",
-  description: "一個黑暗童話密室逃脫遊戲",
+  description: "一個黑暗童話密室逃脫遊戲，在充滿詭異氛圍的糖果屋中尋找線索、解開謎題，逃離女巫的掌控。",
+  icons: {
+    icon: "item_images/kid_head.png",
+  },
+  openGraph: {
+    title: "逃離糖果屋",
+    description: "一個黑暗童話密室逃脫遊戲，在充滿詭異氛圍的糖果屋中尋找線索、解開謎題，逃離女巫的掌控。",
+    url: "https://final-web-design-dusky.vercel.app/",
+    siteName: "逃離糖果屋",
+    images: "images/ch01_bg",
+  },
 };
 
 export default function RootLayout({
