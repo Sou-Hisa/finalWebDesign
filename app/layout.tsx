@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     description: "一個黑暗童話密室逃脫遊戲，在充滿詭異氛圍的糖果屋中尋找線索、解開謎題，逃離女巫的掌控。",
     url: "https://final-web-design-dusky.vercel.app/",
     siteName: "逃離糖果屋",
-    images: "images/ch01_bg",
+    images: "images/ch01_bg.png",
   },
 };
 
