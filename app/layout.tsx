@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Ma_Shan_Zheng, Noto_Serif_TC, Noto_Sans_TC } from "next/font/google";
 import "./globals.css";
 import BgMusic from "../component/BgMusic";
-import { url } from "inspector/promises";
 
 const maShangZheng = Ma_Shan_Zheng({
   weight: "400",
